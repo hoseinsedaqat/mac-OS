@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
 import { SystemStateService } from '../../core/services/system-state.service';
 import { I18nService } from '../../core/services/i18n.service';
+import { IconComponent } from '../../shared/components/icon/icon.component';
 
 const STEP_COUNT = 5;
 
 @Component({
   selector: 'mw-boot',
   standalone: true,
+  imports: [IconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './boot.component.html',
   styleUrl: './boot.component.scss',

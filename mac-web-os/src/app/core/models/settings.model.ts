@@ -34,6 +34,12 @@ export interface SettingsState {
   passwordHash: string | null;
   wifiEnabled: boolean;
   focusMode: boolean;
+  bluetoothEnabled: boolean;
+  airdropEnabled: boolean;
+  stageManagerEnabled: boolean;
+  screenMirroringEnabled: boolean;
+  screenRecordingActive: boolean;
+  keyboardBrightness: number;
 }
 
 export const DEFAULT_SETTINGS: SettingsState = {
@@ -41,7 +47,7 @@ export const DEFAULT_SETTINGS: SettingsState = {
   theme: 'light',
   accent: 'blue',
   language: 'en',
-  wallpaperId: 'aurora',
+  wallpaperId: 'aurora-waves',
   wallpaperFit: 'cover',
   dockSize: 56,
   dockAutoHide: false,
@@ -57,4 +63,10 @@ export const DEFAULT_SETTINGS: SettingsState = {
   passwordHash: null,
   wifiEnabled: true,
   focusMode: false,
+  bluetoothEnabled: false,
+  airdropEnabled: false,
+  stageManagerEnabled: false,
+  screenMirroringEnabled: false,
+  screenRecordingActive: false,
+  keyboardBrightness: 40,
 };

@@ -134,6 +134,11 @@ export class WindowManagerService {
     else this.minimize(id);
   }
 
+  /** "Show Desktop": minimizes every open, non-minimized window — used by Mission Control / Control Center. */
+  minimizeAll(): void {
+    this.windowsSignal.update((list) => list.map((w) => ({ ...w, minimized: true, active: false })));
+  }
+
   toggleMaximize(id: string): void {
     const viewport = this.viewportSize();
     this.windowsSignal.update((list) =>

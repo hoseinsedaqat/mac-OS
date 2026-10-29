@@ -7,6 +7,8 @@ import { LoginComponent } from './shell/login/login.component';
 import { DesktopComponent } from './shell/desktop/desktop.component';
 import { ContextMenuComponent } from './shared/components/context-menu/context-menu.component';
 import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
+import { RestartScreenComponent } from './shell/restart-screen/restart-screen.component';
+import { PowerOffScreenComponent } from './shell/power-off-screen/power-off-screen.component';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +20,8 @@ import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confi
     DesktopComponent,
     ContextMenuComponent,
     ConfirmDialogComponent,
+    RestartScreenComponent,
+    PowerOffScreenComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './app.html',

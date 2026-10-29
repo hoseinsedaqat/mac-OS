@@ -24,7 +24,7 @@
       <div class="mw-store__featured">
         @for (app of featured(); track app.id) {
           <button type="button" class="mw-store__featured-card" (click)="selectApp(app)">
-            <mw-icon [name]="app.icon" [size]="30" />
+            <mw-app-icon [background]="themeFor(app.id).background" [glyph]="app.icon" [glyphColor]="themeFor(app.id).glyphColor ?? '#fff'" [size]="48" />
             <strong>{{ app.name }}</strong>
             <span>{{ app.description }}</span>
           </button>
@@ -36,7 +36,7 @@
     <div class="mw-store__grid">
       @for (app of visibleApps(); track app.id) {
         <div class="mw-store__row" (click)="selectApp(app)">
-          <mw-icon [name]="app.icon" [size]="28" />
+          <mw-app-icon [background]="themeFor(app.id).background" [glyph]="app.icon" [glyphColor]="themeFor(app.id).glyphColor ?? '#fff'" [size]="44" />
           <div class="mw-store__row-info">
             <strong>{{ app.name }}</strong>
             <span>{{ app.description }}</span>
@@ -56,7 +56,7 @@
   @if (selectedApp(); as app) {
     <div class="mw-store__detail-scrim" (click)="closeDetail()">
       <div class="mw-store__detail" (click)="$event.stopPropagation()">
-        <mw-icon [name]="app.icon" [size]="46" />
+        <mw-app-icon [background]="themeFor(app.id).background" [glyph]="app.icon" [glyphColor]="themeFor(app.id).glyphColor ?? '#fff'" [size]="72" />
         <h2>{{ app.name }}</h2>
         <p class="mw-store__detail-category">{{ categoryLabels[app.category] }}</p>
         <p class="mw-store__detail-desc">{{ app.description }}</p>

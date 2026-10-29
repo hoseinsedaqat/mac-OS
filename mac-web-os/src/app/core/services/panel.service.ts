@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 
-export type OverlayPanel = 'none' | 'spotlight' | 'control-center' | 'notifications';
+export type OverlayPanel = 'none' | 'spotlight' | 'control-center' | 'notifications' | 'launchpad';
 
 /** Ensures only one of Spotlight / Control Center / Notification Center is open at a time. */
 @Injectable({ providedIn: 'root' })

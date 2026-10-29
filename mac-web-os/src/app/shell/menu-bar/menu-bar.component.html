@@ -1,7 +1,7 @@
 <div class="mw-menubar" role="menubar">
   <div class="mw-menubar__left">
     <button type="button" class="mw-menubar__apple" [attr.aria-label]="i18n.t('shell.menuBar.about')" (click)="openAppleMenu($event)">
-      <mw-icon name="apps" [size]="15" />
+      <mw-icon name="apple" [size]="15" />
     </button>
     <span class="mw-menubar__app-name">{{ activeApp() }}</span>
     <button type="button" class="mw-menubar__item" (click)="openFileMenu($event)">{{ i18n.t('shell.menuBar.file') }}</button>

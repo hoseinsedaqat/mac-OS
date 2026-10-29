@@ -22,8 +22,8 @@
 .mw-dock__inner {
   display: flex;
   align-items: flex-end;
-  gap: 10px;
-  padding: 8px 12px;
+  gap: 7px;
+  padding: 7px 9px;
   background: var(--mw-bg-elevated);
   border: 1px solid var(--mw-border-subtle);
   border-radius: 20px;
@@ -56,15 +56,10 @@
   height: var(--dock-size, 56px);
   display: grid;
   place-items: center;
-  background: var(--mw-bg-control);
-  border: 1px solid var(--mw-border-subtle);
-  border-radius: 14px;
-  color: var(--mw-text-primary);
+  background: transparent;
+  border: none;
+  padding: 0;
   cursor: pointer;
-
-  &:hover {
-    background: var(--mw-bg-control-hover);
-  }
 }
 
 .mw-dock__tooltip {

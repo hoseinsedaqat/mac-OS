@@ -8,6 +8,18 @@ export interface WallpaperDef {
 
 export const WALLPAPERS: WallpaperDef[] = [
   {
+    id: 'aurora-waves',
+    name: 'Silk Flow',
+    file: 'wallpapers/aurora-waves.jpg',
+    fallbackGradient: 'linear-gradient(200deg, #1c2a63 0%, #7a2f6e 45%, #d9657a 70%, #f2a25c 100%)',
+  },
+  {
+    id: 'lake-dusk',
+    name: 'Lake Dusk',
+    file: 'wallpapers/lake-dusk.jpg',
+    fallbackGradient: 'linear-gradient(180deg, #2b3a55 0%, #8c7a98 40%, #e8b98a 65%, #4a6b7a 100%)',
+  },
+  {
     id: 'aurora',
     name: 'Aurora',
     file: 'wallpapers/aurora.jpg',

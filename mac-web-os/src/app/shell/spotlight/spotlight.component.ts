@@ -7,6 +7,8 @@ import { FileSystemService } from '../../core/services/file-system.service';
 import { StorageService } from '../../core/services/storage.service';
 import { I18nService } from '../../core/services/i18n.service';
 import { IconComponent } from '../../shared/components/icon/icon.component';
+import { AppIconComponent } from '../../shared/components/app-icon/app-icon.component';
+import { getIconTheme } from '../../shared/utils/icon-theme.data';
 import { AppDefinition } from '../../core/models/app.model';
 import { FsNode } from '../../core/models/file-system.model';
 
@@ -20,7 +22,7 @@ type ResultGroup = { label: string; kind: 'app' | 'file' | 'note'; items: (AppDe
 @Component({
   selector: 'mw-spotlight',
   standalone: true,
-  imports: [FormsModule, IconComponent],
+  imports: [FormsModule, IconComponent, AppIconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './spotlight.component.html',
   styleUrl: './spotlight.component.scss',
@@ -36,6 +38,10 @@ export class SpotlightComponent {
   readonly inputRef = viewChild<ElementRef<HTMLInputElement>>('searchInput');
   readonly query = signal('');
   readonly isOpen = computed(() => this.panels.active() === 'spotlight');
+
+  themeFor(id: string) {
+    return getIconTheme(id);
+  }
 
   constructor() {
     effect(() => {

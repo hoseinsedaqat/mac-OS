@@ -25,7 +25,7 @@
               <h3>{{ i18n.t('shell.spotlight.applications') }}</h3>
               @for (app of appResults(); track app.id) {
                 <button type="button" class="mw-spotlight__row" (click)="openApp(app)">
-                  <mw-icon [name]="app.icon" [size]="18" />
+                  <mw-app-icon [background]="themeFor(app.id).background" [glyph]="app.icon" [glyphColor]="themeFor(app.id).glyphColor ?? '#fff'" [size]="26" />
                   <span>{{ app.name }}</span>
                 </button>
               }

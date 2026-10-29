@@ -4,13 +4,16 @@ import { WindowManagerService } from '../../core/services/window-manager.service
 import { SettingsService } from '../../core/services/settings.service';
 import { ContextMenuService, ContextMenuItem } from '../../core/services/context-menu.service';
 import { SoundService } from '../../core/services/sound.service';
-import { IconComponent } from '../../shared/components/icon/icon.component';
+import { PanelService } from '../../core/services/panel.service';
+import { I18nService } from '../../core/services/i18n.service';
+import { AppIconComponent } from '../../shared/components/app-icon/app-icon.component';
+import { getIconTheme } from '../../shared/utils/icon-theme.data';
 import { AppDefinition } from '../../core/models/app.model';
 
 @Component({
   selector: 'mw-dock',
   standalone: true,
-  imports: [IconComponent],
+  imports: [AppIconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './dock.component.html',
   styleUrl: './dock.component.scss',
@@ -21,14 +24,27 @@ export class DockComponent implements OnDestroy {
   readonly settings = inject(SettingsService);
   private readonly contextMenu = inject(ContextMenuService);
   private readonly sound = inject(SoundService);
+  private readonly panels = inject(PanelService);
+  readonly i18n = inject(I18nService);
 
   readonly dockEl = viewChild<ElementRef<HTMLElement>>('dockEl');
   readonly apps = computed(() => this.registry.dockApps().filter((a) => a.id !== 'trash'));
   readonly trashApp = computed(() => this.registry.get('trash') as AppDefinition);
+  readonly iconSize = computed(() => Math.max(28, this.settings.settings().dockSize - 12));
 
   readonly hovering = signal(false);
   readonly scales = signal<Record<string, number>>({});
   readonly bouncing = signal<string | null>(null);
+
+  private readonly todayNumber = String(new Date().getDate());
+
+  themeFor(id: string) {
+    return getIconTheme(id);
+  }
+
+  glyphTextFor(id: string): string | null {
+    return id === 'calendar' ? this.todayNumber : null;
+  }
 
   isRunning(appId: string): boolean {
     return this.wm.isOpen(appId);
@@ -117,6 +133,10 @@ export class DockComponent implements OnDestroy {
 
   openTrash(): void {
     this.activate(this.trashApp());
+  }
+
+  openLaunchpad(): void {
+    this.panels.toggle('launchpad');
   }
 
   ngOnDestroy(): void {

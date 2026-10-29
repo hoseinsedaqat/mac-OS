@@ -29,9 +29,7 @@
   height: 52px;
   display: grid;
   place-items: center;
-  border-radius: var(--mw-radius-md);
-  background: rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(4px);
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
 }
 
 .mw-desktop-icon__label {

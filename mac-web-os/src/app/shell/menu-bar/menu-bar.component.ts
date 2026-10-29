@@ -79,13 +79,20 @@ export class MenuBarComponent implements OnInit, OnDestroy {
       { id: 'appstore', label: 'App Store…', icon: 'app-store', action: () => this.wm.open('app-store') },
       { id: 'sep2', separator: true },
       { id: 'sleep', label: t('shell.menuBar.sleep'), icon: 'moon', action: () => this.system.sleep() },
-      { id: 'lock', label: t('shell.menuBar.lockScreen'), icon: 'lock', action: () => this.lockScreen() },
       {
-        id: 'logout',
-        label: t('shell.menuBar.lockScreen'),
-        icon: 'power',
-        action: () => this.lockScreen(),
+        id: 'restart',
+        label: t('shell.menuBar.restart'),
+        icon: 'refresh',
+        action: () => void this.confirmRestart(),
       },
+      {
+        id: 'shutdown',
+        label: t('shell.menuBar.shutDown'),
+        icon: 'power',
+        action: () => void this.confirmShutDown(),
+      },
+      { id: 'sep2b', separator: true },
+      { id: 'lock', label: t('shell.menuBar.lockScreen'), icon: 'lock', action: () => this.lockScreen() },
       { id: 'sep3', separator: true },
       {
         id: 'reset',
@@ -261,6 +268,29 @@ export class MenuBarComponent implements OnInit, OnDestroy {
   private lockScreen(): void {
     this.sound.lock();
     this.system.lock();
+  }
+
+  private async confirmRestart(): Promise<void> {
+    const confirmed = await this.dialog.confirm({
+      title: this.i18n.t('shell.restart.confirmTitle'),
+      message: this.i18n.t('shell.restart.confirmMessage'),
+      confirmLabel: this.i18n.t('shell.menuBar.restart'),
+    });
+    if (!confirmed) return;
+    this.wm.closeAll();
+    this.system.restart();
+  }
+
+  private async confirmShutDown(): Promise<void> {
+    const confirmed = await this.dialog.confirm({
+      title: this.i18n.t('shell.shutdown.confirmTitle'),
+      message: this.i18n.t('shell.shutdown.confirmMessage'),
+      confirmLabel: this.i18n.t('shell.menuBar.shutDown'),
+      danger: true,
+    });
+    if (!confirmed) return;
+    this.wm.closeAll();
+    this.system.powerOff();
   }
 
   private async resetEnvironment(): Promise<void> {

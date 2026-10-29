@@ -26,6 +26,12 @@
         (keydown.space)="wake()"
       ></div>
     }
+    @case ('restarting') {
+      <mw-restart-screen />
+    }
+    @case ('off') {
+      <mw-power-off-screen />
+    }
   }
 }
 

@@ -9,6 +9,15 @@
   aria-label="Dock"
 >
   <div class="mw-dock__inner">
+    <div class="mw-dock__item" data-dock-item="launchpad" [style.transform]="'scale(' + scaleFor('launchpad') + ')'">
+      <button type="button" class="mw-dock__btn" [attr.aria-label]="i18n.t('shell.launchpad.title')" (click)="openLaunchpad()">
+        <mw-app-icon [background]="themeFor('applications').background" glyph="launchpad" [size]="iconSize()" />
+      </button>
+      <span class="mw-dock__tooltip">{{ i18n.t('shell.launchpad.title') }}</span>
+    </div>
+
+    <div class="mw-dock__divider"></div>
+
     @for (app of apps(); track app.id) {
       <div
         class="mw-dock__item"
@@ -23,7 +32,13 @@
           (click)="activate(app)"
           (contextmenu)="onContextMenu($event, app)"
         >
-          <mw-icon [name]="app.icon" [size]="26" />
+          <mw-app-icon
+            [background]="themeFor(app.id).background"
+            [glyph]="app.icon"
+            [glyphColor]="themeFor(app.id).glyphColor ?? '#fff'"
+            [text]="glyphTextFor(app.id)"
+            [size]="iconSize()"
+          />
         </button>
         <span class="mw-dock__tooltip">{{ app.name }}</span>
         <span class="mw-dock__indicator" [class.visible]="isRunning(app.id)"></span>
@@ -40,7 +55,7 @@
         (click)="openTrash()"
         (contextmenu)="onContextMenu($event, trashApp())"
       >
-        <mw-icon name="trash" [size]="26" />
+        <mw-app-icon [background]="themeFor('trash').background" glyph="trash" [glyphColor]="themeFor('trash').glyphColor ?? '#fff'" [size]="iconSize()" />
       </button>
       <span class="mw-dock__tooltip">Trash</span>
       <span class="mw-dock__indicator" [class.visible]="isRunning('trash')"></span>
