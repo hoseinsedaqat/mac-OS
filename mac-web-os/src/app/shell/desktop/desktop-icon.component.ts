@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, NgZone, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, NgZone, computed, inject, input } from '@angular/core';
 import { DesktopIconDef, DesktopService } from '../../core/services/desktop.service';
 import { WindowManagerService } from '../../core/services/window-manager.service';
 import { ContextMenuService } from '../../core/services/context-menu.service';
 import { DialogService } from '../../core/services/dialog.service';
+import { I18nService } from '../../core/services/i18n.service';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 
 @Component({
@@ -25,7 +26,7 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
       <span class="mw-desktop-icon__glyph">
         <mw-icon [name]="def().icon" [size]="30" />
       </span>
-      <span class="mw-desktop-icon__label">{{ def().label }}</span>
+      <span class="mw-desktop-icon__label">{{ label() }}</span>
     </button>
   `,
   styleUrl: './desktop-icon.component.scss',
@@ -38,7 +39,10 @@ export class DesktopIconComponent {
   private readonly wm = inject(WindowManagerService);
   private readonly contextMenu = inject(ContextMenuService);
   private readonly dialog = inject(DialogService);
+  private readonly i18n = inject(I18nService);
   private readonly zone = inject(NgZone);
+
+  readonly label = computed(() => this.i18n.t(this.def().labelKey));
 
   private dragging = false;
   private moved = false;
@@ -105,13 +109,13 @@ export class DesktopIconComponent {
     this.desktop.select(this.def().id);
     const isTrash = this.def().id === 'trash';
     this.contextMenu.open(event.clientX, event.clientY, [
-      { id: 'open', label: 'باز کردن', icon: 'chevronRight', action: () => this.open() },
-      { id: 'info', label: 'اطلاعات', icon: 'info', action: () => this.showInfo() },
+      { id: 'open', label: this.i18n.t('common.open'), icon: 'chevronRight', action: () => this.open() },
+      { id: 'info', label: this.i18n.t('shell.desktop.getInfo'), icon: 'info', action: () => this.showInfo() },
       ...(isTrash
         ? [
             {
               id: 'empty',
-              label: 'خالی‌کردن سطل زباله',
+              label: this.i18n.t('shell.desktop.contextMenu.emptyTrash'),
               icon: 'trash2',
               danger: true,
               action: () => this.emptyTrashFromIcon(),
@@ -123,9 +127,9 @@ export class DesktopIconComponent {
 
   private async emptyTrashFromIcon(): Promise<void> {
     const confirmed = await this.dialog.confirm({
-      title: 'خالی‌کردن سطل زباله',
-      message: 'این عملیات برگشت‌ناپذیر است. آیا مطمئن هستید؟',
-      confirmLabel: 'خالی‌کن',
+      title: this.i18n.t('shell.desktop.contextMenu.emptyTrash'),
+      message: this.i18n.t('shell.desktop.emptyTrashConfirmMessage'),
+      confirmLabel: this.i18n.t('apps.trash.emptyTrash'),
       danger: true,
     });
     if (confirmed) {
@@ -136,8 +140,8 @@ export class DesktopIconComponent {
   private showInfo(): void {
     this.contextMenu.close();
     void this.dialog.alert({
-      title: this.def().label,
-      message: 'این یک آیتم شبیه‌سازی‌شده در دسکتاپ MacWeb OS است.',
+      title: this.label(),
+      message: this.i18n.t('shell.desktop.simulatedItemNotice'),
     });
   }
 }

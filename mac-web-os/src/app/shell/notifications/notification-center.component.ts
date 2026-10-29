@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { PanelService } from '../../core/services/panel.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { WindowManagerService } from '../../core/services/window-manager.service';
+import { I18nService } from '../../core/services/i18n.service';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { relativeFromNow } from '../../shared/utils/date.util';
 
@@ -17,8 +18,10 @@ export class NotificationCenterComponent {
   private readonly panels = inject(PanelService);
   readonly notifications = inject(NotificationService);
   private readonly wm = inject(WindowManagerService);
+  readonly i18n = inject(I18nService);
 
   readonly isOpen = computed(() => this.panels.active() === 'notifications');
+  private readonly locale = computed(() => (this.i18n.language() === 'fa' ? 'fa-IR' : 'en-US'));
 
   close(): void {
     this.panels.close();
@@ -40,6 +43,6 @@ export class NotificationCenterComponent {
   }
 
   relative(ts: number): string {
-    return relativeFromNow(ts);
+    return relativeFromNow(ts, this.locale());
   }
 }

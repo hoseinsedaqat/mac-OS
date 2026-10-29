@@ -1,13 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
 import { SystemStateService } from '../../core/services/system-state.service';
+import { I18nService } from '../../core/services/i18n.service';
 
-const BOOT_STEPS = [
-  'بررسی سخت‌افزار شبیه‌سازی‌شده…',
-  'بارگذاری هسته MacWeb OS…',
-  'آماده‌سازی فضای ذخیره‌سازی محلی…',
-  'بررسی برنامه‌های نصب‌شده…',
-  'آماده‌سازی صفحه ورود…',
-];
+const STEP_COUNT = 5;
 
 @Component({
   selector: 'mw-boot',
@@ -18,12 +13,15 @@ const BOOT_STEPS = [
 })
 export class BootComponent implements OnInit, OnDestroy {
   private readonly system = inject(SystemStateService);
+  readonly i18n = inject(I18nService);
 
   readonly state = this.system.state;
   readonly splashProgress = signal(0);
   readonly bootProgress = signal(0);
   readonly canSkip = signal(false);
-  readonly stepLabel = signal(BOOT_STEPS[0]);
+  private readonly stepIndex = signal(0);
+
+  readonly stepLabel = computed(() => this.i18n.list('shell.boot.steps')[this.stepIndex()] ?? '');
 
   private timers: ReturnType<typeof setInterval>[] = [];
   private timeouts: ReturnType<typeof setTimeout>[] = [];
@@ -65,18 +63,13 @@ export class BootComponent implements OnInit, OnDestroy {
   }
 
   private runBootSequence(): void {
-    let stepIndex = 0;
-    this.stepLabel.set(BOOT_STEPS[0]);
+    this.stepIndex.set(0);
     const interval = setInterval(() => {
       this.bootProgress.update((v) => {
         const next = Math.min(100, v + 2.2);
-        const expectedStep = Math.min(
-          BOOT_STEPS.length - 1,
-          Math.floor((next / 100) * BOOT_STEPS.length),
-        );
-        if (expectedStep !== stepIndex) {
-          stepIndex = expectedStep;
-          this.stepLabel.set(BOOT_STEPS[stepIndex]);
+        const expectedStep = Math.min(STEP_COUNT - 1, Math.floor((next / 100) * STEP_COUNT));
+        if (expectedStep !== this.stepIndex()) {
+          this.stepIndex.set(expectedStep);
         }
         if (next >= 100) {
           clearInterval(interval);

@@ -59,4 +59,42 @@ describe('App (root shell / state-machine rendering)', () => {
     overlay.click();
     expect(system.state()).toBe('desktop');
   });
+
+  it('REGRESSION: the boot sequence actually completes end-to-end instead of freezing on the splash->booting handoff', () => {
+    // Guards against a real bug found in manual testing: splash and booting
+    // used to be two separate @switch cases that both rendered <mw-boot/>,
+    // which made Angular destroy and recreate the component on the
+    // splash -> booting transition, silently resetting its timers and
+    // freezing the UI forever on the first boot step.
+    vi.useFakeTimers();
+    try {
+      const fixture = TestBed.createComponent(App);
+      const system = TestBed.inject(SystemStateService);
+      fixture.detectChanges();
+      expect(system.state()).toBe('splash');
+
+      // The SAME <mw-boot> element must stay in the DOM across the whole
+      // splash -> booting hand-off (not be torn down and rebuilt).
+      const bootElBeforeHandoff = fixture.nativeElement.querySelector('mw-boot');
+      expect(bootElBeforeHandoff).toBeTruthy();
+
+      // Drive the splash progress bar (4%/60ms) all the way to 100%.
+      vi.advanceTimersByTime(2000);
+      fixture.detectChanges();
+      expect(system.state()).toBe('booting');
+
+      const bootElAfterHandoff = fixture.nativeElement.querySelector('mw-boot');
+      expect(bootElAfterHandoff).toBe(bootElBeforeHandoff);
+
+      // Drive the boot progress bar (2.2%/70ms) all the way to 100% and past
+      // the final 350ms settle timeout.
+      vi.advanceTimersByTime(5000);
+      fixture.detectChanges();
+
+      expect(system.state()).toBe('locked');
+      expect(fixture.nativeElement.querySelector('mw-lock-screen')).toBeTruthy();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
 });

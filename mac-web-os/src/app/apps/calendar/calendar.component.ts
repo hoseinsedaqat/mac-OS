@@ -2,11 +2,9 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, signal } f
 import { FormsModule } from '@angular/forms';
 import { CalendarEvent, CalendarStoreService } from './calendar-store.service';
 import { DialogService } from '../../core/services/dialog.service';
+import { I18nService } from '../../core/services/i18n.service';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { addMonths, buildMonthGrid, dateKey, formatFullDate, isSameDay } from '../../shared/utils/date.util';
-
-const WEEKDAYS = ['یک', 'دو', 'سه', 'چهار', 'پنج', 'جمعه', 'شنبه'];
-const MONTH_FORMATTER = new Intl.DateTimeFormat(undefined, { month: 'long', year: 'numeric' });
 
 @Component({
   selector: 'mw-app-calendar',
@@ -20,17 +18,21 @@ export class CalendarComponent {
   readonly windowId = input<string>('');
   readonly store = inject(CalendarStoreService);
   private readonly dialog = inject(DialogService);
+  readonly i18n = inject(I18nService);
 
-  readonly weekdays = WEEKDAYS;
+  private readonly locale = computed(() => (this.i18n.language() === 'fa' ? 'fa-IR' : 'en-US'));
+  readonly weekdays = computed(() => this.i18n.list('apps.calendar.weekdays'));
   readonly today = new Date();
   readonly viewMonth = signal(new Date(this.today.getFullYear(), this.today.getMonth(), 1));
   readonly selectedDate = signal(new Date());
 
-  readonly monthLabel = computed(() => MONTH_FORMATTER.format(this.viewMonth()));
+  readonly monthLabel = computed(() =>
+    new Intl.DateTimeFormat(this.locale(), { month: 'long', year: 'numeric' }).format(this.viewMonth()),
+  );
   readonly grid = computed(() => buildMonthGrid(this.viewMonth()));
   readonly selectedKey = computed(() => dateKey(this.selectedDate()));
   readonly selectedEvents = computed(() => this.store.eventsFor(this.selectedKey()));
-  readonly selectedDateLabel = computed(() => formatFullDate(this.selectedDate()));
+  readonly selectedDateLabel = computed(() => formatFullDate(this.selectedDate(), this.locale()));
 
   readonly formTitle = signal('');
   readonly formTime = signal('09:00');

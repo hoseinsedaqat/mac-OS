@@ -9,7 +9,7 @@
         <div class="mw-boot__bar-fill" [style.width.%]="splashProgress()"></div>
       </div>
       @if (canSkip()) {
-        <p class="mw-boot__hint">برای رد کردن، در هر جایی کلیک کنید یا Enter را بزنید</p>
+        <p class="mw-boot__hint">{{ i18n.t('shell.boot.skipHint') }}</p>
       }
     </div>
   } @else {

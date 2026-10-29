@@ -10,10 +10,14 @@ export type AccentColor =
   | 'green'
   | 'graphite';
 
+/** English is the primary/default language; Persian (فارسی) is the secondary, user-selectable language. */
+export type AppLanguage = 'en' | 'fa';
+
 export interface SettingsState {
-  version: 1;
+  version: 2;
   theme: ThemeMode;
   accent: AccentColor;
+  language: AppLanguage;
   wallpaperId: string;
   wallpaperFit: 'cover' | 'contain' | 'fill' | 'center';
   dockSize: number;
@@ -33,9 +37,10 @@ export interface SettingsState {
 }
 
 export const DEFAULT_SETTINGS: SettingsState = {
-  version: 1,
+  version: 2,
   theme: 'light',
   accent: 'blue',
+  language: 'en',
   wallpaperId: 'aurora',
   wallpaperFit: 'cover',
   dockSize: 56,

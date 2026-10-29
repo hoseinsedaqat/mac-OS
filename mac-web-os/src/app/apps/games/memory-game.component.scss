@@ -1,0 +1,86 @@
+.mw-memory {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mw-space-4);
+}
+
+.mw-memory__stats {
+  display: flex;
+  gap: var(--mw-space-4);
+  font-size: var(--mw-fs-md);
+  font-weight: 600;
+}
+
+.mw-memory__won {
+  color: var(--mw-accent);
+}
+
+.mw-memory__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 64px);
+  gap: var(--mw-space-2);
+}
+
+.mw-memory__card {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--mw-radius-md);
+  border: 1px solid var(--mw-border-subtle);
+  background: var(--mw-bg-control);
+  cursor: pointer;
+  perspective: 600px;
+
+  &:disabled {
+    cursor: default;
+  }
+}
+
+.mw-memory__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  border-radius: var(--mw-radius-md);
+  backface-visibility: hidden;
+  transition: transform var(--mw-duration-base) var(--mw-ease-out);
+}
+
+.mw-memory__face--front {
+  background: var(--mw-bg-control);
+  color: var(--mw-text-secondary);
+  font-weight: 700;
+  transform: rotateY(0deg);
+}
+
+.mw-memory__face--back {
+  background: var(--mw-bg-elevated);
+  transform: rotateY(180deg);
+}
+
+.mw-memory__card.flipped .mw-memory__face--front,
+.mw-memory__card.matched .mw-memory__face--front {
+  transform: rotateY(180deg);
+}
+
+.mw-memory__card.flipped .mw-memory__face--back,
+.mw-memory__card.matched .mw-memory__face--back {
+  transform: rotateY(0deg);
+}
+
+.mw-memory__card.matched {
+  opacity: 0.55;
+}
+
+.mw-memory__reset {
+  padding: var(--mw-space-2) var(--mw-space-4);
+  border-radius: var(--mw-radius-md);
+  border: none;
+  background: var(--mw-accent);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}

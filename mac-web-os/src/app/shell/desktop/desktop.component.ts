@@ -16,6 +16,7 @@ import { KeyboardShortcutService } from '../../core/services/keyboard-shortcut.s
 import { ContextMenuService, ContextMenuItem } from '../../core/services/context-menu.service';
 import { FileSystemService } from '../../core/services/file-system.service';
 import { NotificationService } from '../../core/services/notification.service';
+import { I18nService } from '../../core/services/i18n.service';
 import { DOCUMENTS_ID } from '../../core/models/file-system.model';
 
 @Component({
@@ -45,6 +46,7 @@ export class DesktopComponent implements OnInit, OnDestroy {
   private readonly contextMenu = inject(ContextMenuService);
   private readonly fs = inject(FileSystemService);
   private readonly notifications = inject(NotificationService);
+  private readonly i18n = inject(I18nService);
 
   readonly brightnessFilter = computed(() => `brightness(${this.settings.settings().brightness}%)`);
 
@@ -78,8 +80,8 @@ export class DesktopComponent implements OnInit, OnDestroy {
           appId: 'about',
           appName: 'MacWeb OS',
           icon: 'about',
-          title: 'به MacWeb OS خوش آمدید',
-          body: 'برای شروع، روی یکی از آیکون‌های Dock کلیک کنید یا Spotlight را با Ctrl+Space باز کنید.',
+          title: this.i18n.t('shell.notifications.welcomeTitle'),
+          body: this.i18n.t('shell.notifications.welcomeBody'),
         });
       }, 1200);
     }
@@ -109,28 +111,33 @@ export class DesktopComponent implements OnInit, OnDestroy {
     const items: ContextMenuItem[] = [
       {
         id: 'new-folder',
-        label: 'پوشه جدید در Documents',
+        label: this.i18n.t('shell.desktop.contextMenu.newFolder'),
         icon: 'folder',
         action: () => {
-          void this.fs.createFolder(DOCUMENTS_ID, 'پوشه بدون عنوان').then(() => {
+          void this.fs.createFolder(DOCUMENTS_ID, this.i18n.t('common.untitled')).then(() => {
             this.wm.open('finder', { data: { folderId: DOCUMENTS_ID } });
           });
         },
       },
       {
         id: 'clean-up',
-        label: 'مرتب‌سازی آیکون‌ها',
+        label: this.i18n.t('shell.desktop.contextMenu.resetIconPositions'),
         icon: 'grid',
         action: () => this.desktop.resetPositions(),
       },
       { id: 'sep', separator: true },
       {
         id: 'change-wallpaper',
-        label: 'تغییر والپیپر…',
+        label: this.i18n.t('shell.desktop.contextMenu.changeWallpaper'),
         icon: 'photos',
         action: () => this.wm.open('settings', { data: { section: 'wallpaper' } }),
       },
-      { id: 'settings', label: 'تنظیمات…', icon: 'settings', action: () => this.wm.open('settings') },
+      {
+        id: 'settings',
+        label: this.i18n.t('shell.desktop.contextMenu.settings'),
+        icon: 'settings',
+        action: () => this.wm.open('settings'),
+      },
     ];
     this.contextMenu.open(event.clientX, event.clientY, items);
   }

@@ -7,7 +7,8 @@ export type DesktopIconAction =
 
 export interface DesktopIconDef {
   id: string;
-  label: string;
+  /** Dot-path into the i18n dictionary resolved to the visible label. */
+  labelKey: string;
   icon: string;
   action: DesktopIconAction;
 }
@@ -21,13 +22,61 @@ export interface DesktopIconPosition {
 const STORAGE_KEY = 'desktop-icon-positions';
 
 const DEFAULT_ICONS: DesktopIconDef[] = [
-  { id: 'macintosh-hd', label: 'Macintosh HD', icon: 'hdd', action: { type: 'open-folder', folderId: 'root' } },
-  { id: 'documents', label: 'Documents', icon: 'folder', action: { type: 'open-folder', folderId: 'documents' } },
-  { id: 'downloads', label: 'Downloads', icon: 'folder-download', action: { type: 'open-folder', folderId: 'downloads' } },
-  { id: 'applications', label: 'Applications', icon: 'apps', action: { type: 'open-app', appId: 'app-store' } },
-  { id: 'settings', label: 'Settings', icon: 'settings', action: { type: 'open-app', appId: 'settings' } },
-  { id: 'about-this-mac', label: 'About This Mac', icon: 'about', action: { type: 'open-app', appId: 'about' } },
-  { id: 'trash', label: 'Trash', icon: 'trash', action: { type: 'open-app', appId: 'trash' } },
+  {
+    id: 'macintosh-hd',
+    labelKey: 'shell.desktop.icons.macintoshHd',
+    icon: 'hdd',
+    action: { type: 'open-folder', folderId: 'root' },
+  },
+  {
+    id: 'documents',
+    labelKey: 'shell.desktop.icons.documents',
+    icon: 'folder',
+    action: { type: 'open-folder', folderId: 'documents' },
+  },
+  {
+    id: 'downloads',
+    labelKey: 'shell.desktop.icons.downloads',
+    icon: 'folder-download',
+    action: { type: 'open-folder', folderId: 'downloads' },
+  },
+  {
+    id: 'applications',
+    labelKey: 'shell.desktop.icons.applications',
+    icon: 'apps',
+    action: { type: 'open-app', appId: 'app-store' },
+  },
+  {
+    id: 'terminal',
+    labelKey: 'apps.terminal.name',
+    icon: 'terminal',
+    action: { type: 'open-app', appId: 'terminal' },
+  },
+  {
+    id: 'vscode',
+    labelKey: 'apps.vscode.name',
+    icon: 'vscode',
+    action: { type: 'open-app', appId: 'vscode' },
+  },
+  {
+    id: 'games',
+    labelKey: 'shell.desktop.icons.games',
+    icon: 'games',
+    action: { type: 'open-app', appId: 'games' },
+  },
+  {
+    id: 'settings',
+    labelKey: 'shell.desktop.icons.settings',
+    icon: 'settings',
+    action: { type: 'open-app', appId: 'settings' },
+  },
+  {
+    id: 'about-this-mac',
+    labelKey: 'shell.desktop.icons.aboutThisMac',
+    icon: 'about',
+    action: { type: 'open-app', appId: 'about' },
+  },
+  { id: 'trash', labelKey: 'shell.desktop.icons.trash', icon: 'trash', action: { type: 'open-app', appId: 'trash' } },
 ];
 
 /** Owns desktop icon layout: definitions, positions and selection state. */

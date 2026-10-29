@@ -1,0 +1,109 @@
+.mw-games {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--mw-space-5);
+  gap: var(--mw-space-3);
+  overflow: auto;
+}
+
+.mw-games__header {
+  display: flex;
+  align-items: center;
+  gap: var(--mw-space-3);
+
+  h1 {
+    font-size: var(--mw-fs-xl);
+    font-weight: 700;
+    margin: 0;
+  }
+}
+
+.mw-games__subtitle {
+  margin: 0 0 var(--mw-space-2);
+  color: var(--mw-text-secondary);
+}
+
+.mw-games__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: var(--mw-space-4);
+}
+
+.mw-games__card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--mw-space-2);
+  padding: var(--mw-space-4);
+  background: var(--mw-bg-control);
+  border: 1px solid var(--mw-border-subtle);
+  border-radius: var(--mw-radius-lg);
+  cursor: pointer;
+  text-align: start;
+  transition: transform var(--mw-duration-fast) var(--mw-ease-out), background var(--mw-duration-fast) var(--mw-ease-out);
+
+  &:hover {
+    background: var(--mw-bg-control-hover);
+    transform: translateY(-2px);
+  }
+}
+
+.mw-games__card-icon {
+  display: inline-flex;
+  padding: var(--mw-space-3);
+  border-radius: var(--mw-radius-md);
+  background: var(--mw-accent);
+  color: #fff;
+}
+
+.mw-games__card-name {
+  font-weight: 700;
+  font-size: var(--mw-fs-md);
+}
+
+.mw-games__card-instructions {
+  font-size: var(--mw-fs-xs);
+  color: var(--mw-text-secondary);
+}
+
+.mw-games__card-best {
+  font-size: var(--mw-fs-xs);
+  font-weight: 600;
+  color: var(--mw-accent);
+}
+
+.mw-games__toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--mw-space-3);
+
+  h2 {
+    margin: 0;
+    font-size: var(--mw-fs-lg);
+  }
+}
+
+.mw-games__back {
+  display: flex;
+  align-items: center;
+  gap: var(--mw-space-1);
+  padding: var(--mw-space-2) var(--mw-space-3);
+  background: var(--mw-bg-control);
+  border: 1px solid var(--mw-border-subtle);
+  border-radius: var(--mw-radius-md);
+  cursor: pointer;
+  font-size: var(--mw-fs-sm);
+
+  &:hover {
+    background: var(--mw-bg-control-hover);
+  }
+}
+
+.mw-games__stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}

@@ -14,7 +14,9 @@ export type AppId =
   | 'mail'
   | 'app-store'
   | 'about'
-  | 'trash';
+  | 'trash'
+  | 'games'
+  | 'vscode';
 
 export interface AppWindowDefaults {
   width: number;

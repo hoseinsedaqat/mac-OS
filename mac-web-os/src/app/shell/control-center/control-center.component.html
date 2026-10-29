@@ -1,6 +1,6 @@
 @if (isOpen()) {
   <div class="mw-cc__scrim" (click)="close()"></div>
-  <div class="mw-cc" role="dialog" aria-label="Control Center">
+  <div class="mw-cc" role="dialog" [attr.aria-label]="i18n.t('shell.controlCenter.title')">
     <div class="mw-cc__grid">
       <button type="button" class="mw-cc__toggle" [class.active]="settings.settings().wifiEnabled" (click)="toggleWifi()">
         <mw-icon name="wifi" [size]="18" />
@@ -8,7 +8,7 @@
       </button>
       <button type="button" class="mw-cc__toggle" [class.active]="settings.settings().focusMode" (click)="toggleFocus()">
         <mw-icon name="moon" [size]="18" />
-        <span>Focus</span>
+        <span>{{ i18n.t('shell.controlCenter.focus') }}</span>
       </button>
       <button
         type="button"
@@ -17,7 +17,7 @@
         (click)="toggleTheme()"
       >
         <mw-icon [name]="settings.theme() === 'dark' ? 'moon' : 'sun'" [size]="18" />
-        <span>Appearance</span>
+        <span>{{ i18n.t('shell.controlCenter.appearance') }}</span>
       </button>
       <button
         type="button"
@@ -26,14 +26,39 @@
         (click)="toggleDockAutoHide()"
       >
         <mw-icon name="grid" [size]="18" />
-        <span>Auto-hide Dock</span>
+        <span>{{ i18n.t('shell.controlCenter.autoHideDock') }}</span>
       </button>
     </div>
 
     <div class="mw-cc__slider-card">
       <div class="mw-cc__slider-head">
+        <mw-icon name="globe" [size]="16" />
+        <span>{{ i18n.t('shell.controlCenter.language') }}</span>
+      </div>
+      <div class="mw-cc__lang-switch">
+        <button
+          type="button"
+          class="mw-cc__lang-btn"
+          [class.active]="i18n.language() === 'en'"
+          (click)="setLanguage('en')"
+        >
+          {{ i18n.t('shell.controlCenter.languageEnglish') }}
+        </button>
+        <button
+          type="button"
+          class="mw-cc__lang-btn"
+          [class.active]="i18n.language() === 'fa'"
+          (click)="setLanguage('fa')"
+        >
+          {{ i18n.t('shell.controlCenter.languagePersian') }}
+        </button>
+      </div>
+    </div>
+
+    <div class="mw-cc__slider-card">
+      <div class="mw-cc__slider-head">
         <mw-icon name="sun" [size]="16" />
-        <span>Brightness (شبیه‌سازی‌شده)</span>
+        <span>{{ i18n.t('shell.controlCenter.brightnessSimulated') }}</span>
       </div>
       <input
         type="range"
@@ -41,14 +66,14 @@
         max="100"
         [value]="settings.settings().brightness"
         (input)="setBrightness($event)"
-        aria-label="Brightness"
+        [attr.aria-label]="i18n.t('shell.controlCenter.brightness')"
       />
     </div>
 
     <div class="mw-cc__slider-card">
       <div class="mw-cc__slider-head">
         <mw-icon [name]="settings.settings().volume === 0 ? 'volume-mute' : 'volume'" [size]="16" />
-        <span>Sound</span>
+        <span>{{ i18n.t('shell.controlCenter.volume') }}</span>
       </div>
       <input
         type="range"
@@ -56,14 +81,14 @@
         max="100"
         [value]="settings.settings().volume"
         (input)="setVolume($event)"
-        aria-label="Volume"
+        [attr.aria-label]="i18n.t('shell.controlCenter.volume')"
       />
     </div>
 
     <div class="mw-cc__slider-card">
       <div class="mw-cc__slider-head">
         <mw-icon name="apps" [size]="16" />
-        <span>Dock Size</span>
+        <span>{{ i18n.t('shell.controlCenter.dockSize') }}</span>
       </div>
       <input
         type="range"
@@ -71,7 +96,7 @@
         max="80"
         [value]="settings.settings().dockSize"
         (input)="setDockSize($event)"
-        aria-label="Dock size"
+        [attr.aria-label]="i18n.t('shell.controlCenter.dockSize')"
       />
     </div>
   </div>

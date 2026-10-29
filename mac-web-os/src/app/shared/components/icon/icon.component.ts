@@ -108,6 +108,16 @@ export class IconComponent {
     history: '<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><path d="M12 8v4l3 2"/>',
     send: '<path d="m4 11 16-7-6 16-3-6Z"/>',
     'file-text': '<path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v5h5"/><path d="M8 13h8M8 17h5"/>',
+    games:
+      '<rect x="2.5" y="8" width="19" height="9.5" rx="4"/><path d="M7 10.5v4.5M4.8 12.75h4.4"/><circle cx="16" cy="11" r="1" fill="currentColor" stroke="none"/><circle cx="18.2" cy="13.5" r="1" fill="currentColor" stroke="none"/>',
+    vscode:
+      '<path d="M16.5 2.5 6.3 11.4 2.5 8.6v6.8l3.8-2.8L16.5 21.5l4-1.9V4.4Z"/><path d="m16.5 8.6-6.9 3.4 6.9 3.4" opacity="0.55"/>',
+    play2:
+      '<path d="M4 12a8 8 0 1 1 8 8" /><path d="m4 12 3-3m-3 3 3 3"/>',
+    grid3:
+      '<rect x="3" y="3" width="5" height="5" rx="1"/><rect x="9.5" y="3" width="5" height="5" rx="1"/><rect x="16" y="3" width="5" height="5" rx="1"/><rect x="3" y="9.5" width="5" height="5" rx="1"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><rect x="16" y="9.5" width="5" height="5" rx="1"/><rect x="3" y="16" width="5" height="5" rx="1"/><rect x="9.5" y="16" width="5" height="5" rx="1"/><rect x="16" y="16" width="5" height="5" rx="1"/>',
+    joystick:
+      '<circle cx="12" cy="7" r="3"/><path d="M12 10v5"/><rect x="5" y="15" width="14" height="6" rx="2"/>',
   };
 
   readonly path = computed<SafeHtml>(() =>

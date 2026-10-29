@@ -5,6 +5,7 @@ import { ApplicationRegistryService } from '../../core/services/application-regi
 import { WindowManagerService } from '../../core/services/window-manager.service';
 import { FileSystemService } from '../../core/services/file-system.service';
 import { StorageService } from '../../core/services/storage.service';
+import { I18nService } from '../../core/services/i18n.service';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { AppDefinition } from '../../core/models/app.model';
 import { FsNode } from '../../core/models/file-system.model';
@@ -30,6 +31,7 @@ export class SpotlightComponent {
   private readonly wm = inject(WindowManagerService);
   private readonly fs = inject(FileSystemService);
   private readonly storage = inject(StorageService);
+  readonly i18n = inject(I18nService);
 
   readonly inputRef = viewChild<ElementRef<HTMLInputElement>>('searchInput');
   readonly query = signal('');
@@ -63,7 +65,7 @@ export class SpotlightComponent {
     return notes
       .filter((n) => n.title.toLowerCase().includes(q) || n.body.toLowerCase().includes(q))
       .slice(0, 6)
-      .map((n) => ({ id: n.id, title: n.title || 'یادداشت بدون عنوان' }));
+      .map((n) => ({ id: n.id, title: n.title || this.i18n.t('common.untitled') }));
   });
 
   readonly hasResults = computed(

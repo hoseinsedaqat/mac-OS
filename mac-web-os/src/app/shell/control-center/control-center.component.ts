@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { PanelService } from '../../core/services/panel.service';
 import { SettingsService } from '../../core/services/settings.service';
+import { I18nService } from '../../core/services/i18n.service';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 
 @Component({
@@ -14,6 +15,7 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
 export class ControlCenterComponent {
   private readonly panels = inject(PanelService);
   readonly settings = inject(SettingsService);
+  readonly i18n = inject(I18nService);
 
   readonly isOpen = computed(() => this.panels.active() === 'control-center');
 
@@ -50,5 +52,9 @@ export class ControlCenterComponent {
   setDockSize(event: Event): void {
     const value = Number((event.target as HTMLInputElement).value);
     this.settings.update({ dockSize: value });
+  }
+
+  setLanguage(lang: 'en' | 'fa'): void {
+    this.i18n.setLanguage(lang);
   }
 }

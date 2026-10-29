@@ -1,0 +1,52 @@
+<div class="mw-games">
+  @if (!activeGame()) {
+    <div class="mw-games__header">
+      <mw-icon name="games" [size]="26" />
+      <h1>{{ i18n.t('apps.games.name') }}</h1>
+    </div>
+    <p class="mw-games__subtitle">{{ i18n.t('apps.games.chooseGame') }}</p>
+
+    <div class="mw-games__grid">
+      @for (card of cards; track card.id) {
+        <button type="button" class="mw-games__card" (click)="open(card.id)">
+          <span class="mw-games__card-icon">
+            <mw-icon [name]="card.icon" [size]="28" />
+          </span>
+          <span class="mw-games__card-name">{{ i18n.t(card.nameKey) }}</span>
+          <span class="mw-games__card-instructions">{{ i18n.t(card.instructionsKey) }}</span>
+          @if (best(card.id) > 0) {
+            <span class="mw-games__card-best">{{ i18n.t('apps.games.best') }}: {{ best(card.id) }}</span>
+          }
+        </button>
+      }
+    </div>
+  } @else {
+    <div class="mw-games__toolbar">
+      <button type="button" class="mw-games__back" (click)="back()">
+        <mw-icon name="chevronLeft" [size]="16" />
+        {{ i18n.t('common.back') }}
+      </button>
+      <h2>{{ activeGameName() }}</h2>
+    </div>
+
+    <div class="mw-games__stage">
+      @switch (activeGame()) {
+        @case ('snake') {
+          <mw-game-snake />
+        }
+        @case ('memory') {
+          <mw-game-memory />
+        }
+        @case ('2048') {
+          <mw-game-2048 />
+        }
+        @case ('tic-tac-toe') {
+          <mw-game-tic-tac-toe />
+        }
+        @case ('breakout') {
+          <mw-game-breakout />
+        }
+      }
+    </div>
+  }
+</div>

@@ -41,40 +41,41 @@ export function buildMonthGrid(monthDate: Date): Date[] {
   return days;
 }
 
-export function formatTime(date: Date, use24h: boolean): string {
-  return date.toLocaleTimeString(undefined, {
+export function formatTime(date: Date, use24h: boolean, locale?: string): string {
+  return date.toLocaleTimeString(locale, {
     hour: '2-digit',
     minute: '2-digit',
     hour12: !use24h,
   });
 }
 
-export function formatFullDate(date: Date): string {
-  return date.toLocaleDateString(undefined, {
+export function formatFullDate(date: Date, locale?: string): string {
+  return date.toLocaleDateString(locale, {
     weekday: 'long',
     month: 'long',
     day: 'numeric',
   });
 }
 
-export function formatShortDate(date: Date): string {
-  return date.toLocaleDateString(undefined, {
+export function formatShortDate(date: Date, locale?: string): string {
+  return date.toLocaleDateString(locale, {
     weekday: 'short',
     month: 'short',
     day: 'numeric',
   });
 }
 
-export function relativeFromNow(timestamp: number): string {
+export function relativeFromNow(timestamp: number, locale?: string): string {
+  const isFa = locale === 'fa-IR' || locale === 'fa';
   const diffMs = Date.now() - timestamp;
   const diffSec = Math.round(diffMs / 1000);
-  if (diffSec < 5) return 'just now';
-  if (diffSec < 60) return `${diffSec}s ago`;
+  if (diffSec < 5) return isFa ? 'همین الان' : 'just now';
+  if (diffSec < 60) return isFa ? `${diffSec} ثانیه پیش` : `${diffSec}s ago`;
   const diffMin = Math.round(diffSec / 60);
-  if (diffMin < 60) return `${diffMin}m ago`;
+  if (diffMin < 60) return isFa ? `${diffMin} دقیقه پیش` : `${diffMin}m ago`;
   const diffHour = Math.round(diffMin / 60);
-  if (diffHour < 24) return `${diffHour}h ago`;
+  if (diffHour < 24) return isFa ? `${diffHour} ساعت پیش` : `${diffHour}h ago`;
   const diffDay = Math.round(diffHour / 24);
-  if (diffDay < 7) return `${diffDay}d ago`;
-  return new Date(timestamp).toLocaleDateString();
+  if (diffDay < 7) return isFa ? `${diffDay} روز پیش` : `${diffDay}d ago`;
+  return new Date(timestamp).toLocaleDateString(locale);
 }

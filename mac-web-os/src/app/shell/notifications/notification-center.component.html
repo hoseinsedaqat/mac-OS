@@ -1,17 +1,17 @@
 @if (isOpen()) {
   <div class="mw-nc__scrim" (click)="close()"></div>
-  <div class="mw-nc" role="dialog" aria-label="Notification Center">
+  <div class="mw-nc" role="dialog" [attr.aria-label]="i18n.t('shell.notifications.title')">
     <div class="mw-nc__header">
-      <h2>اعلان‌ها</h2>
+      <h2>{{ i18n.t('shell.notifications.title') }}</h2>
       @if (notifications.notifications().length) {
-        <button type="button" class="mw-nc__clear" (click)="clearAll()">پاک‌کردن همه</button>
+        <button type="button" class="mw-nc__clear" (click)="clearAll()">{{ i18n.t('shell.notifications.clearAll') }}</button>
       }
     </div>
 
     @if (!notifications.notifications().length) {
       <div class="mw-nc__empty">
         <mw-icon name="bell" [size]="30" />
-        <p>اعلان جدیدی وجود ندارد</p>
+        <p>{{ i18n.t('shell.notifications.empty') }}</p>
       </div>
     } @else {
       <div class="mw-nc__list mw-scroll">
@@ -26,7 +26,7 @@
               <p class="mw-nc__title">{{ n.title }}</p>
               <p class="mw-nc__text">{{ n.body }}</p>
             </div>
-            <button type="button" class="mw-nc__remove" aria-label="حذف اعلان" (click)="remove(n.id, $event)">
+            <button type="button" class="mw-nc__remove" [attr.aria-label]="i18n.t('common.delete')" (click)="remove(n.id, $event)">
               <mw-icon name="close" [size]="13" />
             </button>
           </button>

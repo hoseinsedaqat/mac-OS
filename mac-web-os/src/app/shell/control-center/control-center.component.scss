@@ -67,6 +67,34 @@
   font-weight: 500;
 }
 
+.mw-cc__lang-switch {
+  display: flex;
+  gap: var(--mw-space-2);
+}
+
+.mw-cc__lang-btn {
+  flex: 1;
+  padding: var(--mw-space-2) var(--mw-space-3);
+  background: var(--mw-bg-elevated);
+  border: 1px solid var(--mw-border-subtle);
+  border-radius: var(--mw-radius-sm);
+  color: var(--mw-text-primary);
+  font-size: var(--mw-fs-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--mw-duration-fast) var(--mw-ease-out);
+
+  &:hover {
+    background: var(--mw-bg-control-hover);
+  }
+
+  &.active {
+    background: var(--mw-accent);
+    border-color: var(--mw-accent);
+    color: #fff;
+  }
+}
+
 input[type='range'] {
   width: 100%;
   accent-color: var(--mw-accent);

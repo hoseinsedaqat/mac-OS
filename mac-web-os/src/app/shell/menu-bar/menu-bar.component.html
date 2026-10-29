@@ -1,14 +1,14 @@
 <div class="mw-menubar" role="menubar">
   <div class="mw-menubar__left">
-    <button type="button" class="mw-menubar__apple" aria-label="منوی سیستم" (click)="openAppleMenu($event)">
+    <button type="button" class="mw-menubar__apple" [attr.aria-label]="i18n.t('shell.menuBar.about')" (click)="openAppleMenu($event)">
       <mw-icon name="apps" [size]="15" />
     </button>
     <span class="mw-menubar__app-name">{{ activeApp() }}</span>
-    <button type="button" class="mw-menubar__item" (click)="openFileMenu($event)">File</button>
-    <button type="button" class="mw-menubar__item" (click)="openEditMenu($event)">Edit</button>
-    <button type="button" class="mw-menubar__item" (click)="openViewMenu($event)">View</button>
-    <button type="button" class="mw-menubar__item" (click)="openWindowMenu($event)">Window</button>
-    <button type="button" class="mw-menubar__item" (click)="openHelpMenu($event)">Help</button>
+    <button type="button" class="mw-menubar__item" (click)="openFileMenu($event)">{{ i18n.t('shell.menuBar.file') }}</button>
+    <button type="button" class="mw-menubar__item" (click)="openEditMenu($event)">{{ i18n.t('shell.menuBar.edit') }}</button>
+    <button type="button" class="mw-menubar__item" (click)="openViewMenu($event)">{{ i18n.t('shell.menuBar.view') }}</button>
+    <button type="button" class="mw-menubar__item" (click)="openWindowMenu($event)">{{ i18n.t('shell.menuBar.window') }}</button>
+    <button type="button" class="mw-menubar__item" (click)="openHelpMenu($event)">{{ i18n.t('shell.menuBar.help') }}</button>
   </div>
 
   <div class="mw-menubar__right">
@@ -16,14 +16,14 @@
       type="button"
       class="mw-menubar__icon-btn"
       (click)="openWifiMenu($event)"
-      [attr.aria-label]="'Wi-Fi (شبیه‌سازی‌شده): ' + (settings.settings().wifiEnabled ? 'روشن' : 'خاموش')"
+      [attr.aria-label]="i18n.t('shell.controlCenter.wifi') + ': ' + (settings.settings().wifiEnabled ? i18n.t('common.yes') : i18n.t('common.no'))"
     >
       <mw-icon [name]="settings.settings().wifiEnabled ? 'wifi' : 'close'" [size]="15" />
     </button>
     <button
       type="button"
       class="mw-menubar__icon-btn"
-      [attr.aria-label]="'صدا: ' + settings.settings().volume + ' درصد'"
+      [attr.aria-label]="i18n.t('shell.controlCenter.volume') + ': ' + settings.settings().volume + '%'"
       (click)="openControlCenter()"
     >
       <mw-icon [name]="settings.settings().volume === 0 ? 'volume-mute' : 'volume'" [size]="15" />
@@ -31,19 +31,19 @@
     <button
       type="button"
       class="mw-menubar__icon-btn"
-      [attr.aria-label]="'باتری (شبیه‌سازی‌شده): ' + batteryLevel() + ' درصد'"
+      [attr.aria-label]="'Battery: ' + batteryLevel() + '%'"
       (click)="openControlCenter()"
     >
       <mw-icon name="battery" [size]="17" />
       <span class="mw-menubar__battery-text">{{ batteryLevel() }}%</span>
     </button>
-    <button type="button" class="mw-menubar__icon-btn" aria-label="جست‌وجوی Spotlight" (click)="openSpotlight()">
+    <button type="button" class="mw-menubar__icon-btn" [attr.aria-label]="i18n.t('shell.spotlight.placeholder')" (click)="openSpotlight()">
       <mw-icon name="search" [size]="14" />
     </button>
-    <button type="button" class="mw-menubar__icon-btn" aria-label="Control Center" (click)="openControlCenter()">
+    <button type="button" class="mw-menubar__icon-btn" [attr.aria-label]="i18n.t('shell.controlCenter.title')" (click)="openControlCenter()">
       <mw-icon name="grid" [size]="14" />
     </button>
-    <button type="button" class="mw-menubar__icon-btn mw-menubar__notif" aria-label="اعلان‌ها" (click)="openNotifications()">
+    <button type="button" class="mw-menubar__icon-btn mw-menubar__notif" [attr.aria-label]="i18n.t('shell.notifications.title')" (click)="openNotifications()">
       <mw-icon name="bell" [size]="15" />
       @if (unreadCount() > 0) {
         <span class="mw-menubar__badge">{{ unreadCount() }}</span>

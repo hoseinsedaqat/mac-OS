@@ -1,4 +1,5 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
+import { I18nService } from './i18n.service';
 
 export interface ConfirmDialogRequest {
   title: string;
@@ -12,6 +13,7 @@ export interface ConfirmDialogRequest {
 /** Promise-based confirmation dialog so destructive actions always require an explicit choice. */
 @Injectable({ providedIn: 'root' })
 export class DialogService {
+  private readonly i18n = inject(I18nService);
   readonly request = signal<ConfirmDialogRequest | null>(null);
 
   confirm(options: {
@@ -25,8 +27,8 @@ export class DialogService {
       this.request.set({
         title: options.title,
         message: options.message,
-        confirmLabel: options.confirmLabel ?? 'تأیید',
-        cancelLabel: options.cancelLabel ?? 'انصراف',
+        confirmLabel: options.confirmLabel ?? this.i18n.t('common.confirm'),
+        cancelLabel: options.cancelLabel ?? this.i18n.t('common.cancel'),
         danger: options.danger ?? false,
         resolve,
       });
@@ -38,7 +40,7 @@ export class DialogService {
       this.request.set({
         title: options.title,
         message: options.message,
-        confirmLabel: options.okLabel ?? 'باشه',
+        confirmLabel: options.okLabel ?? this.i18n.t('common.ok'),
         cancelLabel: null,
         danger: false,
         resolve: () => resolve(),

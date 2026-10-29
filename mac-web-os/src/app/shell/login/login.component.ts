@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { SystemStateService } from '../../core/services/system-state.service';
 import { SettingsService } from '../../core/services/settings.service';
 import { SoundService } from '../../core/services/sound.service';
+import { I18nService } from '../../core/services/i18n.service';
 import { WallpaperComponent } from '../../shared/components/wallpaper/wallpaper.component';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 
@@ -40,6 +41,7 @@ export class LoginComponent {
   private readonly system = inject(SystemStateService);
   private readonly sound = inject(SoundService);
   readonly settings = inject(SettingsService);
+  readonly i18n = inject(I18nService);
 
   readonly password = signal('');
   readonly error = signal(false);
