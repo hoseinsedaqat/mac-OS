@@ -37,8 +37,8 @@ export class CalendarStoreService {
       {
         id: createId('event'),
         dateKey: dateKey(today),
-        title: 'خوش‌آمدگویی به MacWeb OS',
-        description: 'یک رویداد نمونه برای آشنایی با تقویم.',
+        title: 'Welcome to MacWeb OS',
+        description: 'A sample event to help you get familiar with Calendar.',
         time: '10:00',
       },
     ];

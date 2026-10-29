@@ -18,14 +18,14 @@
       @case ('appearance') {
         <h2>Appearance</h2>
         <div class="mw-settings__row">
-          <span>حالت نمایش</span>
+          <span>Display Mode</span>
           <div class="mw-settings__segmented">
-            <button type="button" [class.active]="settings.theme() === 'light'" (click)="setTheme('light')">روشن</button>
-            <button type="button" [class.active]="settings.theme() === 'dark'" (click)="setTheme('dark')">تاریک</button>
+            <button type="button" [class.active]="settings.theme() === 'light'" (click)="setTheme('light')">Light</button>
+            <button type="button" [class.active]="settings.theme() === 'dark'" (click)="setTheme('dark')">Dark</button>
           </div>
         </div>
         <div class="mw-settings__row mw-settings__row--wrap">
-          <span>رنگ تاکیدی</span>
+          <span>Accent Color</span>
           <div class="mw-settings__swatches">
             @for (opt of accentOptions; track opt.id) {
               <button
@@ -57,12 +57,12 @@
           }
         </div>
         <div class="mw-settings__row">
-          <span>نحوه نمایش</span>
+          <span>Display Mode</span>
           <select [value]="settings.settings().wallpaperFit" (change)="setWallpaperFit($event)">
-            <option value="cover">پر کردن صفحه (Cover)</option>
-            <option value="contain">نمایش کامل (Contain)</option>
-            <option value="fill">کشیدن (Fill)</option>
-            <option value="center">مرکز (Center)</option>
+            <option value="cover">Fill Screen (Cover)</option>
+            <option value="contain">Fit to Screen (Contain)</option>
+            <option value="fill">Stretch (Fill)</option>
+            <option value="center">Center</option>
           </select>
         </div>
       }
@@ -70,17 +70,17 @@
       @case ('dock') {
         <h2>Dock</h2>
         <div class="mw-settings__row">
-          <span>اندازه Dock</span>
+          <span>Dock Size</span>
           <input type="range" min="40" max="80" [value]="settings.settings().dockSize" (input)="setDockSize($event)" />
         </div>
         <div class="mw-settings__row">
-          <span>مخفی‌کردن خودکار</span>
+          <span>Automatically Hide</span>
           <button type="button" class="mw-switch" [class.on]="settings.settings().dockAutoHide" (click)="toggleDockAutoHide()">
             <i></i>
           </button>
         </div>
         <div class="mw-settings__row">
-          <span>بزرگ‌نمایی هنگام هاور</span>
+          <span>Magnification on Hover</span>
           <button
             type="button"
             class="mw-switch"
@@ -95,20 +95,20 @@
       @case ('desktop') {
         <h2>Desktop</h2>
         <p class="mw-settings__hint">
-          موقعیت آیکون‌های دسکتاپ به‌صورت خودکار ذخیره می‌شود. برای مرتب‌سازی مجدد، روی دسکتاپ راست‌کلیک کنید.
+          Desktop icon positions are saved automatically. To rearrange them again, right-click the desktop.
         </p>
       }
 
       @case ('sound') {
         <h2>Sound</h2>
         <div class="mw-settings__row">
-          <span>فعال‌بودن صدا</span>
+          <span>Sound Enabled</span>
           <button type="button" class="mw-switch" [class.on]="settings.settings().soundEnabled" (click)="toggleSound()">
             <i></i>
           </button>
         </div>
         <div class="mw-settings__row">
-          <span>میزان صدا</span>
+          <span>Volume</span>
           <input type="range" min="0" max="100" [value]="settings.settings().volume" (input)="setVolume($event)" />
         </div>
       }
@@ -116,7 +116,7 @@
       @case ('datetime') {
         <h2>Date &amp; Time</h2>
         <div class="mw-settings__row">
-          <span>نمایش تاریخ در نوار منو</span>
+          <span>Show Date in Menu Bar</span>
           <button
             type="button"
             class="mw-switch"
@@ -127,7 +127,7 @@
           </button>
         </div>
         <div class="mw-settings__row">
-          <span>فرمت ۲۴ ساعته</span>
+          <span>24-Hour Format</span>
           <button type="button" class="mw-switch" [class.on]="settings.settings().use24HourClock" (click)="toggle24h()">
             <i></i>
           </button>
@@ -137,33 +137,34 @@
       @case ('accessibility') {
         <h2>Accessibility</h2>
         <div class="mw-settings__row">
-          <span>کاهش انیمیشن‌ها</span>
+          <span>Reduce Motion</span>
           <button type="button" class="mw-switch" [class.on]="settings.settings().reduceMotion" (click)="toggleReduceMotion()">
             <i></i>
           </button>
         </div>
         <p class="mw-settings__hint">
-          این گزینه مدت انیمیشن‌های رابط کاربری را به حداقل می‌رساند و با تنظیم سیستم‌عامل شما (prefers-reduced-motion) نیز هماهنگ است.
+          This option minimizes the duration of UI animations and also follows your operating system's
+          prefers-reduced-motion setting.
         </p>
 
-        <h3>کاربر و امنیت نمایشی</h3>
+        <h3>Demo User &amp; Security</h3>
         <div class="mw-settings__row">
-          <span>نام کاربری</span>
+          <span>User Name</span>
           <input type="text" [value]="settings.settings().userName" (change)="setUserName($event)" />
         </div>
         <div class="mw-settings__row">
-          <span>رمز عبور نمایشی هنگام ورود</span>
+          <span>Demo Password on Login</span>
           <button type="button" class="mw-switch" [class.on]="settings.settings().passwordEnabled" (click)="togglePassword()">
             <i></i>
           </button>
         </div>
         @if (settings.settings().passwordEnabled) {
           <div class="mw-settings__row">
-            <span>تنظیم رمز جدید</span>
-            <input #pw type="password" placeholder="رمز جدید" (keydown.enter)="setDemoPassword(pw.value); pw.value = ''" />
+            <span>Set New Password</span>
+            <input #pw type="password" placeholder="New password" (keydown.enter)="setDemoPassword(pw.value); pw.value = ''" />
           </div>
           <p class="mw-settings__hint">
-            این رمز فقط به‌صورت محلی و شبیه‌سازی‌شده بررسی می‌شود و هیچ ارتباطی با حساب واقعی اپل ندارد.
+            This password is only checked locally in simulation and has no connection to a real Apple account.
           </p>
         }
       }
@@ -178,23 +179,23 @@
             ></div>
           </div>
           <p class="mw-settings__hint">
-            {{ formatBytes(est.usage) }} از {{ formatBytes(est.quota) }} فضای مرورگر استفاده شده است (شامل تنظیمات،
-            فایل‌های شبیه‌سازی‌شده و یادداشت‌ها).
+            {{ formatBytes(est.usage) }} of {{ formatBytes(est.quota) }} of browser storage used (includes settings,
+            simulated files, and notes).
           </p>
         } @else {
-          <p class="mw-settings__hint">مرورگر شما گزارش فضای ذخیره‌سازی را پشتیبانی نمی‌کند.</p>
+          <p class="mw-settings__hint">Your browser does not support storage usage reporting.</p>
         }
         @if (storageDegraded()) {
           <p class="mw-settings__warning">
-            ذخیره‌سازی محلی در این مرورگر محدود شده است؛ برخی تغییرات ممکن است پس از بستن تب از بین بروند.
+            Local storage is limited in this browser; some changes may be lost after closing the tab.
           </p>
         }
-        <button type="button" class="mw-btn mw-btn-danger" (click)="resetDefaults()">بازگرداندن تنظیمات پیش‌فرض</button>
+        <button type="button" class="mw-btn mw-btn-danger" (click)="resetDefaults()">Restore Default Settings</button>
       }
 
       @case ('about') {
         <h2>About This Mac</h2>
-        <p class="mw-settings__hint">برای مشاهده اطلاعات کامل سیستم، برنامه «About This Mac» را از منوی سیستم باز کنید.</p>
+        <p class="mw-settings__hint">To see full system information, open the "About This Mac" app from the system menu.</p>
       }
     }
   </section>

@@ -137,23 +137,6 @@
       {{ i18n.t('shell.controlCenter.editControls') }}
     </button>
 
-    <div class="mw-cc__divider"></div>
-
-    <div class="mw-cc__slider-card">
-      <div class="mw-cc__slider-head">
-        <mw-icon name="globe" [size]="16" />
-        <span>{{ i18n.t('shell.controlCenter.language') }}</span>
-      </div>
-      <div class="mw-cc__lang-switch">
-        <button type="button" class="mw-cc__lang-btn" [class.active]="i18n.language() === 'en'" (click)="setLanguage('en')">
-          {{ i18n.t('shell.controlCenter.languageEnglish') }}
-        </button>
-        <button type="button" class="mw-cc__lang-btn" [class.active]="i18n.language() === 'fa'" (click)="setLanguage('fa')">
-          {{ i18n.t('shell.controlCenter.languagePersian') }}
-        </button>
-      </div>
-    </div>
-
     <div class="mw-cc__grid">
       <button type="button" class="mw-cc__toggle" [class.active]="settings.settings().dockAutoHide" (click)="toggleDockAutoHide()">
         <mw-icon name="grid" [size]="18" />

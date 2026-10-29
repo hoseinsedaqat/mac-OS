@@ -115,12 +115,12 @@ export class DockComponent implements OnDestroy {
     event.preventDefault();
     const running = this.isRunning(app.id);
     const items: ContextMenuItem[] = [
-      { id: 'open', label: 'باز کردن', icon: 'chevronRight', action: () => this.activate(app) },
+      { id: 'open', label: 'Open', icon: 'chevronRight', action: () => this.activate(app) },
       ...(running
         ? [
             {
               id: 'quit',
-              label: 'بستن برنامه',
+              label: 'Quit App',
               icon: 'close',
               danger: true,
               action: () => this.wm.closeAppWindows(app.id),

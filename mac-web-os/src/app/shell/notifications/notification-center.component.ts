@@ -21,7 +21,7 @@ export class NotificationCenterComponent {
   readonly i18n = inject(I18nService);
 
   readonly isOpen = computed(() => this.panels.active() === 'notifications');
-  private readonly locale = computed(() => (this.i18n.language() === 'fa' ? 'fa-IR' : 'en-US'));
+  private readonly locale = 'en-US';
 
   close(): void {
     this.panels.close();
@@ -43,6 +43,6 @@ export class NotificationCenterComponent {
   }
 
   relative(ts: number): string {
-    return relativeFromNow(ts, this.locale());
+    return relativeFromNow(ts, this.locale);
   }
 }

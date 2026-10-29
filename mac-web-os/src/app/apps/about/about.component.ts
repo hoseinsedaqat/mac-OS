@@ -22,7 +22,7 @@ export class AboutComponent {
   readonly osVersion = OS_VERSION;
   readonly openWindowCount = computed(() => this.wm.windows().length);
   readonly installedAppsCount = this.registry.list().length;
-  readonly storageEstimate = signal<string>('در حال محاسبه…');
+  readonly storageEstimate = signal<string>('Calculating…');
 
   constructor() {
     this.loadStorage();
@@ -30,16 +30,16 @@ export class AboutComponent {
 
   private async loadStorage(): Promise<void> {
     if (!navigator.storage?.estimate) {
-      this.storageEstimate.set('نامشخص (پشتیبانی نمی‌شود)');
+      this.storageEstimate.set('Unknown (not supported)');
       return;
     }
     try {
       const estimate = await navigator.storage.estimate();
       const usageMb = ((estimate.usage ?? 0) / (1024 * 1024)).toFixed(2);
       const quotaMb = ((estimate.quota ?? 0) / (1024 * 1024)).toFixed(0);
-      this.storageEstimate.set(`${usageMb} MB از ~${quotaMb} MB (شبیه‌سازی‌شده توسط مرورگر)`);
+      this.storageEstimate.set(`${usageMb} MB of ~${quotaMb} MB (simulated by browser)`);
     } catch {
-      this.storageEstimate.set('نامشخص');
+      this.storageEstimate.set('Unknown');
     }
   }
 }

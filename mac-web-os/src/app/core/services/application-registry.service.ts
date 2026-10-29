@@ -48,7 +48,7 @@ export class ApplicationRegistryService {
         showInDock: true,
         showInLaunchpad: true,
         window: { ...defaultWindow, width: 860, height: 560 },
-        description: 'مرور و مدیریت فایل‌های شبیه‌سازی‌شده.',
+        description: 'Browse and manage simulated files.',
         loadComponent: () =>
           import('../../apps/finder/finder.component').then((m) => m.FinderComponent),
       },
@@ -61,7 +61,7 @@ export class ApplicationRegistryService {
         showInDock: true,
         showInLaunchpad: true,
         window: { ...defaultWindow, width: 980, height: 640 },
-        description: 'مرورگر داخلی نمایشی با صفحات محلی.',
+        description: 'A demo in-app browser with local sample pages.',
         loadComponent: () =>
           import('../../apps/safari/safari.component').then((m) => m.SafariComponent),
       },
@@ -74,7 +74,7 @@ export class ApplicationRegistryService {
         showInDock: true,
         showInLaunchpad: true,
         window: { ...defaultWindow, width: 920, height: 600 },
-        description: 'ایمیل نمایشی (حالت Demo).',
+        description: 'Demo email client (Demo mode).',
         loadComponent: () => import('../../apps/mail/mail.component').then((m) => m.MailComponent),
       },
       {
@@ -86,7 +86,7 @@ export class ApplicationRegistryService {
         showInDock: true,
         showInLaunchpad: true,
         window: { ...defaultWindow, width: 820, height: 600, minWidth: 560 },
-        description: 'تقویم تعاملی با رویدادهای ذخیره‌شده.',
+        description: 'An interactive calendar with saved events.',
         loadComponent: () =>
           import('../../apps/calendar/calendar.component').then((m) => m.CalendarComponent),
       },
@@ -99,7 +99,7 @@ export class ApplicationRegistryService {
         showInDock: true,
         showInLaunchpad: true,
         window: { ...defaultWindow, width: 780, height: 560 },
-        description: 'یادداشت‌برداری با ذخیره‌سازی خودکار.',
+        description: 'Note-taking with automatic saving.',
         loadComponent: () => import('../../apps/notes/notes.component').then((m) => m.NotesComponent),
       },
       {
@@ -111,7 +111,7 @@ export class ApplicationRegistryService {
         showInDock: true,
         showInLaunchpad: true,
         window: { ...defaultWindow, width: 860, height: 600 },
-        description: 'گالری تصاویر نمونه.',
+        description: 'A gallery of sample photos.',
         loadComponent: () =>
           import('../../apps/photos/photos.component').then((m) => m.PhotosComponent),
       },
@@ -124,7 +124,7 @@ export class ApplicationRegistryService {
         showInDock: true,
         showInLaunchpad: true,
         window: { ...defaultWindow, width: 760, height: 560, minWidth: 540 },
-        description: 'پخش‌کننده موسیقی نمایشی.',
+        description: 'A demo music player.',
         loadComponent: () => import('../../apps/music/music.component').then((m) => m.MusicComponent),
       },
       {
@@ -136,7 +136,7 @@ export class ApplicationRegistryService {
         showInDock: true,
         showInLaunchpad: true,
         window: { width: 320, height: 500, minWidth: 300, minHeight: 460, resizable: false },
-        description: 'ماشین‌حساب با منطق محاسباتی امن.',
+        description: 'A calculator with safe calculation logic.',
         loadComponent: () =>
           import('../../apps/calculator/calculator.component').then((m) => m.CalculatorComponent),
       },
@@ -149,7 +149,7 @@ export class ApplicationRegistryService {
         showInDock: true,
         showInLaunchpad: true,
         window: { ...defaultWindow, width: 700, height: 460, minWidth: 420, minHeight: 280 },
-        description: 'ترمینال شبیه‌سازی‌شده با فهرست دستورات امن.',
+        description: 'A simulated terminal with a safe, allow-listed command set.',
         loadComponent: () =>
           import('../../apps/terminal/terminal.component').then((m) => m.TerminalComponent),
       },
@@ -162,7 +162,7 @@ export class ApplicationRegistryService {
         showInDock: true,
         showInLaunchpad: true,
         window: { ...defaultWindow, width: 900, height: 620 },
-        description: 'فروشگاه نمایشی برنامه‌ها.',
+        description: 'A demo app store.',
         loadComponent: () =>
           import('../../apps/app-store/app-store.component').then((m) => m.AppStoreComponent),
       },
@@ -175,7 +175,7 @@ export class ApplicationRegistryService {
         showInDock: true,
         showInLaunchpad: true,
         window: { ...defaultWindow, width: 820, height: 580, minWidth: 640 },
-        description: 'تنظیمات سیستم.',
+        description: 'System settings.',
         loadComponent: () =>
           import('../../apps/settings/settings.component').then((m) => m.SettingsComponent),
       },
@@ -188,7 +188,7 @@ export class ApplicationRegistryService {
         showInDock: true,
         showInLaunchpad: false,
         window: { ...defaultWindow, width: 720, height: 520 },
-        description: 'فایل‌های حذف‌شده.',
+        description: 'Deleted files.',
         loadComponent: () => import('../../apps/trash/trash.component').then((m) => m.TrashComponent),
       },
       {
@@ -225,7 +225,7 @@ export class ApplicationRegistryService {
         showInDock: false,
         showInLaunchpad: false,
         window: { width: 560, height: 460, minWidth: 480, minHeight: 400, resizable: false },
-        description: 'اطلاعات سیستم شبیه‌سازی‌شده.',
+        description: 'Simulated system information.',
         loadComponent: () => import('../../apps/about/about.component').then((m) => m.AboutComponent),
       },
     ];

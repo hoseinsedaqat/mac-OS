@@ -10,8 +10,8 @@ export type AccentColor =
   | 'green'
   | 'graphite';
 
-/** English is the primary/default language; Persian (فارسی) is the secondary, user-selectable language. */
-export type AppLanguage = 'en' | 'fa';
+/** MacWeb OS is English-only; this field is kept (always `'en'`) purely for settings-schema stability. */
+export type AppLanguage = 'en';
 
 export interface SettingsState {
   version: 2;

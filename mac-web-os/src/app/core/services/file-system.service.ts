@@ -55,7 +55,7 @@ export class FileSystemService {
   private enterMemoryMode(): void {
     this.memoryMode = true;
     this.error.set(
-      'ذخیره‌سازی فایل در این مرورگر در دسترس نیست. تغییرات فقط در همین نشست حفظ می‌شوند.',
+      'File storage is not available in this browser. Changes will only persist for this session.',
     );
     if (this.nodes().length === 0) {
       this.nodes.set(this.seedNodes());
@@ -166,21 +166,21 @@ export class FileSystemService {
         DOCUMENTS_ID,
         'Welcome.txt',
         'text',
-        'به MacWeb OS خوش آمدید!\n\nاین یک فایل شبیه‌سازی‌شده است که در IndexedBD مرورگر شما ذخیره می‌شود.\nمی‌توانید آن را جابه‌جا، تغییر نام یا حذف کنید.',
+        "Welcome to MacWeb OS!\n\nThis is a simulated file stored in your browser's IndexedDB.\nYou can move, rename, or delete it.",
       ),
       file(
         createId('file'),
         DOCUMENTS_ID,
         'Resume.txt',
         'text',
-        'نمونه رزومه شبیه‌سازی‌شده برای تست Finder.',
+        'A simulated sample resume for testing Finder.',
       ),
       file(
         createId('file'),
         DOWNLOADS_ID,
         'sample-image.txt',
         'image',
-        'این یک فایل تصویری شبیه‌سازی‌شده است (placeholder).',
+        'This is a simulated image file (placeholder).',
       ),
     ];
   }

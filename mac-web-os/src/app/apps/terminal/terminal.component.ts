@@ -26,7 +26,7 @@ export class TerminalComponent implements AfterViewChecked {
   private readonly scrollAnchor = viewChild<ElementRef<HTMLDivElement>>('scrollAnchor');
 
   readonly lines = signal<TerminalLine[]>([
-    { type: 'output', text: 'MacWeb OS Terminal — برای راهنما help را تایپ کنید.' },
+    { type: 'output', text: 'MacWeb OS Terminal — type "help" to see available commands.' },
   ]);
   readonly currentInput = signal('');
   private history: string[] = [];

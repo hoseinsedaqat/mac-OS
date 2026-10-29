@@ -20,22 +20,22 @@ export function runCommand(input: string, ctx: TerminalContext): CommandOutput {
   switch (command) {
     case 'help':
       return [
-        'دستورات پشتیبانی‌شده:',
-        '  help      نمایش این راهنما',
-        '  about     درباره MacWeb OS Terminal',
-        '  whoami    نمایش نام کاربر فعلی',
-        '  date      نمایش تاریخ و ساعت سیستم',
-        '  echo      بازتاب متن ورودی',
-        '  ls        نمایش محتویات پوشه فعلی (شبیه‌سازی‌شده)',
-        '  pwd       نمایش مسیر پوشه فعلی',
-        '  neofetch  نمایش اطلاعات سیستم به‌صورت نمایشی',
-        '  clear     پاک‌کردن صفحه ترمینال',
+        'Available commands:',
+        '  help      Show this help',
+        '  about     About MacWeb OS Terminal',
+        '  whoami    Show the current user name',
+        '  date      Show the system date and time',
+        '  echo      Echo back the input text',
+        '  ls        List the current folder contents (simulated)',
+        '  pwd       Show the current folder path',
+        '  neofetch  Show system info for show',
+        '  clear     Clear the terminal screen',
       ];
     case 'about':
       return [
-        'MacWeb OS Terminal (شبیه‌سازی‌شده)',
-        'این ترمینال هیچ دستوری را روی سیستم واقعی شما اجرا نمی‌کند.',
-        'تمام دستورات در یک محیط ایزوله و امن در مرورگر پردازش می‌شوند.',
+        'MacWeb OS Terminal (simulated)',
+        'This terminal never executes any command on your real machine.',
+        'Every command is processed in an isolated, sandboxed browser environment.',
       ];
     case 'whoami':
       return [ctx.userName.toLowerCase().replace(/\s+/g, '-')];
@@ -47,7 +47,7 @@ export function runCommand(input: string, ctx: TerminalContext): CommandOutput {
       return [ctx.currentPath];
     case 'ls': {
       const entries = ctx.listCurrentDir();
-      return entries.length ? [entries.join('   ')] : ['(پوشه خالی است)'];
+      return entries.length ? [entries.join('   ')] : ['(empty folder)'];
     }
     case 'neofetch':
       return [
@@ -63,6 +63,6 @@ export function runCommand(input: string, ctx: TerminalContext): CommandOutput {
     case 'clear':
       return ['__CLEAR__'];
     default:
-      return [`دستور یافت نشد: ${command}. برای مشاهده فهرست دستورات، help را اجرا کنید.`];
+      return [`Command not found: ${command}. Run "help" to see the list of commands.`];
   }
 }

@@ -72,8 +72,8 @@ export class MailComponent {
       appId: 'mail',
       appName: 'Mail (Demo)',
       icon: 'mail',
-      title: 'ایمیل شبیه‌سازی‌شد',
-      body: `ایمیل به «${this.composeTo() || 'گیرنده نامشخص'}» در حالت نمایشی ارسال شد (بدون اتصال واقعی).`,
+      title: 'Email Simulated',
+      body: `Email to "${this.composeTo() || 'Unknown Recipient'}" was sent in demo mode (no real connection).`,
     });
     this.composing.set(false);
     this.selectFolder('sent');
@@ -81,9 +81,9 @@ export class MailComponent {
 
   async deleteMessage(message: MailMessage): Promise<void> {
     const confirmed = await this.dialog.confirm({
-      title: 'حذف پیام',
-      message: `آیا از حذف «${message.subject}» مطمئن هستید؟`,
-      confirmLabel: 'حذف',
+      title: 'Delete Message',
+      message: `Are you sure you want to delete "${message.subject}"?`,
+      confirmLabel: 'Delete',
       danger: true,
     });
     if (confirmed) {

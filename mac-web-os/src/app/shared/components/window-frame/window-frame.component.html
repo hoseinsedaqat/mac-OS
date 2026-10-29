@@ -7,7 +7,7 @@
     <button
       type="button"
       class="mw-traffic mw-traffic--close"
-      aria-label="بستن پنجره"
+      aria-label="Close Window"
       (pointerdown)="$event.stopPropagation()"
       (click)="close($event)"
     >
@@ -16,7 +16,7 @@
     <button
       type="button"
       class="mw-traffic mw-traffic--minimize"
-      aria-label="کوچک‌کردن پنجره"
+      aria-label="Minimize Window"
       (pointerdown)="$event.stopPropagation()"
       (click)="minimize($event)"
     >
@@ -25,7 +25,7 @@
     <button
       type="button"
       class="mw-traffic mw-traffic--maximize"
-      aria-label="بزرگ‌کردن پنجره"
+      aria-label="Maximize Window"
       (pointerdown)="$event.stopPropagation()"
       (click)="toggleMaximize($event)"
     >
@@ -39,7 +39,7 @@
   @if (component(); as cmp) {
     <ng-container *ngComponentOutlet="cmp; inputs: { windowId: win().id }" />
   } @else if (loadError()) {
-    <div class="mw-window__error">این برنامه بارگذاری نشد.</div>
+    <div class="mw-window__error">This app failed to load.</div>
   } @else {
     <div class="mw-window__loading">
       <div class="mw-spinner"></div>

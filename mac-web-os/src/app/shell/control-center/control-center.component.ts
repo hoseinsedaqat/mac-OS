@@ -90,10 +90,6 @@ export class ControlCenterComponent {
     this.settings.update({ dockSize: value });
   }
 
-  setLanguage(lang: 'en' | 'fa'): void {
-    this.i18n.setLanguage(lang);
-  }
-
   openMusic(): void {
     this.wm.open('music');
     this.close();

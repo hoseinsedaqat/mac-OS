@@ -25,11 +25,11 @@ export class LockScreenComponent {
   readonly settings = inject(SettingsService);
   readonly i18n = inject(I18nService);
 
-  private readonly locale = computed(() => (this.i18n.language() === 'fa' ? 'fa-IR' : 'en-US'));
+  private readonly locale = 'en-US';
   readonly time = computed(() =>
-    formatTime(this.clock.now(), this.settings.settings().use24HourClock, this.locale()),
+    formatTime(this.clock.now(), this.settings.settings().use24HourClock, this.locale),
   );
-  readonly date = computed(() => formatFullDate(this.clock.now(), this.locale()));
+  readonly date = computed(() => formatFullDate(this.clock.now(), this.locale));
 
   /**
    * Listens on `document` (not just the host element) so Enter unlocks the

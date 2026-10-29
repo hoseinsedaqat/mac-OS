@@ -10,11 +10,11 @@ import { getIconTheme } from '../../shared/utils/icon-theme.data';
 import { AppDefinition } from '../../core/models/app.model';
 
 const CATEGORY_LABELS: Record<string, string> = {
-  system: 'سیستمی',
-  productivity: 'بهره‌وری',
-  internet: 'اینترنت',
-  media: 'رسانه',
-  utilities: 'ابزارها',
+  system: 'System',
+  productivity: 'Productivity',
+  internet: 'Internet',
+  media: 'Media',
+  utilities: 'Utilities',
 };
 
 @Component({
@@ -74,8 +74,8 @@ export class AppStoreComponent {
       appId: 'app-store',
       appName: 'App Store',
       icon: 'app-store',
-      title: 'نصب کامل شد',
-      body: `${app.name} اکنون در دسترس است.`,
+      title: 'Installation Complete',
+      body: `${app.name} is now available.`,
     });
   }
 

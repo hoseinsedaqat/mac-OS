@@ -170,7 +170,7 @@ export class FinderComponent implements OnInit {
 
   async createFolder(): Promise<void> {
     if (this.isApplications()) return;
-    const node = await this.fs.createFolder(this.currentFolder(), 'پوشه بدون عنوان');
+    const node = await this.fs.createFolder(this.currentFolder(), 'untitled folder');
     this.startRename(node);
   }
 
@@ -203,10 +203,10 @@ export class FinderComponent implements OnInit {
   }
 
   async showInfo(node: FsNode): Promise<void> {
-    const sizeLabel = node.type === 'folder' ? '—' : `${node.size} بایت`;
+    const sizeLabel = node.type === 'folder' ? '—' : `${node.size} bytes`;
     await this.dialog.alert({
       title: node.name,
-      message: `نوع: ${node.type === 'folder' ? 'پوشه' : 'فایل'}\nاندازه: ${sizeLabel}\nایجاد شده: ${new Date(node.createdAt).toLocaleString()}\nآخرین ویرایش: ${new Date(node.modifiedAt).toLocaleString()}`,
+      message: `Kind: ${node.type === 'folder' ? 'Folder' : 'File'}\nSize: ${sizeLabel}\nCreated: ${new Date(node.createdAt).toLocaleString()}\nModified: ${new Date(node.modifiedAt).toLocaleString()}`,
     });
   }
 
@@ -219,17 +219,17 @@ export class FinderComponent implements OnInit {
     const destinations = [ROOT_ID, DESKTOP_ID, DOCUMENTS_ID, DOWNLOADS_ID].filter((id) => id !== this.currentFolder());
 
     const items: ContextMenuItem[] = [
-      { id: 'open', label: 'باز کردن', icon: 'chevronRight', action: () => this.openNode(node) },
+      { id: 'open', label: 'Open', icon: 'chevronRight', action: () => this.openNode(node) },
       {
         id: 'rename',
-        label: 'تغییر نام',
+        label: 'Rename',
         icon: 'info',
         disabled: !!node.protected,
         action: () => this.startRename(node),
       },
       {
         id: 'move',
-        label: 'انتقال به…',
+        label: 'Move to…',
         icon: 'folder',
         disabled: !!node.protected,
         action: () =>
@@ -244,11 +244,11 @@ export class FinderComponent implements OnInit {
             })),
           ),
       },
-      { id: 'info', label: 'اطلاعات', icon: 'info', action: () => this.showInfo(node) },
+      { id: 'info', label: 'Get Info', icon: 'info', action: () => this.showInfo(node) },
       { id: 'sep', separator: true },
       {
         id: 'trash',
-        label: 'انتقال به سطل زباله',
+        label: 'Move to Trash',
         icon: 'trash2',
         danger: true,
         disabled: !!node.protected,
@@ -262,7 +262,7 @@ export class FinderComponent implements OnInit {
     event.preventDefault();
     if (this.isApplications()) return;
     this.contextMenu.open(event.clientX, event.clientY, [
-      { id: 'new-folder', label: 'پوشه جدید', icon: 'folder', action: () => this.createFolder() },
+      { id: 'new-folder', label: 'New Folder', icon: 'folder', action: () => this.createFolder() },
     ]);
   }
 }

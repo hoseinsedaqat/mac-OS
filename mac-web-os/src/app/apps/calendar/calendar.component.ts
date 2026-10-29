@@ -20,19 +20,19 @@ export class CalendarComponent {
   private readonly dialog = inject(DialogService);
   readonly i18n = inject(I18nService);
 
-  private readonly locale = computed(() => (this.i18n.language() === 'fa' ? 'fa-IR' : 'en-US'));
+  private readonly locale = 'en-US';
   readonly weekdays = computed(() => this.i18n.list('apps.calendar.weekdays'));
   readonly today = new Date();
   readonly viewMonth = signal(new Date(this.today.getFullYear(), this.today.getMonth(), 1));
   readonly selectedDate = signal(new Date());
 
   readonly monthLabel = computed(() =>
-    new Intl.DateTimeFormat(this.locale(), { month: 'long', year: 'numeric' }).format(this.viewMonth()),
+    new Intl.DateTimeFormat(this.locale, { month: 'long', year: 'numeric' }).format(this.viewMonth()),
   );
   readonly grid = computed(() => buildMonthGrid(this.viewMonth()));
   readonly selectedKey = computed(() => dateKey(this.selectedDate()));
   readonly selectedEvents = computed(() => this.store.eventsFor(this.selectedKey()));
-  readonly selectedDateLabel = computed(() => formatFullDate(this.selectedDate(), this.locale()));
+  readonly selectedDateLabel = computed(() => formatFullDate(this.selectedDate(), this.locale));
 
   readonly formTitle = signal('');
   readonly formTime = signal('09:00');
@@ -111,9 +111,9 @@ export class CalendarComponent {
 
   async deleteEvent(event: CalendarEvent): Promise<void> {
     const confirmed = await this.dialog.confirm({
-      title: 'حذف رویداد',
-      message: `آیا از حذف «${event.title}» مطمئن هستید؟`,
-      confirmLabel: 'حذف',
+      title: 'Delete Event',
+      message: `Are you sure you want to delete "${event.title}"?`,
+      confirmLabel: 'Delete',
       danger: true,
     });
     if (confirmed) {

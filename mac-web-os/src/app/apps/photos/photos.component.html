@@ -11,7 +11,7 @@
   <section class="mw-photos__main">
     <div class="mw-photos__toolbar">
       <mw-icon name="search" [size]="13" />
-      <input type="text" placeholder="جست‌وجوی تصاویر" [(ngModel)]="query" />
+      <input type="text" placeholder="Search Photos" [(ngModel)]="query" />
     </div>
 
     <div class="mw-photos__grid mw-scroll">
@@ -25,26 +25,26 @@
             </div>
           }
           <span class="mw-photos__title">{{ item.title }}</span>
-          <button type="button" class="mw-photos__remove" aria-label="حذف از مجموعه" (click)="remove(item.id, $event)">
+          <button type="button" class="mw-photos__remove" aria-label="Remove from Library" (click)="remove(item.id, $event)">
             <mw-icon name="close" [size]="11" />
           </button>
         </button>
       } @empty {
-        <p class="mw-photos__empty">تصویری یافت نشد.</p>
+        <p class="mw-photos__empty">No photos found.</p>
       }
     </div>
   </section>
 
   @if (activeItem; as item) {
     <div class="mw-photos__viewer" (click)="closeViewer()">
-      <button type="button" class="mw-photos__nav mw-photos__nav--prev" (click)="prev(); $event.stopPropagation()" aria-label="قبلی">
+      <button type="button" class="mw-photos__nav mw-photos__nav--prev" (click)="prev(); $event.stopPropagation()" aria-label="Previous">
         <mw-icon name="chevronLeft" [size]="22" />
       </button>
       <img [src]="item.file" [alt]="item.title" (click)="$event.stopPropagation()" />
-      <button type="button" class="mw-photos__nav mw-photos__nav--next" (click)="next(); $event.stopPropagation()" aria-label="بعدی">
+      <button type="button" class="mw-photos__nav mw-photos__nav--next" (click)="next(); $event.stopPropagation()" aria-label="Next">
         <mw-icon name="chevronRight" [size]="22" />
       </button>
-      <button type="button" class="mw-photos__close" aria-label="بستن" (click)="closeViewer()">
+      <button type="button" class="mw-photos__close" aria-label="Close" (click)="closeViewer()">
         <mw-icon name="close" [size]="16" />
       </button>
       <span class="mw-photos__viewer-title">{{ item.title }}</span>

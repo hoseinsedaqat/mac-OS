@@ -2,14 +2,14 @@
   <header class="mw-trash__header">
     <h2>Trash</h2>
     <button type="button" class="mw-btn" [disabled]="trashedNodes().length === 0" (click)="emptyTrash()">
-      خالی‌کردن سطل زباله
+      Empty Trash
     </button>
   </header>
 
   @if (!trashedNodes().length) {
     <div class="mw-trash__empty">
       <mw-icon name="trash" [size]="40" />
-      <p>سطل زباله خالی است</p>
+      <p>Trash is empty</p>
     </div>
   } @else {
     <div class="mw-trash__grid mw-scroll">
@@ -18,8 +18,8 @@
           <mw-icon [name]="node.type === 'folder' ? 'folder' : 'file-text'" [size]="30" />
           <span class="mw-trash__name">{{ node.name }}</span>
           <div class="mw-trash__actions">
-            <button type="button" (click)="restore(node)">بازگرداندن</button>
-            <button type="button" class="danger" (click)="deleteForever(node)">حذف دائمی</button>
+            <button type="button" (click)="restore(node)">Put Back</button>
+            <button type="button" class="danger" (click)="deleteForever(node)">Delete Permanently</button>
           </div>
         </div>
       }

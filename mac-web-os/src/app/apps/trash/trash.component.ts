@@ -46,9 +46,9 @@ export class TrashComponent {
 
   async deleteForever(node: FsNode): Promise<void> {
     const confirmed = await this.dialog.confirm({
-      title: 'حذف دائمی',
-      message: `«${node.name}» برای همیشه حذف خواهد شد. این عملیات برگشت‌ناپذیر است.`,
-      confirmLabel: 'حذف دائمی',
+      title: 'Delete Permanently',
+      message: `"${node.name}" will be deleted permanently. This action cannot be undone.`,
+      confirmLabel: 'Delete Permanently',
       danger: true,
     });
     if (confirmed) {
@@ -60,9 +60,9 @@ export class TrashComponent {
   async emptyTrash(): Promise<void> {
     if (this.trashedNodes().length === 0) return;
     const confirmed = await this.dialog.confirm({
-      title: 'خالی‌کردن سطل زباله',
-      message: `${this.trashedNodes().length} مورد برای همیشه حذف خواهند شد. این عملیات برگشت‌ناپذیر است.`,
-      confirmLabel: 'خالی‌کن',
+      title: 'Empty Trash',
+      message: `${this.trashedNodes().length} item(s) will be permanently deleted. This action cannot be undone.`,
+      confirmLabel: 'Empty Trash',
       danger: true,
     });
     if (confirmed) {

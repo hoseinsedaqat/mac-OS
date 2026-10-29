@@ -161,9 +161,6 @@ export const en = {
       autoHide: 'Auto-hide',
       autoHideDock: 'Auto-hide Dock',
       magnification: 'Magnification',
-      language: 'Language',
-      languageEnglish: 'English',
-      languagePersian: 'فارسی',
       quick: {
         resetIcons: 'Reset Desktop Icons',
         screenRecording: 'Screen Recording (simulated)',
@@ -340,9 +337,6 @@ export const en = {
         'This permanently deletes every file, note, event, message and preference stored by MacWeb OS in this browser. This cannot be undone.',
       storageEstimate: 'Estimated storage used',
       storageDegradedWarning: 'Browser storage is unavailable or full — changes will only persist for this session.',
-      language: 'App Language',
-      languageEnglish: 'English',
-      languagePersian: 'فارسی (Persian)',
     },
     terminal: {
       name: 'Terminal',
