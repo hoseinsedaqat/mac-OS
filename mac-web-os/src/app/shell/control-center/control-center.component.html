@@ -1,0 +1,78 @@
+@if (isOpen()) {
+  <div class="mw-cc__scrim" (click)="close()"></div>
+  <div class="mw-cc" role="dialog" aria-label="Control Center">
+    <div class="mw-cc__grid">
+      <button type="button" class="mw-cc__toggle" [class.active]="settings.settings().wifiEnabled" (click)="toggleWifi()">
+        <mw-icon name="wifi" [size]="18" />
+        <span>Wi-Fi</span>
+      </button>
+      <button type="button" class="mw-cc__toggle" [class.active]="settings.settings().focusMode" (click)="toggleFocus()">
+        <mw-icon name="moon" [size]="18" />
+        <span>Focus</span>
+      </button>
+      <button
+        type="button"
+        class="mw-cc__toggle"
+        [class.active]="settings.theme() === 'dark'"
+        (click)="toggleTheme()"
+      >
+        <mw-icon [name]="settings.theme() === 'dark' ? 'moon' : 'sun'" [size]="18" />
+        <span>Appearance</span>
+      </button>
+      <button
+        type="button"
+        class="mw-cc__toggle"
+        [class.active]="settings.settings().dockAutoHide"
+        (click)="toggleDockAutoHide()"
+      >
+        <mw-icon name="grid" [size]="18" />
+        <span>Auto-hide Dock</span>
+      </button>
+    </div>
+
+    <div class="mw-cc__slider-card">
+      <div class="mw-cc__slider-head">
+        <mw-icon name="sun" [size]="16" />
+        <span>Brightness (شبیه‌سازی‌شده)</span>
+      </div>
+      <input
+        type="range"
+        min="30"
+        max="100"
+        [value]="settings.settings().brightness"
+        (input)="setBrightness($event)"
+        aria-label="Brightness"
+      />
+    </div>
+
+    <div class="mw-cc__slider-card">
+      <div class="mw-cc__slider-head">
+        <mw-icon [name]="settings.settings().volume === 0 ? 'volume-mute' : 'volume'" [size]="16" />
+        <span>Sound</span>
+      </div>
+      <input
+        type="range"
+        min="0"
+        max="100"
+        [value]="settings.settings().volume"
+        (input)="setVolume($event)"
+        aria-label="Volume"
+      />
+    </div>
+
+    <div class="mw-cc__slider-card">
+      <div class="mw-cc__slider-head">
+        <mw-icon name="apps" [size]="16" />
+        <span>Dock Size</span>
+      </div>
+      <input
+        type="range"
+        min="40"
+        max="80"
+        [value]="settings.settings().dockSize"
+        (input)="setDockSize($event)"
+        aria-label="Dock size"
+      />
+    </div>
+  </div>
+}

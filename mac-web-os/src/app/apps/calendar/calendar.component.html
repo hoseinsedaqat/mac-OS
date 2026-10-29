@@ -1,0 +1,73 @@
+<div class="mw-cal">
+  <section class="mw-cal__calendar">
+    <header class="mw-cal__header">
+      <h2>{{ monthLabel() }}</h2>
+      <div class="mw-cal__nav">
+        <button type="button" (click)="goToday()">امروز</button>
+        <button type="button" aria-label="ماه قبل" (click)="prevMonth()"><mw-icon name="chevronLeft" [size]="14" /></button>
+        <button type="button" aria-label="ماه بعد" (click)="nextMonth()"><mw-icon name="chevronRight" [size]="14" /></button>
+      </div>
+    </header>
+
+    <div class="mw-cal__weekdays">
+      @for (w of weekdays; track w) {
+        <span>{{ w }}</span>
+      }
+    </div>
+
+    <div class="mw-cal__grid">
+      @for (day of grid(); track day.getTime()) {
+        <button
+          type="button"
+          class="mw-cal__day"
+          [class.outside]="!isCurrentMonth(day)"
+          [class.today]="isToday(day)"
+          [class.selected]="isSelected(day)"
+          (click)="selectDay(day)"
+        >
+          <span>{{ day.getDate() }}</span>
+          @if (eventCount(day) > 0) {
+            <i class="mw-cal__dot"></i>
+          }
+        </button>
+      }
+    </div>
+  </section>
+
+  <aside class="mw-cal__side mw-scroll">
+    <h3>{{ selectedDateLabel() }}</h3>
+
+    <div class="mw-cal__events">
+      @for (event of selectedEvents(); track event.id) {
+        <div class="mw-cal__event">
+          <div class="mw-cal__event-time">{{ event.time }}</div>
+          <div class="mw-cal__event-body">
+            <strong>{{ event.title }}</strong>
+            @if (event.description) {
+              <p>{{ event.description }}</p>
+            }
+          </div>
+          <div class="mw-cal__event-actions">
+            <button type="button" aria-label="ویرایش" (click)="editEvent(event)"><mw-icon name="info" [size]="13" /></button>
+            <button type="button" aria-label="حذف" (click)="deleteEvent(event)"><mw-icon name="trash2" [size]="13" /></button>
+          </div>
+        </div>
+      } @empty {
+        <p class="mw-cal__empty">رویدادی برای این روز ثبت نشده است.</p>
+      }
+    </div>
+
+    <form class="mw-cal__form" (ngSubmit)="saveEvent()">
+      <h4>{{ editingId() ? 'ویرایش رویداد' : 'رویداد جدید' }}</h4>
+      <input type="text" placeholder="عنوان رویداد" [(ngModel)]="formTitle" name="title" required />
+      <input type="time" [(ngModel)]="formTime" name="time" />
+      <textarea placeholder="توضیحات (اختیاری)" [(ngModel)]="formDescription" name="description" rows="2"></textarea>
+      <div class="mw-cal__form-actions">
+        @if (editingId()) {
+          <button type="button" class="mw-btn" (click)="resetForm()">انصراف</button>
+        }
+        <button type="submit" class="mw-btn mw-btn-accent">{{ editingId() ? 'ذخیره تغییرات' : 'افزودن رویداد' }}</button>
+      </div>
+    </form>
+  </aside>
+</div>

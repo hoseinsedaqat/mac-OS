@@ -1,0 +1,27 @@
+<div class="mw-term" (click)="focusInput(inputEl)">
+  <div class="mw-term__scroll mw-scroll">
+    @for (line of lines(); track $index) {
+      @if (line.type === 'input') {
+        <div class="mw-term__line"><span class="mw-term__prompt">guest@macweb-os %</span> {{ line.text }}</div>
+      } @else {
+        <div class="mw-term__line mw-term__output">{{ line.text }}</div>
+      }
+    }
+    <div class="mw-term__line mw-term__active">
+      <span class="mw-term__prompt">guest@macweb-os %</span>
+      <input
+        #inputEl
+        type="text"
+        class="mw-term__input"
+        [(ngModel)]="currentInput"
+        (keydown.enter)="submit()"
+        (keydown.arrowUp)="historyUp(); $event.preventDefault()"
+        (keydown.arrowDown)="historyDown(); $event.preventDefault()"
+        autocomplete="off"
+        spellcheck="false"
+        aria-label="ورودی ترمینال"
+      />
+    </div>
+    <div #scrollAnchor></div>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+<div class="mw-menubar" role="menubar">
+  <div class="mw-menubar__left">
+    <button type="button" class="mw-menubar__apple" aria-label="منوی سیستم" (click)="openAppleMenu($event)">
+      <mw-icon name="apps" [size]="15" />
+    </button>
+    <span class="mw-menubar__app-name">{{ activeApp() }}</span>
+    <button type="button" class="mw-menubar__item" (click)="openFileMenu($event)">File</button>
+    <button type="button" class="mw-menubar__item" (click)="openEditMenu($event)">Edit</button>
+    <button type="button" class="mw-menubar__item" (click)="openViewMenu($event)">View</button>
+    <button type="button" class="mw-menubar__item" (click)="openWindowMenu($event)">Window</button>
+    <button type="button" class="mw-menubar__item" (click)="openHelpMenu($event)">Help</button>
+  </div>
+
+  <div class="mw-menubar__right">
+    <button
+      type="button"
+      class="mw-menubar__icon-btn"
+      (click)="openWifiMenu($event)"
+      [attr.aria-label]="'Wi-Fi (شبیه‌سازی‌شده): ' + (settings.settings().wifiEnabled ? 'روشن' : 'خاموش')"
+    >
+      <mw-icon [name]="settings.settings().wifiEnabled ? 'wifi' : 'close'" [size]="15" />
+    </button>
+    <button
+      type="button"
+      class="mw-menubar__icon-btn"
+      [attr.aria-label]="'صدا: ' + settings.settings().volume + ' درصد'"
+      (click)="openControlCenter()"
+    >
+      <mw-icon [name]="settings.settings().volume === 0 ? 'volume-mute' : 'volume'" [size]="15" />
+    </button>
+    <button
+      type="button"
+      class="mw-menubar__icon-btn"
+      [attr.aria-label]="'باتری (شبیه‌سازی‌شده): ' + batteryLevel() + ' درصد'"
+      (click)="openControlCenter()"
+    >
+      <mw-icon name="battery" [size]="17" />
+      <span class="mw-menubar__battery-text">{{ batteryLevel() }}%</span>
+    </button>
+    <button type="button" class="mw-menubar__icon-btn" aria-label="جست‌وجوی Spotlight" (click)="openSpotlight()">
+      <mw-icon name="search" [size]="14" />
+    </button>
+    <button type="button" class="mw-menubar__icon-btn" aria-label="Control Center" (click)="openControlCenter()">
+      <mw-icon name="grid" [size]="14" />
+    </button>
+    <button type="button" class="mw-menubar__icon-btn mw-menubar__notif" aria-label="اعلان‌ها" (click)="openNotifications()">
+      <mw-icon name="bell" [size]="15" />
+      @if (unreadCount() > 0) {
+        <span class="mw-menubar__badge">{{ unreadCount() }}</span>
+      }
+    </button>
+    <span class="mw-menubar__clock mw-no-select">
+      @if (settings.settings().showDateInMenuBar) {
+        <span class="mw-menubar__date">{{ date() }}</span>
+      }
+      {{ time() }}
+    </span>
+  </div>
+</div>

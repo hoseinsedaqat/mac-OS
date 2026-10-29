@@ -1,0 +1,95 @@
+.mw-boot {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 50% 35%, #1b1b1f 0%, #000 72%);
+  color: #fff;
+  cursor: default;
+  outline: none;
+  animation: mw-fade-in 400ms ease;
+}
+
+.mw-boot__logo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+
+.mw-boot__logo {
+  width: 84px;
+  height: 84px;
+  display: grid;
+  place-items: center;
+  animation: mw-logo-breathe 2.6s ease-in-out infinite;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.18));
+  }
+
+  &--small {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+.mw-boot__title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  opacity: 0.92;
+}
+
+.mw-boot__bar {
+  width: 220px;
+  height: 4px;
+  border-radius: var(--mw-radius-round);
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.mw-boot__bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #9b9bff, #fff);
+  border-radius: var(--mw-radius-round);
+  transition: width 80ms linear;
+}
+
+.mw-boot__hint,
+.mw-boot__step {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  min-height: 16px;
+}
+
+@keyframes mw-logo-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.95;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+@keyframes mw-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mw-boot__logo {
+    animation: none;
+  }
+}

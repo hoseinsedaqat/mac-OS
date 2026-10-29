@@ -1,0 +1,59 @@
+<header
+  class="mw-window__titlebar"
+  (pointerdown)="startDrag($event)"
+  (dblclick)="toggleMaximize($event)"
+>
+  <div class="mw-window__traffic">
+    <button
+      type="button"
+      class="mw-traffic mw-traffic--close"
+      aria-label="بستن پنجره"
+      (pointerdown)="$event.stopPropagation()"
+      (click)="close($event)"
+    >
+      <mw-icon name="close" [size]="9" [strokeWidth]="2.4" />
+    </button>
+    <button
+      type="button"
+      class="mw-traffic mw-traffic--minimize"
+      aria-label="کوچک‌کردن پنجره"
+      (pointerdown)="$event.stopPropagation()"
+      (click)="minimize($event)"
+    >
+      <mw-icon name="minus" [size]="9" [strokeWidth]="2.4" />
+    </button>
+    <button
+      type="button"
+      class="mw-traffic mw-traffic--maximize"
+      aria-label="بزرگ‌کردن پنجره"
+      (pointerdown)="$event.stopPropagation()"
+      (click)="toggleMaximize($event)"
+    >
+      <mw-icon name="plus" [size]="9" [strokeWidth]="2.4" />
+    </button>
+  </div>
+  <span class="mw-window__title">{{ win().title }}</span>
+</header>
+
+<div class="mw-window__body mw-scroll">
+  @if (component(); as cmp) {
+    <ng-container *ngComponentOutlet="cmp; inputs: { windowId: win().id }" />
+  } @else if (loadError()) {
+    <div class="mw-window__error">این برنامه بارگذاری نشد.</div>
+  } @else {
+    <div class="mw-window__loading">
+      <div class="mw-spinner"></div>
+    </div>
+  }
+</div>
+
+@if (win().resizable && !win().maximized) {
+  <div class="mw-resize mw-resize--n" (pointerdown)="startResize($event, 'n')"></div>
+  <div class="mw-resize mw-resize--s" (pointerdown)="startResize($event, 's')"></div>
+  <div class="mw-resize mw-resize--e" (pointerdown)="startResize($event, 'e')"></div>
+  <div class="mw-resize mw-resize--w" (pointerdown)="startResize($event, 'w')"></div>
+  <div class="mw-resize mw-resize--ne" (pointerdown)="startResize($event, 'ne')"></div>
+  <div class="mw-resize mw-resize--nw" (pointerdown)="startResize($event, 'nw')"></div>
+  <div class="mw-resize mw-resize--se" (pointerdown)="startResize($event, 'se')"></div>
+  <div class="mw-resize mw-resize--sw" (pointerdown)="startResize($event, 'sw')"></div>
+}

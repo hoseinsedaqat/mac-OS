@@ -1,0 +1,32 @@
+@switch (system.state()) {
+  @case ('splash') {
+    <mw-boot />
+  }
+  @case ('booting') {
+    <mw-boot />
+  }
+  @case ('locked') {
+    <mw-lock-screen />
+  }
+  @case ('login') {
+    <mw-login />
+  }
+  @case ('desktop') {
+    <mw-desktop />
+  }
+  @case ('sleeping') {
+    <mw-desktop />
+    <div
+      class="mw-sleep-overlay"
+      role="button"
+      tabindex="0"
+      aria-label="ادامه با کلیک یا کلید"
+      (click)="wake()"
+      (keydown.enter)="wake()"
+      (keydown.space)="wake()"
+    ></div>
+  }
+}
+
+<mw-context-menu />
+<mw-confirm-dialog />

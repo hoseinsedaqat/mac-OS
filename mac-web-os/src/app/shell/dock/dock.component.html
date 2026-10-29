@@ -1,0 +1,49 @@
+<nav
+  class="mw-dock"
+  #dockEl
+  [class.auto-hide]="settings.settings().dockAutoHide && !hovering()"
+  [style.--dock-size]="settings.settings().dockSize + 'px'"
+  (pointerenter)="onDockPointerEnter()"
+  (pointermove)="onDockPointerMove($event)"
+  (pointerleave)="onDockPointerLeave()"
+  aria-label="Dock"
+>
+  <div class="mw-dock__inner">
+    @for (app of apps(); track app.id) {
+      <div
+        class="mw-dock__item"
+        [attr.data-dock-item]="app.id"
+        [style.transform]="'scale(' + scaleFor(app.id) + ')'"
+        [class.bounce]="bouncing() === app.id"
+      >
+        <button
+          type="button"
+          class="mw-dock__btn"
+          [attr.aria-label]="app.name"
+          (click)="activate(app)"
+          (contextmenu)="onContextMenu($event, app)"
+        >
+          <mw-icon [name]="app.icon" [size]="26" />
+        </button>
+        <span class="mw-dock__tooltip">{{ app.name }}</span>
+        <span class="mw-dock__indicator" [class.visible]="isRunning(app.id)"></span>
+      </div>
+    }
+
+    <div class="mw-dock__divider"></div>
+
+    <div class="mw-dock__item" data-dock-item="trash" [style.transform]="'scale(' + scaleFor('trash') + ')'">
+      <button
+        type="button"
+        class="mw-dock__btn"
+        aria-label="Trash"
+        (click)="openTrash()"
+        (contextmenu)="onContextMenu($event, trashApp())"
+      >
+        <mw-icon name="trash" [size]="26" />
+      </button>
+      <span class="mw-dock__tooltip">Trash</span>
+      <span class="mw-dock__indicator" [class.visible]="isRunning('trash')"></span>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,17 @@
+.mw-sleep-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--mw-z-overlay);
+  background: #000;
+  cursor: pointer;
+  animation: mw-sleep-fade 600ms ease forwards;
+}
+
+@keyframes mw-sleep-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,99 @@
+name: Deploy MacWeb OS to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: mac-web-os
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: mac-web-os/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npx ng test --watch=false
+
+      - name: Compute base-href for GitHub Pages
+        id: base-href
+        shell: bash
+        run: |
+          REPO_NAME="${{ github.event.repository.name }}"
+          # A "<user>.github.io" (or "<org>.github.io") repository is served
+          # from the domain root, every other repository is served from a
+          # "/<repo-name>/" subpath. The comparison is case-insensitive
+          # because GitHub Pages user/org sites are matched case-insensitively.
+          if [[ "${REPO_NAME,,}" == *".github.io" ]]; then
+            echo "href=/" >> "$GITHUB_OUTPUT"
+          else
+            echo "href=/${REPO_NAME}/" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build (production)
+        run: npx ng build --configuration production --base-href "${{ steps.base-href.outputs.href }}"
+
+      - name: Locate build output directory
+        id: output-dir
+        shell: bash
+        run: |
+          # The Angular application builder always emits to dist/<project>/browser,
+          # but we auto-detect it instead of hard-coding the project name so this
+          # workflow keeps working if the project is ever renamed.
+          CANDIDATE=$(find dist -maxdepth 2 -type d -name browser | head -n 1)
+          if [ -z "$CANDIDATE" ]; then
+            CANDIDATE=$(find dist -mindepth 1 -maxdepth 1 -type d | head -n 1)
+          fi
+          if [ -z "$CANDIDATE" ]; then
+            echo "::error::Could not locate a build output directory under dist/"
+            exit 1
+          fi
+          echo "Found build output at: $CANDIDATE"
+          echo "dir=$CANDIDATE" >> "$GITHUB_OUTPUT"
+
+      - name: Add SPA fallback (404.html) for deep links
+        working-directory: mac-web-os/${{ steps.output-dir.outputs.dir }}
+        run: cp index.html 404.html
+
+      - name: Add .nojekyll (preserve files starting with an underscore)
+        working-directory: mac-web-os/${{ steps.output-dir.outputs.dir }}
+        run: touch .nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: mac-web-os/${{ steps.output-dir.outputs.dir }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

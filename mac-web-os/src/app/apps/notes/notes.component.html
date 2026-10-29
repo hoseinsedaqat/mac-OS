@@ -1,0 +1,59 @@
+<div class="mw-notes">
+  <aside class="mw-notes__sidebar">
+    <div class="mw-notes__search">
+      <mw-icon name="search" [size]="14" />
+      <input type="text" placeholder="جست‌وجو" [(ngModel)]="query" aria-label="جست‌وجوی یادداشت‌ها" />
+    </div>
+    <button type="button" class="mw-notes__new" (click)="createNote()">
+      <mw-icon name="plus" [size]="14" />
+      یادداشت جدید
+    </button>
+    <div class="mw-notes__list mw-scroll">
+      @for (note of filtered(); track note.id) {
+        <button
+          type="button"
+          class="mw-notes__item"
+          [class.active]="store.selectedId() === note.id"
+          (click)="select(note.id)"
+        >
+          <strong>{{ note.title || 'یادداشت بدون عنوان' }}</strong>
+          <div class="mw-notes__meta">
+            <span>{{ relative(note.updatedAt) }}</span>
+            <span class="mw-notes__preview">{{ preview(note.body) }}</span>
+          </div>
+        </button>
+      } @empty {
+        <p class="mw-notes__empty">یادداشتی یافت نشد</p>
+      }
+    </div>
+  </aside>
+
+  <section class="mw-notes__editor">
+    @if (store.selectedNote(); as note) {
+      <header class="mw-notes__editor-head">
+        <span class="mw-notes__folder">{{ note.folder }}</span>
+        <button type="button" class="mw-notes__delete" (click)="deleteCurrent()" aria-label="حذف یادداشت">
+          <mw-icon name="trash2" [size]="16" />
+        </button>
+      </header>
+      <input
+        type="text"
+        class="mw-notes__title-input"
+        placeholder="عنوان"
+        [ngModel]="draftTitle()"
+        (ngModelChange)="onTitleChange($event)"
+      />
+      <textarea
+        class="mw-notes__body-input mw-scroll"
+        placeholder="شروع به نوشتن کنید…"
+        [ngModel]="draftBody()"
+        (ngModelChange)="onBodyChange($event)"
+      ></textarea>
+    } @else {
+      <div class="mw-notes__placeholder">
+        <mw-icon name="notes" [size]="36" />
+        <p>یادداشتی انتخاب نشده است</p>
+      </div>
+    }
+  </section>
+</div>

@@ -1,0 +1,35 @@
+<div class="mw-about">
+  <div class="mw-about__logo">
+    <img src="icons/logo.png" alt="MacWeb OS" width="72" height="72" />
+  </div>
+  <h1>MacWeb OS</h1>
+  <p class="mw-about__version">نسخه {{ osVersion }}</p>
+
+  <dl class="mw-about__specs">
+    <div>
+      <dt>موتور رابط کاربری</dt>
+      <dd>Angular {{ angularVersion }} (Standalone + Signals)</dd>
+    </div>
+    <div>
+      <dt>معماری</dt>
+      <dd>شبیه‌ساز دسکتاپ کاملاً سمت کلاینت، بدون بک‌اند</dd>
+    </div>
+    <div>
+      <dt>برنامه‌های نصب‌شده</dt>
+      <dd>{{ installedAppsCount }} برنامه</dd>
+    </div>
+    <div>
+      <dt>پنجره‌های باز</dt>
+      <dd>{{ openWindowCount() }}</dd>
+    </div>
+    <div>
+      <dt>فضای ذخیره‌سازی مرورگر</dt>
+      <dd>{{ storageEstimate() }}</dd>
+    </div>
+  </dl>
+
+  <p class="mw-about__disclaimer">
+    MacWeb OS یک پروژه شبیه‌سازی الهام‌گرفته از ظاهر macOS است و هیچ ارتباطی با شرکت اپل ندارد. تمام اطلاعات
+    سخت‌افزاری نمایش داده‌شده شبیه‌سازی‌شده‌اند و معرف سخت‌افزار واقعی دستگاه شما نیستند.
+  </p>
+</div>

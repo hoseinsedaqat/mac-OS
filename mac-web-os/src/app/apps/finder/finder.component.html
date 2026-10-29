@@ -1,0 +1,160 @@
+<div class="mw-finder">
+  <aside class="mw-finder__sidebar">
+    <h4>Locations</h4>
+    @for (item of sidebarItems; track item.id) {
+      <button
+        type="button"
+        class="mw-finder__sidebar-item"
+        [class.active]="currentFolder() === item.id"
+        (click)="navigateTo(item.id)"
+      >
+        <mw-icon [name]="item.icon" [size]="15" />
+        <span>{{ item.label }}</span>
+      </button>
+    }
+  </aside>
+
+  <section class="mw-finder__main">
+    <div class="mw-finder__toolbar">
+      <button type="button" [disabled]="!canGoBack()" aria-label="بازگشت" (click)="goBack()">
+        <mw-icon name="chevronLeft" [size]="14" />
+      </button>
+      <button type="button" [disabled]="!canGoForward()" aria-label="جلو" (click)="goForward()">
+        <mw-icon name="chevronRight" [size]="14" />
+      </button>
+
+      <div class="mw-finder__breadcrumb">
+        @for (crumb of breadcrumb(); track crumb.id; let last = $last) {
+          <button type="button" (click)="navigateTo(crumb.id)" [class.last]="last">{{ crumb.name }}</button>
+          @if (!last) {
+            <span>/</span>
+          }
+        }
+      </div>
+
+      <div class="mw-finder__spacer"></div>
+
+      <div class="mw-finder__search">
+        <mw-icon name="search" [size]="12" />
+        <input type="text" placeholder="جست‌وجو" [(ngModel)]="query" aria-label="جست‌وجوی فایل" />
+      </div>
+
+      <div class="mw-finder__sort">
+        <select [ngModel]="sortKey()" (ngModelChange)="setSort($event)" aria-label="مرتب‌سازی">
+          <option value="name">نام</option>
+          <option value="type">نوع</option>
+          <option value="date">تاریخ</option>
+        </select>
+      </div>
+
+      <button type="button" aria-label="تغییر نما" (click)="toggleView()">
+        <mw-icon [name]="viewMode() === 'grid' ? 'list' : 'grid'" [size]="14" />
+      </button>
+      <button type="button" aria-label="پوشه جدید" (click)="createFolder()" [disabled]="isApplications()">
+        <mw-icon name="plus" [size]="14" />
+      </button>
+    </div>
+
+    <div class="mw-finder__body">
+    <div class="mw-finder__content mw-scroll" (click)="clearSelection()" (contextmenu)="onBackgroundContextMenu($event)">
+      @if (isApplications()) {
+        <div class="mw-finder__grid">
+          @for (app of applicationsList(); track app.id) {
+            <button type="button" class="mw-finder__cell" (dblclick)="openApp(app.id)">
+              <mw-icon [name]="app.icon" [size]="34" />
+              <span>{{ app.name }}</span>
+            </button>
+          }
+        </div>
+      } @else if (viewMode() === 'grid') {
+        <div class="mw-finder__grid">
+          @for (node of items(); track node.id) {
+            <button
+              type="button"
+              class="mw-finder__cell"
+              [class.selected]="isSelected(node.id)"
+              (click)="select(node, $event); $event.stopPropagation()"
+              (dblclick)="openNode(node)"
+              (contextmenu)="onContextMenu($event, node)"
+            >
+              <mw-icon [name]="node.type === 'folder' ? 'folder' : 'file-text'" [size]="34" />
+              @if (renamingId() === node.id) {
+                <input
+                  type="text"
+                  class="mw-finder__rename-input"
+                  [(ngModel)]="renameValue"
+                  (click)="$event.stopPropagation()"
+                  (keydown.enter)="commitRename(node)"
+                  (keydown.escape)="cancelRename()"
+                  (blur)="commitRename(node)"
+                  autofocus
+                />
+              } @else {
+                <span>{{ node.name }}</span>
+              }
+            </button>
+          } @empty {
+            <p class="mw-finder__empty">این پوشه خالی است.</p>
+          }
+        </div>
+      } @else {
+        <table class="mw-finder__table">
+          <thead>
+            <tr>
+              <th>نام</th>
+              <th>نوع</th>
+              <th>تاریخ تغییر</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (node of items(); track node.id) {
+              <tr
+                [class.selected]="isSelected(node.id)"
+                (click)="select(node, $event)"
+                (dblclick)="openNode(node)"
+                (contextmenu)="onContextMenu($event, node)"
+              >
+                <td>
+                  <mw-icon [name]="node.type === 'folder' ? 'folder' : 'file-text'" [size]="16" />
+                  @if (renamingId() === node.id) {
+                    <input
+                      type="text"
+                      [(ngModel)]="renameValue"
+                      (click)="$event.stopPropagation()"
+                      (keydown.enter)="commitRename(node)"
+                      (keydown.escape)="cancelRename()"
+                      (blur)="commitRename(node)"
+                      autofocus
+                    />
+                  } @else {
+                    <span>{{ node.name }}</span>
+                  }
+                </td>
+                <td>{{ node.type === 'folder' ? 'پوشه' : 'فایل' }}</td>
+                <td>{{ node.modifiedAt | date: 'short' }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="3" class="mw-finder__empty">این پوشه خالی است.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+
+    @if (previewNode(); as node) {
+      <div class="mw-finder__preview">
+        <header>
+          <strong>{{ node.name }}</strong>
+          <div class="mw-finder__preview-actions">
+            <button type="button" class="mw-btn mw-btn-accent" (click)="savePreview()">ذخیره</button>
+            <button type="button" class="mw-btn" (click)="closePreview()">بستن</button>
+          </div>
+        </header>
+        <textarea class="mw-scroll" [(ngModel)]="previewDraft"></textarea>
+      </div>
+    }
+    </div>
+  </section>
+</div>

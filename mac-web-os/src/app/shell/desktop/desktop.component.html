@@ -1,0 +1,25 @@
+<div class="mw-desktop" [style.filter]="brightnessFilter()">
+  <mw-wallpaper />
+
+  <div
+    class="mw-desktop__surface"
+    (click)="onDesktopClick()"
+    (contextmenu)="onDesktopContextMenu($event)"
+  >
+    @for (icon of desktop.icons(); track icon.id; let i = $index) {
+      <mw-desktop-icon [def]="icon" [index]="i" />
+    }
+  </div>
+
+  <mw-menu-bar />
+
+  @for (win of wm.windows(); track win.id) {
+    <mw-window-frame [win]="win" />
+  }
+
+  <mw-dock />
+  <mw-spotlight />
+  <mw-control-center />
+  <mw-notification-center />
+  <mw-toast-stack />
+</div>

@@ -1,0 +1,107 @@
+.mw-spotlight__scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--mw-z-panels);
+  display: flex;
+  justify-content: center;
+  padding-top: 14vh;
+  background: rgba(0, 0, 0, 0.18);
+  animation: mw-fade-in var(--mw-duration-fast) var(--mw-ease-standard);
+}
+
+.mw-spotlight {
+  width: min(560px, 92vw);
+  height: fit-content;
+  max-height: 60vh;
+  background: var(--mw-bg-elevated);
+  border: 1px solid var(--mw-border-subtle);
+  border-radius: var(--mw-radius-lg);
+  box-shadow: var(--mw-shadow-3);
+  backdrop-filter: blur(30px) saturate(1.8);
+  -webkit-backdrop-filter: blur(30px) saturate(1.8);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: mw-pop-in var(--mw-duration-base) var(--mw-ease-out);
+}
+
+.mw-spotlight__input-row {
+  display: flex;
+  align-items: center;
+  gap: var(--mw-space-4);
+  padding: var(--mw-space-5);
+  color: var(--mw-text-tertiary);
+  border-bottom: 1px solid var(--mw-border-subtle);
+}
+
+.mw-spotlight__input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: var(--mw-fs-xl);
+  color: var(--mw-text-primary);
+  outline: none;
+}
+
+.mw-spotlight__results {
+  overflow: auto;
+  padding: var(--mw-space-3);
+}
+
+.mw-spotlight__empty {
+  padding: var(--mw-space-5);
+  text-align: center;
+  color: var(--mw-text-tertiary);
+  font-size: var(--mw-fs-sm);
+}
+
+.mw-spotlight__group {
+  margin-bottom: var(--mw-space-3);
+
+  h3 {
+    padding: var(--mw-space-2) var(--mw-space-3);
+    font-size: var(--mw-fs-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--mw-text-tertiary);
+  }
+}
+
+.mw-spotlight__row {
+  display: flex;
+  align-items: center;
+  gap: var(--mw-space-3);
+  width: 100%;
+  padding: var(--mw-space-3);
+  background: transparent;
+  border: none;
+  border-radius: var(--mw-radius-sm);
+  color: var(--mw-text-primary);
+  font-size: var(--mw-fs-md);
+  text-align: start;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--mw-accent);
+    color: #fff;
+  }
+}
+
+@keyframes mw-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes mw-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
