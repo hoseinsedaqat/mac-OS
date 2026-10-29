@@ -8,6 +8,12 @@ export interface WallpaperDef {
 
 export const WALLPAPERS: WallpaperDef[] = [
   {
+    id: 'night-city',
+    name: 'Night City',
+    file: 'wallpapers/night-city.jpg',
+    fallbackGradient: 'linear-gradient(200deg, #050b1a 0%, #0e1f3d 35%, #16304f 60%, #d9a441 100%)',
+  },
+  {
     id: 'aurora-waves',
     name: 'Silk Flow',
     file: 'wallpapers/aurora-waves.jpg',

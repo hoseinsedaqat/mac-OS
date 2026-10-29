@@ -265,6 +265,7 @@ export class MenuBarComponent implements OnInit, OnDestroy {
       confirmLabel: this.i18n.t('shell.menuBar.restart'),
     });
     if (!confirmed) return;
+    this.sound.shutdown();
     this.wm.closeAll();
     this.system.restart();
   }
@@ -277,6 +278,7 @@ export class MenuBarComponent implements OnInit, OnDestroy {
       danger: true,
     });
     if (!confirmed) return;
+    this.sound.shutdown();
     this.wm.closeAll();
     this.system.powerOff();
   }

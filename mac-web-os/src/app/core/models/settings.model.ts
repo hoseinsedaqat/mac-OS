@@ -47,7 +47,7 @@ export const DEFAULT_SETTINGS: SettingsState = {
   theme: 'light',
   accent: 'blue',
   language: 'en',
-  wallpaperId: 'aurora-waves',
+  wallpaperId: 'night-city',
   wallpaperFit: 'cover',
   dockSize: 56,
   dockAutoHide: false,

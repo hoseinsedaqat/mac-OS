@@ -42,6 +42,7 @@ export class TrashComponent {
 
   async restore(node: FsNode): Promise<void> {
     await this.fs.restoreFromTrash(node.id);
+    this.sound.click();
   }
 
   async deleteForever(node: FsNode): Promise<void> {

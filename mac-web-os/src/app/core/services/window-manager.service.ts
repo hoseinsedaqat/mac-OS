@@ -3,6 +3,7 @@ import { OpenWindowOptions, Rect, WindowState } from '../models/window.model';
 import { ApplicationRegistryService } from './application-registry.service';
 import { createId } from '../../shared/utils/id.util';
 import { clamp } from '../../shared/utils/clamp.util';
+import { SoundService } from './sound.service';
 
 const MENU_BAR_HEIGHT = 32;
 const DOCK_RESERVED = 92;
@@ -18,7 +19,10 @@ export class WindowManagerService {
   readonly visibleWindows = computed(() => this.windowsSignal().filter((w) => !w.minimized));
   readonly minimizedWindows = computed(() => this.windowsSignal().filter((w) => w.minimized));
 
-  constructor(private readonly registry: ApplicationRegistryService) {}
+  constructor(
+    private readonly registry: ApplicationRegistryService,
+    private readonly sound: SoundService,
+  ) {}
 
   isOpen(appId: string): boolean {
     return this.windowsSignal().some((w) => w.appId === appId);
@@ -79,6 +83,7 @@ export class WindowManagerService {
     };
 
     this.windowsSignal.update((list) => [...this.deactivateAll(list), win]);
+    this.sound.open();
     return win.id;
   }
 
@@ -105,16 +110,19 @@ export class WindowManagerService {
       }
       return remaining;
     });
+    this.sound.close();
   }
 
   closeAppWindows(appId: string): void {
     this.windowsSignal.update((list) => list.filter((w) => w.appId !== appId));
+    this.sound.close();
   }
 
   minimize(id: string): void {
     this.windowsSignal.update((list) =>
       list.map((w) => (w.id === id ? { ...w, minimized: true, active: false } : w)),
     );
+    this.sound.minimize();
     const remaining = this.windowsSignal().filter((w) => !w.minimized);
     if (remaining.length) {
       const topMost = [...remaining].sort((a, b) => b.zIndex - a.zIndex)[0];
@@ -125,6 +133,7 @@ export class WindowManagerService {
   restore(id: string): void {
     this.windowsSignal.update((list) => list.map((w) => (w.id === id ? { ...w, minimized: false } : w)));
     this.focus(id);
+    this.sound.restore();
   }
 
   toggleMinimize(id: string): void {
@@ -137,6 +146,7 @@ export class WindowManagerService {
   /** "Show Desktop": minimizes every open, non-minimized window — used by Mission Control / Control Center. */
   minimizeAll(): void {
     this.windowsSignal.update((list) => list.map((w) => ({ ...w, minimized: true, active: false })));
+    this.sound.minimize();
   }
 
   toggleMaximize(id: string): void {
@@ -157,6 +167,7 @@ export class WindowManagerService {
       }),
     );
     this.focus(id);
+    this.sound.restore();
   }
 
   move(id: string, x: number, y: number): void {

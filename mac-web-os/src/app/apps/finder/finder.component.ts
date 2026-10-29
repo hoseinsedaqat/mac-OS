@@ -6,6 +6,7 @@ import { ApplicationRegistryService } from '../../core/services/application-regi
 import { WindowManagerService } from '../../core/services/window-manager.service';
 import { ContextMenuService, ContextMenuItem } from '../../core/services/context-menu.service';
 import { DialogService } from '../../core/services/dialog.service';
+import { SoundService } from '../../core/services/sound.service';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { FsNode, ROOT_ID, DOCUMENTS_ID, DOWNLOADS_ID, DESKTOP_ID } from '../../core/models/file-system.model';
 
@@ -35,6 +36,7 @@ export class FinderComponent implements OnInit {
   private readonly wm = inject(WindowManagerService);
   private readonly contextMenu = inject(ContextMenuService);
   private readonly dialog = inject(DialogService);
+  private readonly sound = inject(SoundService);
 
   readonly sidebarItems: SidebarItem[] = [
     { id: ROOT_ID, label: 'Macintosh HD', icon: 'hdd' },
@@ -195,6 +197,7 @@ export class FinderComponent implements OnInit {
   async moveToTrash(node: FsNode): Promise<void> {
     if (node.protected) return;
     await this.fs.moveToTrash(node.id);
+    this.sound.trash();
     this.selection.update((s) => {
       const next = new Set(s);
       next.delete(node.id);

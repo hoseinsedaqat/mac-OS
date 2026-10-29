@@ -3,7 +3,6 @@ import { ApplicationRegistryService } from '../../core/services/application-regi
 import { WindowManagerService } from '../../core/services/window-manager.service';
 import { SettingsService } from '../../core/services/settings.service';
 import { ContextMenuService, ContextMenuItem } from '../../core/services/context-menu.service';
-import { SoundService } from '../../core/services/sound.service';
 import { PanelService } from '../../core/services/panel.service';
 import { I18nService } from '../../core/services/i18n.service';
 import { AppIconComponent } from '../../shared/components/app-icon/app-icon.component';
@@ -23,7 +22,6 @@ export class DockComponent implements OnDestroy {
   readonly wm = inject(WindowManagerService);
   readonly settings = inject(SettingsService);
   private readonly contextMenu = inject(ContextMenuService);
-  private readonly sound = inject(SoundService);
   private readonly panels = inject(PanelService);
   readonly i18n = inject(I18nService);
 
