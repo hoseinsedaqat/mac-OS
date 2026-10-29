@@ -1,0 +1,37 @@
+<mw-wallpaper />
+<div class="mw-login__scrim"></div>
+
+<div class="mw-login__panel" [class.mw-login__panel--shake]="error()">
+  <div class="mw-login__avatar">
+    <mw-icon name="user" [size]="42" />
+  </div>
+  <h1 class="mw-login__name">{{ settings.settings().userName }}</h1>
+
+  @if (passwordEnabled()) {
+    <form class="mw-login__form" (ngSubmit)="submit()">
+      <input
+        type="password"
+        class="mw-login__input"
+        [placeholder]="i18n.t('shell.login.passwordPlaceholder')"
+        [(ngModel)]="password"
+        name="password"
+        autocomplete="off"
+        [attr.aria-invalid]="error()"
+        autofocus
+      />
+      @if (error()) {
+        <p class="mw-login__error">{{ i18n.t('shell.login.wrongPasswordRetry') }}</p>
+      }
+      <button type="submit" class="mw-login__submit" [attr.aria-label]="i18n.t('shell.login.signIn')">
+        <mw-icon name="chevronRight" [size]="18" />
+      </button>
+    </form>
+  } @else {
+    <p class="mw-login__note">{{ i18n.t('shell.login.noPasswordNote') }}</p>
+    <button type="button" class="mw-btn mw-btn-accent mw-login__enter" (click)="submit()">
+      {{ i18n.t('shell.login.enterDesktop') }}
+    </button>
+  }
+
+  <button type="button" class="mw-login__cancel" (click)="cancel()">{{ i18n.t('shell.login.back') }}</button>
+</div>

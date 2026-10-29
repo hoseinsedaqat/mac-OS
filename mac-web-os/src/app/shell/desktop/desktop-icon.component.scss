@@ -1,0 +1,43 @@
+.mw-desktop-icon {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 88px;
+  padding: var(--mw-space-2);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--mw-radius-sm);
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  cursor: default;
+  touch-action: none;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  &.selected {
+    background: color-mix(in srgb, var(--mw-accent) 38%, rgba(255, 255, 255, 0.12));
+    border-color: color-mix(in srgb, var(--mw-accent) 60%, transparent);
+  }
+}
+
+.mw-desktop-icon__glyph {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--mw-radius-md);
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(4px);
+}
+
+.mw-desktop-icon__label {
+  font-size: 12px;
+  text-align: center;
+  line-height: 1.25;
+  word-break: break-word;
+  max-width: 100%;
+}

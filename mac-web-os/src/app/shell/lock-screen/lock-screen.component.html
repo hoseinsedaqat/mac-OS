@@ -1,0 +1,15 @@
+<mw-wallpaper />
+<div class="mw-lock__scrim"></div>
+
+<div class="mw-lock__content">
+  <div class="mw-lock__time">{{ time() }}</div>
+  <div class="mw-lock__date">{{ date() }}</div>
+</div>
+
+<div class="mw-lock__footer">
+  <div class="mw-lock__avatar">
+    <mw-icon name="user" [size]="30" />
+  </div>
+  <p class="mw-lock__username">{{ settings.settings().userName }}</p>
+  <p class="mw-lock__hint">{{ i18n.t('shell.lock.pressEnter') }}</p>
+</div>

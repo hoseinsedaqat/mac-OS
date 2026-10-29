@@ -1,0 +1,62 @@
+@if (isOpen()) {
+  <div class="mw-spotlight__scrim" (click)="close()" (keydown.escape)="close()">
+    <div class="mw-spotlight" (click)="$event.stopPropagation()">
+      <div class="mw-spotlight__input-row">
+        <mw-icon name="search" [size]="20" />
+        <input
+          #searchInput
+          type="text"
+          class="mw-spotlight__input"
+          [placeholder]="i18n.t('shell.spotlight.placeholder')"
+          [(ngModel)]="query"
+          (keydown.escape)="close()"
+          [attr.aria-label]="i18n.t('shell.spotlight.placeholder')"
+        />
+      </div>
+
+      @if (query().trim()) {
+        <div class="mw-spotlight__results mw-scroll">
+          @if (!hasResults()) {
+            <p class="mw-spotlight__empty">{{ i18n.t('shell.spotlight.noResults') }}</p>
+          }
+
+          @if (appResults().length) {
+            <div class="mw-spotlight__group">
+              <h3>{{ i18n.t('shell.spotlight.applications') }}</h3>
+              @for (app of appResults(); track app.id) {
+                <button type="button" class="mw-spotlight__row" (click)="openApp(app)">
+                  <mw-icon [name]="app.icon" [size]="18" />
+                  <span>{{ app.name }}</span>
+                </button>
+              }
+            </div>
+          }
+
+          @if (fileResults().length) {
+            <div class="mw-spotlight__group">
+              <h3>{{ i18n.t('shell.spotlight.files') }}</h3>
+              @for (file of fileResults(); track file.id) {
+                <button type="button" class="mw-spotlight__row" (click)="openFile(file)">
+                  <mw-icon [name]="file.type === 'folder' ? 'folder' : 'file-text'" [size]="18" />
+                  <span>{{ file.name }}</span>
+                </button>
+              }
+            </div>
+          }
+
+          @if (noteResults().length) {
+            <div class="mw-spotlight__group">
+              <h3>{{ i18n.t('shell.spotlight.notes') }}</h3>
+              @for (note of noteResults(); track note.id) {
+                <button type="button" class="mw-spotlight__row" (click)="openNote(note)">
+                  <mw-icon name="notes" [size]="18" />
+                  <span>{{ note.title }}</span>
+                </button>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+}

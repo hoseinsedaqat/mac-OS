@@ -1,0 +1,89 @@
+<div class="mw-vscode">
+  <aside class="mw-vscode__sidebar">
+    <div class="mw-vscode__sidebar-header">
+      <span>{{ i18n.t('apps.vscode.explorer') }}</span>
+      <button type="button" class="mw-vscode__icon-btn" [attr.aria-label]="i18n.t('apps.vscode.newFile')" (click)="createFile()">
+        <mw-icon name="plus" [size]="14" />
+      </button>
+    </div>
+    <div class="mw-vscode__tree">
+      @for (file of files(); track file.id) {
+        <button
+          type="button"
+          class="mw-vscode__tree-item"
+          [class.active]="activeFileId() === file.id"
+          (click)="openFile(file.id)"
+        >
+          <mw-icon [name]="iconFor(file)" [size]="14" />
+          <span class="mw-vscode__tree-label">{{ file.name }}</span>
+          <span class="mw-vscode__tree-delete" (click)="deleteFile(file.id, $event)">
+            <mw-icon name="close" [size]="11" />
+          </span>
+        </button>
+      }
+    </div>
+  </aside>
+
+  <section class="mw-vscode__main">
+    <div class="mw-vscode__tabs">
+      @for (file of openFiles(); track file.id) {
+        <button
+          type="button"
+          class="mw-vscode__tab"
+          [class.active]="activeFileId() === file.id"
+          (click)="openFile(file.id)"
+        >
+          <mw-icon [name]="iconFor(file)" [size]="13" />
+          <span>{{ file.name }}</span>
+          <span class="mw-vscode__tab-close" (click)="closeFile(file.id, $event)">
+            <mw-icon name="close" [size]="11" />
+          </span>
+        </button>
+      }
+
+      <div class="mw-vscode__tabs-spacer"></div>
+
+      <button type="button" class="mw-vscode__action" (click)="save()" [disabled]="!activeFile()">
+        <mw-icon name="check" [size]="13" />
+        {{ i18n.t('apps.vscode.save') }}
+      </button>
+      <button type="button" class="mw-vscode__action mw-vscode__action--run" (click)="run()" [disabled]="!canRun() || running()">
+        <mw-icon name="play" [size]="13" />
+        {{ i18n.t('apps.vscode.run') }}
+      </button>
+    </div>
+
+    @if (activeFile(); as file) {
+      <div class="mw-vscode__editor-wrap">
+        <textarea
+          class="mw-vscode__editor"
+          spellcheck="false"
+          [ngModel]="file.content"
+          (ngModelChange)="onEdit($event)"
+        ></textarea>
+      </div>
+    } @else {
+      <div class="mw-vscode__empty">
+        <mw-icon name="vscode" [size]="32" />
+        <p>{{ i18n.t('apps.vscode.noFileOpen') }}</p>
+      </div>
+    }
+
+    @if (showOutput()) {
+      <div class="mw-vscode__output">
+        <div class="mw-vscode__output-header">
+          <span>{{ i18n.t('apps.vscode.output') }}</span>
+          <button type="button" (click)="clearOutput()">{{ i18n.t('common.refresh') }}</button>
+          <button type="button" (click)="showOutput.set(false)">{{ i18n.t('common.close') }}</button>
+        </div>
+        <div class="mw-vscode__output-body mw-scroll">
+          @for (line of output(); track $index) {
+            <p [class.error]="line.kind === 'error'" [class.info]="line.kind === 'info'">{{ line.text }}</p>
+          }
+        </div>
+      </div>
+    }
+
+    <p class="mw-vscode__notice">{{ i18n.t('apps.vscode.simulatedNotice') }}</p>
+  </section>
+</div>

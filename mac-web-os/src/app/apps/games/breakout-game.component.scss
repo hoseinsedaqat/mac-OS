@@ -1,0 +1,58 @@
+.mw-breakout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mw-space-3);
+  outline: none;
+}
+
+.mw-breakout__stats {
+  display: flex;
+  gap: var(--mw-space-4);
+  font-weight: 700;
+  font-size: var(--mw-fs-md);
+}
+
+.mw-breakout__stage {
+  position: relative;
+  border-radius: var(--mw-radius-md);
+  overflow: hidden;
+  border: 1px solid var(--mw-border-subtle);
+  cursor: none;
+
+  canvas {
+    display: block;
+    background: #1c1c1e;
+  }
+}
+
+.mw-breakout__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mw-space-3);
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+  padding: var(--mw-space-3);
+
+  button {
+    padding: var(--mw-space-2) var(--mw-space-4);
+    border-radius: var(--mw-radius-md);
+    border: none;
+    background: var(--mw-accent);
+    color: #fff;
+    cursor: pointer;
+    font-weight: 600;
+  }
+}
+
+.mw-breakout__hint {
+  font-size: var(--mw-fs-xs);
+  color: var(--mw-text-secondary);
+  margin: 0;
+}

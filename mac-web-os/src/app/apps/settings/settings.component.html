@@ -1,0 +1,201 @@
+<div class="mw-settings">
+  <aside class="mw-settings__nav">
+    @for (section of sections; track section.id) {
+      <button
+        type="button"
+        class="mw-settings__nav-item"
+        [class.active]="active() === section.id"
+        (click)="select(section.id)"
+      >
+        <mw-icon [name]="section.icon" [size]="16" />
+        <span>{{ section.label }}</span>
+      </button>
+    }
+  </aside>
+
+  <section class="mw-settings__content mw-scroll">
+    @switch (active()) {
+      @case ('appearance') {
+        <h2>Appearance</h2>
+        <div class="mw-settings__row">
+          <span>حالت نمایش</span>
+          <div class="mw-settings__segmented">
+            <button type="button" [class.active]="settings.theme() === 'light'" (click)="setTheme('light')">روشن</button>
+            <button type="button" [class.active]="settings.theme() === 'dark'" (click)="setTheme('dark')">تاریک</button>
+          </div>
+        </div>
+        <div class="mw-settings__row mw-settings__row--wrap">
+          <span>رنگ تاکیدی</span>
+          <div class="mw-settings__swatches">
+            @for (opt of accentOptions; track opt.id) {
+              <button
+                type="button"
+                class="mw-settings__swatch"
+                [class.active]="settings.accent() === opt.id"
+                [style.background]="opt.hex"
+                [attr.aria-label]="opt.id"
+                (click)="setAccent(opt.id)"
+              ></button>
+            }
+          </div>
+        </div>
+      }
+
+      @case ('wallpaper') {
+        <h2>Wallpaper</h2>
+        <div class="mw-settings__wallpapers">
+          @for (wp of wallpapers; track wp.id) {
+            <button
+              type="button"
+              class="mw-settings__wallpaper"
+              [class.active]="settings.wallpaperId() === wp.id"
+              (click)="setWallpaper(wp.id)"
+            >
+              <img [src]="wp.file" [alt]="wp.name" loading="lazy" />
+              <span>{{ wp.name }}</span>
+            </button>
+          }
+        </div>
+        <div class="mw-settings__row">
+          <span>نحوه نمایش</span>
+          <select [value]="settings.settings().wallpaperFit" (change)="setWallpaperFit($event)">
+            <option value="cover">پر کردن صفحه (Cover)</option>
+            <option value="contain">نمایش کامل (Contain)</option>
+            <option value="fill">کشیدن (Fill)</option>
+            <option value="center">مرکز (Center)</option>
+          </select>
+        </div>
+      }
+
+      @case ('dock') {
+        <h2>Dock</h2>
+        <div class="mw-settings__row">
+          <span>اندازه Dock</span>
+          <input type="range" min="40" max="80" [value]="settings.settings().dockSize" (input)="setDockSize($event)" />
+        </div>
+        <div class="mw-settings__row">
+          <span>مخفی‌کردن خودکار</span>
+          <button type="button" class="mw-switch" [class.on]="settings.settings().dockAutoHide" (click)="toggleDockAutoHide()">
+            <i></i>
+          </button>
+        </div>
+        <div class="mw-settings__row">
+          <span>بزرگ‌نمایی هنگام هاور</span>
+          <button
+            type="button"
+            class="mw-switch"
+            [class.on]="settings.settings().dockMagnification"
+            (click)="toggleDockMagnification()"
+          >
+            <i></i>
+          </button>
+        </div>
+      }
+
+      @case ('desktop') {
+        <h2>Desktop</h2>
+        <p class="mw-settings__hint">
+          موقعیت آیکون‌های دسکتاپ به‌صورت خودکار ذخیره می‌شود. برای مرتب‌سازی مجدد، روی دسکتاپ راست‌کلیک کنید.
+        </p>
+      }
+
+      @case ('sound') {
+        <h2>Sound</h2>
+        <div class="mw-settings__row">
+          <span>فعال‌بودن صدا</span>
+          <button type="button" class="mw-switch" [class.on]="settings.settings().soundEnabled" (click)="toggleSound()">
+            <i></i>
+          </button>
+        </div>
+        <div class="mw-settings__row">
+          <span>میزان صدا</span>
+          <input type="range" min="0" max="100" [value]="settings.settings().volume" (input)="setVolume($event)" />
+        </div>
+      }
+
+      @case ('datetime') {
+        <h2>Date &amp; Time</h2>
+        <div class="mw-settings__row">
+          <span>نمایش تاریخ در نوار منو</span>
+          <button
+            type="button"
+            class="mw-switch"
+            [class.on]="settings.settings().showDateInMenuBar"
+            (click)="toggleShowDate()"
+          >
+            <i></i>
+          </button>
+        </div>
+        <div class="mw-settings__row">
+          <span>فرمت ۲۴ ساعته</span>
+          <button type="button" class="mw-switch" [class.on]="settings.settings().use24HourClock" (click)="toggle24h()">
+            <i></i>
+          </button>
+        </div>
+      }
+
+      @case ('accessibility') {
+        <h2>Accessibility</h2>
+        <div class="mw-settings__row">
+          <span>کاهش انیمیشن‌ها</span>
+          <button type="button" class="mw-switch" [class.on]="settings.settings().reduceMotion" (click)="toggleReduceMotion()">
+            <i></i>
+          </button>
+        </div>
+        <p class="mw-settings__hint">
+          این گزینه مدت انیمیشن‌های رابط کاربری را به حداقل می‌رساند و با تنظیم سیستم‌عامل شما (prefers-reduced-motion) نیز هماهنگ است.
+        </p>
+
+        <h3>کاربر و امنیت نمایشی</h3>
+        <div class="mw-settings__row">
+          <span>نام کاربری</span>
+          <input type="text" [value]="settings.settings().userName" (change)="setUserName($event)" />
+        </div>
+        <div class="mw-settings__row">
+          <span>رمز عبور نمایشی هنگام ورود</span>
+          <button type="button" class="mw-switch" [class.on]="settings.settings().passwordEnabled" (click)="togglePassword()">
+            <i></i>
+          </button>
+        </div>
+        @if (settings.settings().passwordEnabled) {
+          <div class="mw-settings__row">
+            <span>تنظیم رمز جدید</span>
+            <input #pw type="password" placeholder="رمز جدید" (keydown.enter)="setDemoPassword(pw.value); pw.value = ''" />
+          </div>
+          <p class="mw-settings__hint">
+            این رمز فقط به‌صورت محلی و شبیه‌سازی‌شده بررسی می‌شود و هیچ ارتباطی با حساب واقعی اپل ندارد.
+          </p>
+        }
+      }
+
+      @case ('storage') {
+        <h2>Storage</h2>
+        @if (storageSupported() && storageEstimate(); as est) {
+          <div class="mw-settings__storage-bar">
+            <div
+              class="mw-settings__storage-fill"
+              [style.width.%]="est.quota ? (est.usage / est.quota) * 100 : 0"
+            ></div>
+          </div>
+          <p class="mw-settings__hint">
+            {{ formatBytes(est.usage) }} از {{ formatBytes(est.quota) }} فضای مرورگر استفاده شده است (شامل تنظیمات،
+            فایل‌های شبیه‌سازی‌شده و یادداشت‌ها).
+          </p>
+        } @else {
+          <p class="mw-settings__hint">مرورگر شما گزارش فضای ذخیره‌سازی را پشتیبانی نمی‌کند.</p>
+        }
+        @if (storageDegraded()) {
+          <p class="mw-settings__warning">
+            ذخیره‌سازی محلی در این مرورگر محدود شده است؛ برخی تغییرات ممکن است پس از بستن تب از بین بروند.
+          </p>
+        }
+        <button type="button" class="mw-btn mw-btn-danger" (click)="resetDefaults()">بازگرداندن تنظیمات پیش‌فرض</button>
+      }
+
+      @case ('about') {
+        <h2>About This Mac</h2>
+        <p class="mw-settings__hint">برای مشاهده اطلاعات کامل سیستم، برنامه «About This Mac» را از منوی سیستم باز کنید.</p>
+      }
+    }
+  </section>
+</div>

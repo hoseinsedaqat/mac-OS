@@ -1,0 +1,22 @@
+<div class="mw-calc">
+  <div class="mw-calc__screen">
+    <div class="mw-calc__expression">{{ state().expression || '\u00A0' }}</div>
+    <div class="mw-calc__display" [class.error]="state().error">{{ state().display }}</div>
+  </div>
+
+  <div class="mw-calc__grid">
+    @for (btn of buttons; track btn.value + btn.kind) {
+      <button
+        type="button"
+        class="mw-calc__btn"
+        [class.mw-calc__btn--op]="btn.kind === 'op'"
+        [class.mw-calc__btn--equals]="btn.kind === 'equals'"
+        [class.mw-calc__btn--action]="btn.kind === 'action'"
+        [class.mw-calc__btn--wide]="btn.wide"
+        (click)="press(btn)"
+      >
+        {{ btn.label }}
+      </button>
+    }
+  </div>
+</div>

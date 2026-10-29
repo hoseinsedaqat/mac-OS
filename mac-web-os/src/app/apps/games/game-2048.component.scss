@@ -1,0 +1,88 @@
+.mw-2048 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mw-space-3);
+  outline: none;
+  position: relative;
+}
+
+.mw-2048__stats {
+  display: flex;
+  gap: var(--mw-space-4);
+  font-weight: 700;
+  font-size: var(--mw-fs-md);
+}
+
+.mw-2048__board {
+  display: grid;
+  grid-template-columns: repeat(4, 64px);
+  grid-template-rows: repeat(4, 64px);
+  gap: 6px;
+  padding: 6px;
+  background: var(--mw-bg-control);
+  border-radius: var(--mw-radius-lg);
+}
+
+.mw-2048__cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--mw-radius-sm);
+  background: var(--mw-bg-elevated);
+  font-weight: 700;
+  font-size: 18px;
+  transition: background var(--mw-duration-fast) var(--mw-ease-out);
+
+  &[data-value='2'] { background: #eee4da; color: #776e65; }
+  &[data-value='4'] { background: #ede0c8; color: #776e65; }
+  &[data-value='8'] { background: #f2b179; color: #fff; }
+  &[data-value='16'] { background: #f59563; color: #fff; }
+  &[data-value='32'] { background: #f67c5f; color: #fff; }
+  &[data-value='64'] { background: #f65e3b; color: #fff; }
+  &[data-value='128'] { background: #edcf72; color: #fff; font-size: 16px; }
+  &[data-value='256'] { background: #edcc61; color: #fff; font-size: 16px; }
+  &[data-value='512'] { background: #edc850; color: #fff; font-size: 16px; }
+  &[data-value='1024'] { background: #edc53f; color: #fff; font-size: 14px; }
+  &[data-value='2048'] { background: #edc22e; color: #fff; font-size: 14px; }
+}
+
+.mw-2048__hint {
+  font-size: var(--mw-fs-xs);
+  color: var(--mw-text-secondary);
+  margin: 0;
+}
+
+.mw-2048__reset {
+  padding: var(--mw-space-2) var(--mw-space-4);
+  border-radius: var(--mw-radius-md);
+  border: none;
+  background: var(--mw-accent);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.mw-2048__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mw-space-3);
+  background: color-mix(in srgb, var(--mw-bg-elevated) 85%, transparent);
+  border-radius: var(--mw-radius-lg);
+  font-weight: 700;
+  font-size: var(--mw-fs-lg);
+
+  button {
+    padding: var(--mw-space-2) var(--mw-space-4);
+    border-radius: var(--mw-radius-md);
+    border: none;
+    background: var(--mw-accent);
+    color: #fff;
+    cursor: pointer;
+    font-weight: 600;
+  }
+}

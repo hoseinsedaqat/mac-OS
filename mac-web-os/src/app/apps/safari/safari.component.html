@@ -1,0 +1,148 @@
+<div class="mw-safari">
+  <div class="mw-safari__tabs">
+    @for (tab of tabs(); track tab.id) {
+      <button
+        type="button"
+        class="mw-safari__tab"
+        [class.active]="activeTabId() === tab.id"
+        (click)="selectTab(tab.id)"
+      >
+        <span>{{ tab.addressInput || 'برگه جدید' }}</span>
+        <i (click)="closeTab(tab.id, $event)" aria-label="بستن تب">×</i>
+      </button>
+    }
+    <button type="button" class="mw-safari__new-tab" aria-label="تب جدید" (click)="newTab()">+</button>
+  </div>
+
+  <div class="mw-safari__toolbar">
+    <button type="button" [disabled]="!canGoBack()" aria-label="بازگشت" (click)="goBack()">
+      <mw-icon name="chevronLeft" [size]="14" />
+    </button>
+    <button type="button" [disabled]="!canGoForward()" aria-label="جلو" (click)="goForward()">
+      <mw-icon name="chevronRight" [size]="14" />
+    </button>
+    <button type="button" aria-label="بارگذاری مجدد" (click)="reload()"><mw-icon name="refresh" [size]="13" /></button>
+    <button type="button" aria-label="خانه" (click)="goHome()"><mw-icon name="home" [size]="13" /></button>
+
+    <div class="mw-safari__address">
+      <mw-icon name="globe" [size]="12" />
+      <input
+        type="text"
+        [ngModel]="activeTab().addressInput"
+        (ngModelChange)="onAddressInputChange($event)"
+        (keydown.enter)="submitAddress()"
+        placeholder="آدرس را وارد کنید یا یکی از: home, about, portfolio, help"
+        aria-label="نوار آدرس"
+      />
+    </div>
+
+    <button type="button" aria-label="نشان‌گذاری" (click)="toggleBookmark()">
+      <mw-icon name="bookmark" [size]="14" [strokeWidth]="isBookmarked() ? 0 : 1.8" />
+    </button>
+    <button type="button" aria-label="تاریخچه" (click)="toggleHistoryPanel()">
+      <mw-icon name="history" [size]="14" />
+    </button>
+  </div>
+
+  @if (bookmarks().length) {
+    <div class="mw-safari__bookmarks">
+      @for (bm of bookmarks(); track bm) {
+        <button type="button" (click)="navigate(bm)">{{ bm.replace('macweb://', '') }}</button>
+      }
+    </div>
+  }
+
+  <div class="mw-safari__content mw-scroll">
+    @switch (activeTab().kind) {
+      @case ('local') {
+        @switch (activeTab().route) {
+          @case ('home') {
+            <div class="mw-page mw-page--home">
+              <h1>به MacWeb OS Safari خوش آمدید</h1>
+              <p>این یک مرورگر داخلی و نمایشی است که فقط صفحات محلی پروژه را نمایش می‌دهد.</p>
+              <div class="mw-page__links">
+                <button type="button" (click)="navigate('macweb://about')">درباره پروژه</button>
+                <button type="button" (click)="navigate('macweb://portfolio')">نمونه‌کار</button>
+                <button type="button" (click)="navigate('macweb://help')">راهنما</button>
+              </div>
+            </div>
+          }
+          @case ('about') {
+            <div class="mw-page">
+              <h1>درباره MacWeb OS</h1>
+              <p>
+                MacWeb OS یک شبیه‌ساز تحت وب از تجربه دسکتاپ macOS است که به‌طور کامل با Angular و بدون نیاز به
+                بک‌اند ساخته شده است. این پروژه یک محصول رسمی اپل نیست و صرفاً از نظر بصری از آن الهام گرفته است.
+              </p>
+              <p>همه داده‌های شما — تنظیمات، فایل‌ها، یادداشت‌ها و رویدادها — به‌صورت محلی در مرورگر شما ذخیره می‌شوند.</p>
+            </div>
+          }
+          @case ('portfolio') {
+            <div class="mw-page">
+              <h1>نمونه‌کار</h1>
+              <p>این صفحه نمونه‌ای از یک پورتفولیوی ساده برای نمایش قابلیت صفحات محلی مرورگر است.</p>
+              <ul class="mw-page__list">
+                <li>شبیه‌سازی کامل محیط دسکتاپ با Angular Signals</li>
+                <li>مدیریت پنجره با Drag / Resize / Minimize / Maximize</li>
+                <li>فایل‌سیستم شبیه‌سازی‌شده روی IndexedDB</li>
+                <li>پشتیبانی از حالت روشن/تاریک و رنگ‌های تاکیدی</li>
+              </ul>
+            </div>
+          }
+          @case ('help') {
+            <div class="mw-page">
+              <h1>راهنمای MacWeb OS</h1>
+              <ul class="mw-page__list">
+                <li><strong>Ctrl/Cmd + Space</strong> — باز کردن Spotlight</li>
+                <li><strong>Ctrl/Cmd + W</strong> — بستن پنجره فعال</li>
+                <li><strong>Ctrl/Cmd + M</strong> — کوچک‌کردن پنجره فعال</li>
+                <li><strong>Ctrl/Cmd + Q</strong> — بستن همه پنجره‌های برنامه فعال</li>
+                <li><strong>Alt/Option + Tab</strong> — جابه‌جایی بین پنجره‌ها</li>
+                <li><strong>Escape</strong> — بستن پنل یا منوی باز</li>
+              </ul>
+            </div>
+          }
+        }
+      }
+      @case ('external-notice') {
+        <div class="mw-page mw-page--notice">
+          <mw-icon name="globe" [size]="32" />
+          <h1>بازکردن آدرس خارجی</h1>
+          <p>
+            به دلایل امنیتی مرورگر (CSP / X-Frame-Options)، آدرس‌های خارجی داخل MacWeb OS نمایش داده نمی‌شوند. برای
+            باز کردن «{{ currentAddress() }}» می‌توانید از دکمه زیر استفاده کنید تا در یک تب جدید مرورگر واقعی شما باز شود.
+          </p>
+          <button type="button" class="mw-btn mw-btn-accent" (click)="openExternally()">باز کردن در تب جدید</button>
+        </div>
+      }
+      @case ('invalid') {
+        <div class="mw-page mw-page--notice">
+          <mw-icon name="info" [size]="32" />
+          <h1>آدرس نامعتبر</h1>
+          <p>«{{ currentAddress() }}» یک آدرس معتبر نیست. آدرس‌های محلی معتبر: home, about, portfolio, help</p>
+        </div>
+      }
+    }
+  </div>
+
+  @if (showHistory()) {
+    <div class="mw-safari__history-scrim" (click)="toggleHistoryPanel()">
+      <div class="mw-safari__history" (click)="$event.stopPropagation()">
+        <header>
+          <h3>تاریخچه</h3>
+          <button type="button" (click)="clearHistory()">پاک‌کردن</button>
+        </header>
+        <div class="mw-scroll">
+          @for (h of history(); track h.at) {
+            <button type="button" class="mw-safari__history-item" (click)="navigate(h.address)">
+              <span>{{ h.title }}</span>
+              <small>{{ h.address }}</small>
+            </button>
+          } @empty {
+            <p class="mw-safari__history-empty">تاریخچه‌ای وجود ندارد.</p>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</div>

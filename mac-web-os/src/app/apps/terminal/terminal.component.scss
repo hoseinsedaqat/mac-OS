@@ -1,0 +1,47 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.mw-term {
+  height: 100%;
+  background: rgba(20, 20, 22, 0.96);
+  color: #c9f7c9;
+  font-family: var(--mw-font-mono);
+  font-size: 13px;
+  padding: var(--mw-space-4);
+  cursor: text;
+}
+
+.mw-term__scroll {
+  height: 100%;
+  overflow: auto;
+}
+
+.mw-term__line {
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.6;
+}
+
+.mw-term__output {
+  color: #d7d7db;
+}
+
+.mw-term__prompt {
+  color: #6be675;
+  margin-inline-end: 6px;
+}
+
+.mw-term__active {
+  display: flex;
+}
+
+.mw-term__input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  font: inherit;
+}

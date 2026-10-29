@@ -1,0 +1,77 @@
+<div class="mw-mail">
+  <aside class="mw-mail__sidebar">
+    <button type="button" class="mw-mail__compose" (click)="startCompose()">
+      <mw-icon name="plus" [size]="13" />
+      نوشتن
+    </button>
+    <button type="button" class="mw-mail__folder" [class.active]="folder() === 'inbox' && !query()" (click)="selectFolder('inbox')">
+      <mw-icon name="mail" [size]="14" />
+      <span>Inbox</span>
+      @if (unreadInbox() > 0) {
+        <span class="mw-mail__badge">{{ unreadInbox() }}</span>
+      }
+    </button>
+    <button type="button" class="mw-mail__folder" [class.active]="folder() === 'sent' && !query()" (click)="selectFolder('sent')">
+      <mw-icon name="send" [size]="14" />
+      <span>Sent</span>
+    </button>
+    <button type="button" class="mw-mail__folder" [class.active]="folder() === 'drafts' && !query()" (click)="selectFolder('drafts')">
+      <mw-icon name="file-text" [size]="14" />
+      <span>Drafts</span>
+    </button>
+    <p class="mw-mail__demo-note">حالت Demo — بدون ارسال واقعی ایمیل</p>
+  </aside>
+
+  <section class="mw-mail__list-pane">
+    <div class="mw-mail__search">
+      <mw-icon name="search" [size]="13" />
+      <input type="text" placeholder="جست‌وجو در ایمیل‌ها" [(ngModel)]="query" />
+    </div>
+    <div class="mw-mail__list mw-scroll">
+      @for (message of list(); track message.id) {
+        <button
+          type="button"
+          class="mw-mail__item"
+          [class.active]="selectedId() === message.id"
+          [class.unread]="!message.read"
+          (click)="openMessage(message)"
+        >
+          <div class="mw-mail__item-head">
+            <strong>{{ message.from }}</strong>
+            <span>{{ relative(message.date) }}</span>
+          </div>
+          <p class="mw-mail__subject">{{ message.subject }}</p>
+          <p class="mw-mail__preview">{{ message.body.slice(0, 60) }}</p>
+        </button>
+      } @empty {
+        <p class="mw-mail__empty">پیامی یافت نشد</p>
+      }
+    </div>
+  </section>
+
+  <section class="mw-mail__reading">
+    @if (composing()) {
+      <div class="mw-mail__compose-form">
+        <input type="text" placeholder="گیرنده" [(ngModel)]="composeTo" />
+        <input type="text" placeholder="موضوع" [(ngModel)]="composeSubject" />
+        <textarea class="mw-scroll" placeholder="متن ایمیل…" [(ngModel)]="composeBody"></textarea>
+        <div class="mw-mail__compose-actions">
+          <button type="button" class="mw-btn" (click)="saveDraft()">ذخیره پیش‌نویس</button>
+          <button type="button" class="mw-btn mw-btn-accent" (click)="send()">ارسال (نمایشی)</button>
+        </div>
+      </div>
+    } @else if (selected(); as message) {
+      <header class="mw-mail__reading-head">
+        <h2>{{ message.subject }}</h2>
+        <button type="button" aria-label="حذف" (click)="deleteMessage(message)"><mw-icon name="trash2" [size]="16" /></button>
+      </header>
+      <p class="mw-mail__meta">از: {{ message.from }} — به: {{ message.to }}</p>
+      <div class="mw-mail__body mw-scroll">{{ message.body }}</div>
+    } @else {
+      <div class="mw-mail__placeholder">
+        <mw-icon name="mail" [size]="36" />
+        <p>پیامی برای نمایش انتخاب نشده است</p>
+      </div>
+    }
+  </section>
+</div>

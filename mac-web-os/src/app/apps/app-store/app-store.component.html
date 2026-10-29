@@ -1,0 +1,72 @@
+<div class="mw-store">
+  <aside class="mw-store__sidebar">
+    <h4>دسته‌بندی</h4>
+    @for (cat of categories(); track cat) {
+      <button type="button" class="mw-store__cat" [class.active]="activeCategory() === cat" (click)="activeCategory.set(cat)">
+        {{ cat === 'all' ? 'همه' : categoryLabels[cat] }}
+      </button>
+    }
+  </aside>
+
+  <section class="mw-store__main mw-scroll">
+    <div class="mw-store__search">
+      <mw-icon name="search" [size]="14" />
+      <input type="text" placeholder="جست‌وجوی برنامه" [(ngModel)]="query" />
+    </div>
+
+    <p class="mw-store__note">
+      نصب در اینجا یعنی فعال‌سازی برنامه در این شبیه‌ساز؛ هیچ نرم‌افزاری روی دستگاه واقعی شما نصب نمی‌شود. توجه:
+      برنامه‌های پیش‌فرض Dock همواره از طریق Dock نیز در دسترس هستند.
+    </p>
+
+    @if (!query() && activeCategory() === 'all') {
+      <h3>پیشنهادی</h3>
+      <div class="mw-store__featured">
+        @for (app of featured(); track app.id) {
+          <button type="button" class="mw-store__featured-card" (click)="selectApp(app)">
+            <mw-icon [name]="app.icon" [size]="30" />
+            <strong>{{ app.name }}</strong>
+            <span>{{ app.description }}</span>
+          </button>
+        }
+      </div>
+    }
+
+    <h3>همه برنامه‌ها</h3>
+    <div class="mw-store__grid">
+      @for (app of visibleApps(); track app.id) {
+        <div class="mw-store__row" (click)="selectApp(app)">
+          <mw-icon [name]="app.icon" [size]="28" />
+          <div class="mw-store__row-info">
+            <strong>{{ app.name }}</strong>
+            <span>{{ app.description }}</span>
+          </div>
+          @if (install.isInstalled(app.id)) {
+            <button type="button" class="mw-store__btn mw-store__btn--open" (click)="openApp(app, $event)">باز کردن</button>
+          } @else {
+            <button type="button" class="mw-store__btn" (click)="installApp(app, $event)">نصب</button>
+          }
+        </div>
+      } @empty {
+        <p class="mw-store__empty">برنامه‌ای یافت نشد.</p>
+      }
+    </div>
+  </section>
+
+  @if (selectedApp(); as app) {
+    <div class="mw-store__detail-scrim" (click)="closeDetail()">
+      <div class="mw-store__detail" (click)="$event.stopPropagation()">
+        <mw-icon [name]="app.icon" [size]="46" />
+        <h2>{{ app.name }}</h2>
+        <p class="mw-store__detail-category">{{ categoryLabels[app.category] }}</p>
+        <p class="mw-store__detail-desc">{{ app.description }}</p>
+        @if (install.isInstalled(app.id)) {
+          <button type="button" class="mw-btn mw-btn-accent" (click)="openApp(app)">باز کردن</button>
+        } @else {
+          <button type="button" class="mw-btn mw-btn-accent" (click)="installApp(app)">نصب برنامه</button>
+        }
+        <button type="button" class="mw-btn" (click)="closeDetail()">بستن</button>
+      </div>
+    </div>
+  }
+</div>

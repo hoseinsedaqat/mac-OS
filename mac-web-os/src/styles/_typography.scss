@@ -1,0 +1,34 @@
+body {
+  font-family: var(--mw-font-sans);
+  font-size: var(--mw-fs-md);
+  color: var(--mw-text-primary);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+.mw-text-xs {
+  font-size: var(--mw-fs-xs);
+}
+.mw-text-sm {
+  font-size: var(--mw-fs-sm);
+}
+.mw-text-lg {
+  font-size: var(--mw-fs-lg);
+}
+.mw-text-xl {
+  font-size: var(--mw-fs-xl);
+}
+.mw-text-secondary {
+  color: var(--mw-text-secondary);
+}
+.mw-text-tertiary {
+  color: var(--mw-text-tertiary);
+}

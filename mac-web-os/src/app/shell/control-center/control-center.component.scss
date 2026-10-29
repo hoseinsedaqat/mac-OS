@@ -1,0 +1,112 @@
+.mw-cc__scrim {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--mw-z-panels) - 1);
+}
+
+.mw-cc {
+  position: fixed;
+  top: 38px;
+  inset-inline-end: 12px;
+  z-index: var(--mw-z-panels);
+  width: 300px;
+  padding: var(--mw-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--mw-space-4);
+  background: var(--mw-bg-elevated);
+  border: 1px solid var(--mw-border-subtle);
+  border-radius: var(--mw-radius-lg);
+  box-shadow: var(--mw-shadow-3);
+  backdrop-filter: blur(30px) saturate(1.8);
+  -webkit-backdrop-filter: blur(30px) saturate(1.8);
+  animation: mw-pop-in var(--mw-duration-base) var(--mw-ease-out);
+}
+
+.mw-cc__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--mw-space-3);
+}
+
+.mw-cc__toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--mw-space-3);
+  padding: var(--mw-space-4);
+  background: var(--mw-bg-control);
+  border: 1px solid transparent;
+  border-radius: var(--mw-radius-md);
+  color: var(--mw-text-primary);
+  font-size: var(--mw-fs-sm);
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--mw-bg-control-hover);
+  }
+
+  &.active {
+    background: var(--mw-accent);
+    color: #fff;
+  }
+}
+
+.mw-cc__slider-card {
+  padding: var(--mw-space-4);
+  background: var(--mw-bg-control);
+  border-radius: var(--mw-radius-md);
+}
+
+.mw-cc__slider-head {
+  display: flex;
+  align-items: center;
+  gap: var(--mw-space-2);
+  margin-bottom: var(--mw-space-3);
+  font-size: var(--mw-fs-sm);
+  font-weight: 500;
+}
+
+.mw-cc__lang-switch {
+  display: flex;
+  gap: var(--mw-space-2);
+}
+
+.mw-cc__lang-btn {
+  flex: 1;
+  padding: var(--mw-space-2) var(--mw-space-3);
+  background: var(--mw-bg-elevated);
+  border: 1px solid var(--mw-border-subtle);
+  border-radius: var(--mw-radius-sm);
+  color: var(--mw-text-primary);
+  font-size: var(--mw-fs-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--mw-duration-fast) var(--mw-ease-out);
+
+  &:hover {
+    background: var(--mw-bg-control-hover);
+  }
+
+  &.active {
+    background: var(--mw-accent);
+    border-color: var(--mw-accent);
+    color: #fff;
+  }
+}
+
+input[type='range'] {
+  width: 100%;
+  accent-color: var(--mw-accent);
+}
+
+@keyframes mw-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

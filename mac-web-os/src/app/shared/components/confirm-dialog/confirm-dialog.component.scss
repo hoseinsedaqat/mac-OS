@@ -1,0 +1,69 @@
+.mw-dialog-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--mw-z-modal);
+  display: grid;
+  place-items: center;
+  background: var(--mw-overlay-scrim);
+  animation: mw-fade var(--mw-duration-fast) var(--mw-ease-standard);
+}
+
+.mw-dialog {
+  width: min(380px, 90vw);
+  padding: var(--mw-space-6);
+  background: var(--mw-bg-elevated);
+  border: 1px solid var(--mw-border-subtle);
+  border-radius: var(--mw-radius-lg);
+  box-shadow: var(--mw-shadow-3);
+  backdrop-filter: blur(30px) saturate(1.7);
+  -webkit-backdrop-filter: blur(30px) saturate(1.7);
+  text-align: center;
+  animation: mw-pop-in var(--mw-duration-base) var(--mw-ease-out);
+
+  h2 {
+    font-size: var(--mw-fs-lg);
+    margin-bottom: var(--mw-space-3);
+  }
+  p {
+    color: var(--mw-text-secondary);
+    font-size: var(--mw-fs-sm);
+    line-height: 1.6;
+  }
+}
+
+.mw-dialog__actions {
+  display: flex;
+  gap: var(--mw-space-3);
+  margin-top: var(--mw-space-6);
+
+  .mw-btn {
+    flex: 1;
+  }
+}
+
+.mw-btn-danger {
+  background: var(--mw-accent-red, #ff453a);
+  color: #fff;
+  &:hover {
+    filter: brightness(1.08);
+  }
+}
+
+@keyframes mw-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes mw-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

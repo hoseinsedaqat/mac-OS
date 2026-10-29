@@ -1,0 +1,37 @@
+@if (isOpen()) {
+  <div class="mw-nc__scrim" (click)="close()"></div>
+  <div class="mw-nc" role="dialog" [attr.aria-label]="i18n.t('shell.notifications.title')">
+    <div class="mw-nc__header">
+      <h2>{{ i18n.t('shell.notifications.title') }}</h2>
+      @if (notifications.notifications().length) {
+        <button type="button" class="mw-nc__clear" (click)="clearAll()">{{ i18n.t('shell.notifications.clearAll') }}</button>
+      }
+    </div>
+
+    @if (!notifications.notifications().length) {
+      <div class="mw-nc__empty">
+        <mw-icon name="bell" [size]="30" />
+        <p>{{ i18n.t('shell.notifications.empty') }}</p>
+      </div>
+    } @else {
+      <div class="mw-nc__list mw-scroll">
+        @for (n of notifications.notifications(); track n.id) {
+          <button type="button" class="mw-nc__item" (click)="openFrom(n.appId, n.id)">
+            <mw-icon [name]="n.icon" [size]="18" />
+            <div class="mw-nc__item-body">
+              <div class="mw-nc__item-head">
+                <span class="mw-nc__app-name">{{ n.appName }}</span>
+                <span class="mw-nc__time">{{ relative(n.createdAt) }}</span>
+              </div>
+              <p class="mw-nc__title">{{ n.title }}</p>
+              <p class="mw-nc__text">{{ n.body }}</p>
+            </div>
+            <button type="button" class="mw-nc__remove" [attr.aria-label]="i18n.t('common.delete')" (click)="remove(n.id, $event)">
+              <mw-icon name="close" [size]="13" />
+            </button>
+          </button>
+        }
+      </div>
+    }
+  </div>
+}

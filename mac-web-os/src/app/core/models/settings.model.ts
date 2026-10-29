@@ -1,0 +1,60 @@
+export type ThemeMode = 'light' | 'dark';
+
+export type AccentColor =
+  | 'blue'
+  | 'purple'
+  | 'pink'
+  | 'red'
+  | 'orange'
+  | 'yellow'
+  | 'green'
+  | 'graphite';
+
+/** English is the primary/default language; Persian (فارسی) is the secondary, user-selectable language. */
+export type AppLanguage = 'en' | 'fa';
+
+export interface SettingsState {
+  version: 2;
+  theme: ThemeMode;
+  accent: AccentColor;
+  language: AppLanguage;
+  wallpaperId: string;
+  wallpaperFit: 'cover' | 'contain' | 'fill' | 'center';
+  dockSize: number;
+  dockAutoHide: boolean;
+  dockMagnification: boolean;
+  showDateInMenuBar: boolean;
+  use24HourClock: boolean;
+  reduceMotion: boolean;
+  soundEnabled: boolean;
+  volume: number;
+  brightness: number;
+  userName: string;
+  passwordEnabled: boolean;
+  passwordHash: string | null;
+  wifiEnabled: boolean;
+  focusMode: boolean;
+}
+
+export const DEFAULT_SETTINGS: SettingsState = {
+  version: 2,
+  theme: 'light',
+  accent: 'blue',
+  language: 'en',
+  wallpaperId: 'aurora',
+  wallpaperFit: 'cover',
+  dockSize: 56,
+  dockAutoHide: false,
+  dockMagnification: true,
+  showDateInMenuBar: true,
+  use24HourClock: true,
+  reduceMotion: false,
+  soundEnabled: true,
+  volume: 65,
+  brightness: 100,
+  userName: 'Guest User',
+  passwordEnabled: false,
+  passwordHash: null,
+  wifiEnabled: true,
+  focusMode: false,
+};

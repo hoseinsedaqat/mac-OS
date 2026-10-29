@@ -1,0 +1,12 @@
+.mw-desktop {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  transition: filter var(--mw-duration-base) var(--mw-ease-standard);
+}
+
+.mw-desktop__surface {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
