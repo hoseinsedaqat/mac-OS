@@ -67,4 +67,19 @@ export class SystemStateService {
   wake(): void {
     if (this.stateSignal() === 'sleeping') this.transition('desktop');
   }
+
+  /** Begins the simulated restart sequence (shows a restart screen, then replays the boot animation). */
+  restart(): void {
+    this.transition('restarting');
+  }
+
+  /** Powers the simulated machine off (black screen) until the user turns it back on. */
+  powerOff(): void {
+    this.transition('off');
+  }
+
+  /** Called internally once the restart/off screens finish their delay/interaction to replay the boot sequence. */
+  rebootToSplash(): void {
+    this.transition('splash');
+  }
 }

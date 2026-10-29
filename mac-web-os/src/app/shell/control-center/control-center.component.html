@@ -1,58 +1,121 @@
 @if (isOpen()) {
   <div class="mw-cc__scrim" (click)="close()"></div>
-  <div class="mw-cc" role="dialog" [attr.aria-label]="i18n.t('shell.controlCenter.title')">
-    <div class="mw-cc__grid">
-      <button type="button" class="mw-cc__toggle" [class.active]="settings.settings().wifiEnabled" (click)="toggleWifi()">
+  <div class="mw-cc mw-scroll" role="dialog" [attr.aria-label]="i18n.t('shell.controlCenter.title')">
+    <div class="mw-cc__row">
+      <button type="button" class="mw-cc__tile mw-cc__tile--wifi" [class.active]="settings.settings().wifiEnabled" (click)="toggleWifi()">
         <mw-icon name="wifi" [size]="18" />
-        <span>Wi-Fi</span>
+        <div class="mw-cc__tile-text">
+          <strong>{{ i18n.t('shell.controlCenter.wifiName') }}</strong>
+          <span>{{ settings.settings().wifiEnabled ? i18n.t('common.yes') : i18n.t('shell.controlCenter.off') }}</span>
+        </div>
       </button>
-      <button type="button" class="mw-cc__toggle" [class.active]="settings.settings().focusMode" (click)="toggleFocus()">
+      <button type="button" class="mw-cc__tile mw-cc__tile--narrow" [class.active]="settings.settings().bluetoothEnabled" (click)="toggleBluetooth()">
+        <mw-icon name="bluetooth" [size]="18" />
+      </button>
+    </div>
+
+    <button type="button" class="mw-cc__card mw-cc__media" (click)="openMusic()">
+      <div class="mw-cc__media-art"><mw-icon name="music" [size]="20" /></div>
+      <div class="mw-cc__media-info">
+        <span class="mw-cc__media-status">{{ i18n.t('shell.controlCenter.notPlaying') }}</span>
+      </div>
+      <div class="mw-cc__media-controls">
+        <mw-icon name="prev" [size]="14" />
+        <mw-icon name="play" [size]="16" />
+        <mw-icon name="next" [size]="14" />
+      </div>
+    </button>
+
+    <div class="mw-cc__row mw-cc__row--three">
+      <button type="button" class="mw-cc__tile mw-cc__tile--wide" [class.active]="settings.settings().focusMode" (click)="toggleFocus()">
         <mw-icon name="moon" [size]="18" />
-        <span>{{ i18n.t('shell.controlCenter.focus') }}</span>
+        <div class="mw-cc__tile-text">
+          <strong>{{ i18n.t('shell.controlCenter.focusName') }}</strong>
+          <span>{{ settings.settings().focusMode ? i18n.t('common.yes') : i18n.t('shell.controlCenter.off') }}</span>
+        </div>
       </button>
-      <button
-        type="button"
-        class="mw-cc__toggle"
-        [class.active]="settings.theme() === 'dark'"
-        (click)="toggleTheme()"
-      >
-        <mw-icon [name]="settings.theme() === 'dark' ? 'moon' : 'sun'" [size]="18" />
-        <span>{{ i18n.t('shell.controlCenter.appearance') }}</span>
+      <button type="button" class="mw-cc__tile mw-cc__tile--narrow" [class.active]="settings.settings().stageManagerEnabled" (click)="toggleStageManager()">
+        <mw-icon name="stagemanager" [size]="18" />
       </button>
-      <button
-        type="button"
-        class="mw-cc__toggle"
-        [class.active]="settings.settings().dockAutoHide"
-        (click)="toggleDockAutoHide()"
-      >
-        <mw-icon name="grid" [size]="18" />
-        <span>{{ i18n.t('shell.controlCenter.autoHideDock') }}</span>
+      <button type="button" class="mw-cc__tile mw-cc__tile--narrow" [class.active]="settings.settings().screenMirroringEnabled" (click)="toggleScreenMirroring()">
+        <mw-icon name="screenmirror" [size]="18" />
       </button>
     </div>
 
     <div class="mw-cc__slider-card">
       <div class="mw-cc__slider-head">
-        <mw-icon name="globe" [size]="16" />
-        <span>{{ i18n.t('shell.controlCenter.language') }}</span>
+        <mw-icon [name]="settings.settings().volume === 0 ? 'volume-mute' : 'volume'" [size]="16" />
+        <span>{{ i18n.t('shell.controlCenter.volume') }}</span>
       </div>
-      <div class="mw-cc__lang-switch">
-        <button
-          type="button"
-          class="mw-cc__lang-btn"
-          [class.active]="i18n.language() === 'en'"
-          (click)="setLanguage('en')"
-        >
-          {{ i18n.t('shell.controlCenter.languageEnglish') }}
+      <input
+        type="range"
+        min="0"
+        max="100"
+        [value]="settings.settings().volume"
+        (input)="setVolume($event)"
+        [attr.aria-label]="i18n.t('shell.controlCenter.volume')"
+      />
+    </div>
+
+    <div class="mw-cc__row mw-cc__row--recognise">
+      <button type="button" class="mw-cc__card mw-cc__recognise" (click)="recogniseMusic()">
+        <mw-icon name="waveform" [size]="20" />
+        <span>{{ i18n.t('shell.controlCenter.recogniseMusic') }}</span>
+      </button>
+
+      <div class="mw-cc__quick-grid">
+        <button type="button" class="mw-cc__quick" (click)="toggleTheme()" [attr.aria-label]="i18n.t('shell.controlCenter.appearance')">
+          <mw-icon [name]="settings.theme() === 'dark' ? 'moon' : 'sun'" [size]="16" />
+        </button>
+        <button type="button" class="mw-cc__quick" (click)="openCalculator()" [attr.aria-label]="i18n.t('apps.calculator.name')">
+          <mw-icon name="calculator" [size]="16" />
+        </button>
+        <button type="button" class="mw-cc__quick" (click)="resetIcons()" [attr.aria-label]="i18n.t('shell.controlCenter.quick.resetIcons')">
+          <mw-icon name="history" [size]="16" />
         </button>
         <button
           type="button"
-          class="mw-cc__lang-btn"
-          [class.active]="i18n.language() === 'fa'"
-          (click)="setLanguage('fa')"
+          class="mw-cc__quick"
+          [class.active]="settings.settings().screenRecordingActive"
+          (click)="toggleScreenRecording()"
+          [attr.aria-label]="i18n.t('shell.controlCenter.quick.screenRecording')"
         >
-          {{ i18n.t('shell.controlCenter.languagePersian') }}
+          <mw-icon name="rec" [size]="16" />
+        </button>
+        <button
+          type="button"
+          class="mw-cc__quick"
+          [class.active]="settings.settings().airdropEnabled"
+          (click)="toggleAirdrop()"
+          [attr.aria-label]="i18n.t('shell.controlCenter.airdrop')"
+        >
+          <mw-icon name="airdrop" [size]="16" />
+        </button>
+        <button type="button" class="mw-cc__quick" (click)="copyLink()" [attr.aria-label]="i18n.t('shell.controlCenter.quick.copyLink')">
+          <mw-icon name="upload" [size]="16" />
+        </button>
+        <button type="button" class="mw-cc__quick" (click)="takeScreenshot()" [attr.aria-label]="i18n.t('shell.controlCenter.quick.screenshot')">
+          <mw-icon name="crop" [size]="16" />
+        </button>
+        <button type="button" class="mw-cc__quick" (click)="showDesktop()" [attr.aria-label]="i18n.t('shell.controlCenter.quick.showDesktop')">
+          <mw-icon name="missioncontrol" [size]="16" />
         </button>
       </div>
+    </div>
+
+    <div class="mw-cc__slider-card">
+      <div class="mw-cc__slider-head">
+        <mw-icon name="sun" [size]="16" />
+        <span>{{ i18n.t('shell.controlCenter.keyboardBrightness') }}</span>
+      </div>
+      <input
+        type="range"
+        min="0"
+        max="100"
+        [value]="settings.settings().keyboardBrightness"
+        (input)="setKeyboardBrightness($event)"
+        [attr.aria-label]="i18n.t('shell.controlCenter.keyboardBrightness')"
+      />
     </div>
 
     <div class="mw-cc__slider-card">
@@ -70,19 +133,15 @@
       />
     </div>
 
-    <div class="mw-cc__slider-card">
-      <div class="mw-cc__slider-head">
-        <mw-icon [name]="settings.settings().volume === 0 ? 'volume-mute' : 'volume'" [size]="16" />
-        <span>{{ i18n.t('shell.controlCenter.volume') }}</span>
-      </div>
-      <input
-        type="range"
-        min="0"
-        max="100"
-        [value]="settings.settings().volume"
-        (input)="setVolume($event)"
-        [attr.aria-label]="i18n.t('shell.controlCenter.volume')"
-      />
+    <button type="button" class="mw-cc__edit-controls" (click)="editControls()">
+      {{ i18n.t('shell.controlCenter.editControls') }}
+    </button>
+
+    <div class="mw-cc__grid">
+      <button type="button" class="mw-cc__toggle" [class.active]="settings.settings().dockAutoHide" (click)="toggleDockAutoHide()">
+        <mw-icon name="grid" [size]="18" />
+        <span>{{ i18n.t('shell.controlCenter.autoHideDock') }}</span>
+      </button>
     </div>
 
     <div class="mw-cc__slider-card">

@@ -16,10 +16,10 @@
 
   <section class="mw-finder__main">
     <div class="mw-finder__toolbar">
-      <button type="button" [disabled]="!canGoBack()" aria-label="بازگشت" (click)="goBack()">
+      <button type="button" [disabled]="!canGoBack()" aria-label="Back" (click)="goBack()">
         <mw-icon name="chevronLeft" [size]="14" />
       </button>
-      <button type="button" [disabled]="!canGoForward()" aria-label="جلو" (click)="goForward()">
+      <button type="button" [disabled]="!canGoForward()" aria-label="Forward" (click)="goForward()">
         <mw-icon name="chevronRight" [size]="14" />
       </button>
 
@@ -36,21 +36,21 @@
 
       <div class="mw-finder__search">
         <mw-icon name="search" [size]="12" />
-        <input type="text" placeholder="جست‌وجو" [(ngModel)]="query" aria-label="جست‌وجوی فایل" />
+        <input type="text" placeholder="Search" [(ngModel)]="query" aria-label="Search files" />
       </div>
 
       <div class="mw-finder__sort">
-        <select [ngModel]="sortKey()" (ngModelChange)="setSort($event)" aria-label="مرتب‌سازی">
-          <option value="name">نام</option>
-          <option value="type">نوع</option>
-          <option value="date">تاریخ</option>
+        <select [ngModel]="sortKey()" (ngModelChange)="setSort($event)" aria-label="Sort by">
+          <option value="name">Name</option>
+          <option value="type">Type</option>
+          <option value="date">Date</option>
         </select>
       </div>
 
-      <button type="button" aria-label="تغییر نما" (click)="toggleView()">
+      <button type="button" aria-label="Toggle View" (click)="toggleView()">
         <mw-icon [name]="viewMode() === 'grid' ? 'list' : 'grid'" [size]="14" />
       </button>
-      <button type="button" aria-label="پوشه جدید" (click)="createFolder()" [disabled]="isApplications()">
+      <button type="button" aria-label="New Folder" (click)="createFolder()" [disabled]="isApplications()">
         <mw-icon name="plus" [size]="14" />
       </button>
     </div>
@@ -94,16 +94,16 @@
               }
             </button>
           } @empty {
-            <p class="mw-finder__empty">این پوشه خالی است.</p>
+            <p class="mw-finder__empty">This folder is empty.</p>
           }
         </div>
       } @else {
         <table class="mw-finder__table">
           <thead>
             <tr>
-              <th>نام</th>
-              <th>نوع</th>
-              <th>تاریخ تغییر</th>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Date Modified</th>
             </tr>
           </thead>
           <tbody>
@@ -130,12 +130,12 @@
                     <span>{{ node.name }}</span>
                   }
                 </td>
-                <td>{{ node.type === 'folder' ? 'پوشه' : 'فایل' }}</td>
+                <td>{{ node.type === 'folder' ? 'Folder' : 'File' }}</td>
                 <td>{{ node.modifiedAt | date: 'short' }}</td>
               </tr>
             } @empty {
               <tr>
-                <td colspan="3" class="mw-finder__empty">این پوشه خالی است.</td>
+                <td colspan="3" class="mw-finder__empty">This folder is empty.</td>
               </tr>
             }
           </tbody>
@@ -148,8 +148,8 @@
         <header>
           <strong>{{ node.name }}</strong>
           <div class="mw-finder__preview-actions">
-            <button type="button" class="mw-btn mw-btn-accent" (click)="savePreview()">ذخیره</button>
-            <button type="button" class="mw-btn" (click)="closePreview()">بستن</button>
+            <button type="button" class="mw-btn mw-btn-accent" (click)="savePreview()">Save</button>
+            <button type="button" class="mw-btn" (click)="closePreview()">Close</button>
           </div>
         </header>
         <textarea class="mw-scroll" [(ngModel)]="previewDraft"></textarea>

@@ -14,7 +14,7 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
 export class PhotosComponent {
   readonly windowId = input<string>('');
   readonly albums = ALBUMS;
-  readonly activeAlbum = signal('همه');
+  readonly activeAlbum = signal('All');
   readonly query = signal('');
   readonly removedIds = signal(new Set<string>());
   readonly viewerIndex = signal<number | null>(null);
@@ -24,7 +24,7 @@ export class PhotosComponent {
     const album = this.activeAlbum();
     const q = this.query().trim().toLowerCase();
     return PHOTO_LIBRARY.filter((p) => !this.removedIds().has(p.id))
-      .filter((p) => album === 'همه' || p.album === album)
+      .filter((p) => album === 'All' || p.album === album)
       .filter((p) => !q || p.title.toLowerCase().includes(q));
   });
 

@@ -118,6 +118,30 @@ export class IconComponent {
       '<rect x="3" y="3" width="5" height="5" rx="1"/><rect x="9.5" y="3" width="5" height="5" rx="1"/><rect x="16" y="3" width="5" height="5" rx="1"/><rect x="3" y="9.5" width="5" height="5" rx="1"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><rect x="16" y="9.5" width="5" height="5" rx="1"/><rect x="3" y="16" width="5" height="5" rx="1"/><rect x="9.5" y="16" width="5" height="5" rx="1"/><rect x="16" y="16" width="5" height="5" rx="1"/>',
     joystick:
       '<circle cx="12" cy="7" r="3"/><path d="M12 10v5"/><rect x="5" y="15" width="14" height="6" rx="2"/>',
+    apple:
+      '<path d="M11.8 7.1C11.5 5.4 12.2 3.6 13.7 2.5 15 1.6 16.3 1.5 17 1.7 16.7 3.4 15.7 4.9 14.3 5.8 13.2 6.5 12.4 6.9 11.8 7.1Z" fill="currentColor" stroke="none"/><path d="M19.8 17.1c-.5 1.2-.8 1.7-1.5 2.8-1 1.5-2.3 3.4-4 3.4-1.5 0-1.9-1-3.9-1s-2.5 1-4 1c-1.7 0-3-1.7-4-3.2-2.6-4-2.9-8.7-1.3-11.2 1.2-1.8 3-2.9 4.8-2.9 1.6 0 2.6 1.1 4 1.1 1.3 0 2.1-1.1 4-1.1 1.5 0 3.1.8 4.2 2.2-3.7 2-3.1 7.3 1.7 8.9Z" fill="currentColor" stroke="none"/>',
+    launchpad:
+      '<rect x="3" y="3" width="18" height="18" rx="4.5"/><circle cx="8" cy="8" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="8" r="1.4" fill="currentColor" stroke="none"/><circle cx="16" cy="8" r="1.4" fill="currentColor" stroke="none"/><circle cx="8" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="8" cy="16" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="16" r="1.4" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="1.4" fill="currentColor" stroke="none"/>',
+    bluetooth: '<path d="M7 7.5 17 15l-5 4V5l5 4-10 7.5"/>',
+    airdrop:
+      '<path d="M12 3.5a5.5 5.5 0 0 1 3.9 9.4M12 3.5a5.5 5.5 0 0 0-3.9 9.4M12 7a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/><path d="M6.5 20.5h11a2 2 0 0 0 1.9-2.7l-1-2.8a2 2 0 0 0-1.9-1.3H7.5a2 2 0 0 0-1.9 1.3l-1 2.8a2 2 0 0 0 1.9 2.7Z"/>',
+    stagemanager:
+      '<rect x="3" y="5" width="13" height="13" rx="2"/><rect x="18" y="5.5" width="3" height="4" rx="1" opacity="0.55"/><rect x="18" y="10.5" width="3" height="4" rx="1" opacity="0.55"/><rect x="18" y="15.5" width="3" height="3" rx="1" opacity="0.55"/>',
+    screenmirror:
+      '<rect x="2.5" y="4.5" width="19" height="12" rx="2"/><path d="M12 20.5h.01"/><path d="M9 20.5h6"/><path d="M12 8v5m0-5-2.3 2.3M12 8l2.3 2.3"/>',
+    missioncontrol:
+      '<rect x="3" y="3" width="7.5" height="7.5" rx="1.6"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.6" opacity="0.55"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.6" opacity="0.55"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.6" opacity="0.3"/>',
+    rec: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4" fill="currentColor" stroke="none"/>',
+    crop: '<path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/>',
+    waveform:
+      '<path d="M3 12h2.2M7.2 8v8M11.4 5v14M15.6 8v8M19.8 10v4"/>',
+    timer: '<circle cx="12" cy="13.5" r="8"/><path d="M12 13.5V9M9.5 2.5h5M12 13.5l3 2"/>',
+    video:
+      '<rect x="2.5" y="6" width="13" height="12" rx="2.5"/><path d="m15.5 10.5 5.5-3v9l-5.5-3Z"/>',
+    radar:
+      '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5" opacity="0.6"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><path d="M12 12 18 7"/>',
+    pen: '<path d="M4 20 5 15.5 15.5 5a2.1 2.1 0 0 1 3 3L8 18.5Z"/><path d="m13 7 3 3"/>',
+    eye: '<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/>',
   };
 
   readonly path = computed<SafeHtml>(() =>

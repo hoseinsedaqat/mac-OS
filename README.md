@@ -29,14 +29,16 @@ A fully in-browser, macOS-inspired desktop simulator built with **Angular 22** (
 ## Features
 
 ### System shell
-- **Boot flow**: skippable splash → animated boot → lock screen (live clock/date, optional demo password, Enter-to-login) → login → desktop, modeled as an explicit, illegal-transition-rejecting state machine (`SystemStateService`).
+- **Boot flow**: skippable splash → animated boot → lock screen (live clock/date, optional demo password, Enter-to-login or Enter key) → login (Enter key also submits/continues) → desktop, modeled as an explicit, illegal-transition-rejecting state machine (`SystemStateService`).
 - **Sleep / resume**: the Page Visibility API puts the simulated machine to sleep when the tab is hidden and wakes it on return, preserving every open window and its state.
+- **Restart / Shut Down** (Apple menu): closes every open window and replays the boot animation back to the lock screen (Restart), or shows a black "powered off" screen that turns back on with a click/keypress (Shut Down, clearly disclosed as simulated since a browser tab can't actually power off the device).
 - **Menu Bar**: system menu, active app name, File/Edit/View/Window/Help, live clock & date, simulated Wi-Fi/battery/volume indicators, search, Control Center and Notification Center entry points.
-- **Dock**: 12 built-in apps, open-app indicators, hover magnification, minimize/restore genie-less animation, single-instance activation, auto-hide, resizable, right-click menu — all persisted.
+- **Dock**: a dedicated Launchpad button plus 12 built-in apps, open-app indicators, hover magnification, minimize/restore genie-less animation, single-instance activation, auto-hide, resizable, right-click menu — all persisted.
 - **Window Manager**: a single `WindowManagerService` owns every window's id/app/title/rect/open/minimized/maximized/active/z-index/drag/resize state, clamps windows to the viewport, dims inactive windows, and prevents accidental text selection while dragging.
+- **Launchpad** (desktop "Applications" icon or the Dock's grid icon): a full-screen, category-filterable app grid styled after macOS Launchpad, with original gradient tile artwork. Tiles for real apps (Settings, Photos, Safari, App Store, Calculator, Calendar, Games, Mail, Notes, Music, Finder, Terminal, Code…) open the actual app; a handful of extra tiles shown only for visual completeness (Preview, Maps, Automator, Books, Chess, Clock, Contacts, Dictionary, FaceTime, Find My, Font Book, Freeform, Home) clearly disclose that they are not implemented in this demo instead of silently doing nothing.
 - **Spotlight** (⌘/Ctrl+Space): fuzzy search across apps, simulated files and notes; Escape closes it.
 - **Notification Center**: dismiss individually or all at once, jump to the originating app, empty state.
-- **Control Center**: live Appearance/Volume/Dock controls plus simulated Wi-Fi/Focus/Brightness toggles, all reflecting the real `SettingsService` state.
+- **Control Center**: live Appearance/Volume/Dock/Keyboard-&-Display-brightness controls plus simulated Wi-Fi/Bluetooth/AirDrop/Focus/Stage Manager/Screen Mirroring toggles and a quick-action grid (Dark/Light mode, open Calculator, reset desktop icons, simulated screen recording, copy a shareable link, save a simulated screenshot file to Documents, Show Desktop) — every action either reflects real `SettingsService` state or performs a real, disclosed effect, never a dead click.
 - **Keyboard shortcuts**: <kbd>Esc</kbd>, <kbd>Enter</kbd>, <kbd>Ctrl/Cmd+Space</kbd> (Spotlight), <kbd>Ctrl/Cmd+W</kbd> (close window), <kbd>Ctrl/Cmd+M</kbd> (minimize), <kbd>Ctrl/Cmd+Q</kbd> (quit app), <kbd>Alt/Option+Tab</kbd> (switch app) — all implemented so they never interfere with typing in text fields.
 
 ### 13 built-in apps (all fully functional, nothing decorative)
@@ -165,7 +167,7 @@ mac-web-os/
       finder/ safari/ notes/ calendar/ calculator/ settings/ terminal/
       photos/ music/ mail/ app-store/ about/ trash/
   public/
-    wallpapers/   # 6 original wallpapers (light + dark)
+    wallpapers/   # 8 original wallpapers (light + dark), default is an abstract flowing-silk gradient scene
     icons/        # app logo
     photos/       # sample AI-generated photos for the Photos app
   src/styles/
@@ -187,7 +189,11 @@ Every app is decoupled from the shell through `ApplicationRegistryService` + `Wi
 
 Everything below is clearly labeled in the UI as simulated and never claims to be a real OS capability:
 
-- **Wi-Fi / battery / brightness** indicators in the Menu Bar and Control Center are simulated — browsers have no API to read real hardware battery/Wi-Fi/brightness state reliably or portably.
+- **Wi-Fi / Bluetooth / AirDrop / Stage Manager / Screen Mirroring / battery / brightness** indicators and toggles in the Menu Bar and Control Center are simulated — browsers have no API to read or control real hardware state reliably or portably.
+- **Screen recording** (Control Center quick action) only flips a labeled in-app flag and shows a toast explaining it — MacWeb OS never captures your real screen.
+- **"Screenshot"** (Control Center quick action) saves a placeholder text file named like a screenshot into the simulated Documents folder (visible in Finder) — it is not a real screen capture.
+- **Recognise Music** shows a toast explaining there is no real audio input to listen to in a browser demo.
+- A handful of **Launchpad tiles** (Preview, Maps, Automator, Books, Chess, Clock, Contacts, Dictionary, FaceTime, Find My, Font Book, Freeform, Home) exist only for visual completeness against the reference screenshot and open a clearly-labeled "not implemented in this demo" dialog instead of a real app.
 - **Music** playback is a **Demo mode** using short, generated sample clips — no licensed streaming catalogue is involved.
 - **Mail** sending is a **Demo mode** — composing and "sending" a message only moves it into the local Sent folder; no network call is ever made.
 - **Terminal** is a sandboxed command simulator with an allow-listed parser — it can never run a real shell command, and contains no `eval`/`Function`.

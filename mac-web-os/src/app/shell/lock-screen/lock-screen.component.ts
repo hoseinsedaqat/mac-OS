@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, computed, inject } from '@angular/core';
 import { ClockService } from '../../core/services/clock.service';
 import { SystemStateService } from '../../core/services/system-state.service';
 import { SettingsService } from '../../core/services/settings.service';
@@ -16,7 +16,6 @@ import { formatFullDate, formatTime } from '../../shared/utils/date.util';
   styleUrl: './lock-screen.component.scss',
   host: {
     '(click)': 'unlock()',
-    '(keydown.enter)': 'unlock()',
     tabindex: '0',
   },
 })
@@ -26,12 +25,18 @@ export class LockScreenComponent {
   readonly settings = inject(SettingsService);
   readonly i18n = inject(I18nService);
 
-  private readonly locale = computed(() => (this.i18n.language() === 'fa' ? 'fa-IR' : 'en-US'));
+  private readonly locale = 'en-US';
   readonly time = computed(() =>
-    formatTime(this.clock.now(), this.settings.settings().use24HourClock, this.locale()),
+    formatTime(this.clock.now(), this.settings.settings().use24HourClock, this.locale),
   );
-  readonly date = computed(() => formatFullDate(this.clock.now(), this.locale()));
+  readonly date = computed(() => formatFullDate(this.clock.now(), this.locale));
 
+  /**
+   * Listens on `document` (not just the host element) so Enter unlocks the
+   * screen even before the user has clicked anywhere — matching real macOS,
+   * where "Press Enter to log in" works immediately without requiring focus.
+   */
+  @HostListener('document:keydown.enter')
   unlock(): void {
     this.system.requestLogin();
   }

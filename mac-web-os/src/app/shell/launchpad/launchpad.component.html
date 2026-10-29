@@ -1,0 +1,54 @@
+@if (isOpen()) {
+  <div class="mw-lp__scrim" (click)="close()">
+    <div class="mw-lp" role="dialog" [attr.aria-label]="i18n.t('shell.launchpad.title')" (click)="$event.stopPropagation()">
+      <div class="mw-lp__titlebar">
+        <button
+          type="button"
+          class="mw-lp__icon-btn"
+          [class.active]="viewMode() === 'compact'"
+          [attr.aria-label]="i18n.t('shell.launchpad.toggleView')"
+          (click)="toggleViewMode()"
+        >
+          <mw-icon name="grid" [size]="15" />
+        </button>
+        <h2 class="mw-lp__title">{{ i18n.t('shell.launchpad.title') }}</h2>
+        <button
+          type="button"
+          class="mw-lp__icon-btn"
+          [attr.aria-label]="i18n.t('shell.launchpad.moreOptions')"
+          (click)="openMoreMenu($event)"
+        >
+          <mw-icon name="list" [size]="15" />
+        </button>
+      </div>
+
+      <div class="mw-lp__categories mw-no-select">
+        @for (cat of categories; track cat.id) {
+          <button
+            type="button"
+            class="mw-lp__pill"
+            [class.active]="activeCategory() === cat.id"
+            (click)="selectCategory(cat.id)"
+          >
+            {{ i18n.t(cat.labelKey) }}
+          </button>
+        }
+      </div>
+
+      <div class="mw-lp__grid mw-scroll" [class.compact]="viewMode() === 'compact'">
+        @for (item of tiles(); track item.name) {
+          <button type="button" class="mw-lp__tile" (click)="activate(item)">
+            <mw-app-icon
+              [background]="item.background"
+              [glyph]="item.icon"
+              [glyphColor]="item.glyphColor"
+              [text]="item.text"
+              [size]="viewMode() === 'compact' ? 46 : 64"
+            />
+            <span class="mw-lp__tile-label">{{ item.name }}</span>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+}

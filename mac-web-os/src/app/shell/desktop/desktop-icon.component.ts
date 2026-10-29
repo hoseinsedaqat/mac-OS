@@ -4,12 +4,14 @@ import { WindowManagerService } from '../../core/services/window-manager.service
 import { ContextMenuService } from '../../core/services/context-menu.service';
 import { DialogService } from '../../core/services/dialog.service';
 import { I18nService } from '../../core/services/i18n.service';
-import { IconComponent } from '../../shared/components/icon/icon.component';
+import { PanelService } from '../../core/services/panel.service';
+import { AppIconComponent } from '../../shared/components/app-icon/app-icon.component';
+import { getIconTheme } from '../../shared/utils/icon-theme.data';
 
 @Component({
   selector: 'mw-desktop-icon',
   standalone: true,
-  imports: [IconComponent],
+  imports: [AppIconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button
@@ -24,7 +26,13 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
       (contextmenu)="onContextMenu($event)"
     >
       <span class="mw-desktop-icon__glyph">
-        <mw-icon [name]="def().icon" [size]="30" />
+        <mw-app-icon
+          [background]="theme().background"
+          [glyph]="def().icon"
+          [glyphColor]="theme().glyphColor ?? '#fff'"
+          [text]="dateText()"
+          [size]="52"
+        />
       </span>
       <span class="mw-desktop-icon__label">{{ label() }}</span>
     </button>
@@ -40,9 +48,12 @@ export class DesktopIconComponent {
   private readonly contextMenu = inject(ContextMenuService);
   private readonly dialog = inject(DialogService);
   private readonly i18n = inject(I18nService);
+  private readonly panels = inject(PanelService);
   private readonly zone = inject(NgZone);
 
   readonly label = computed(() => this.i18n.t(this.def().labelKey));
+  readonly theme = computed(() => getIconTheme(this.def().id));
+  readonly dateText = computed(() => (this.theme().dynamicDate ? String(new Date().getDate()) : null));
 
   private dragging = false;
   private moved = false;
@@ -69,8 +80,10 @@ export class DesktopIconComponent {
     const action = this.def().action;
     if (action.type === 'open-app') {
       this.wm.open(action.appId);
-    } else {
+    } else if (action.type === 'open-folder') {
       this.wm.open('finder', { data: { folderId: action.folderId } });
+    } else {
+      this.panels.open('launchpad');
     }
   }
 

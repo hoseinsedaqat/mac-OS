@@ -2,7 +2,7 @@
   @if (state() === 'splash') {
     <div class="mw-boot__logo-wrap">
       <div class="mw-boot__logo">
-        <img src="icons/logo.png" alt="" width="84" height="84" />
+        <mw-icon name="apple" [size]="84" />
       </div>
       <h1 class="mw-boot__title">MacWeb OS</h1>
       <div class="mw-boot__bar">
@@ -15,7 +15,7 @@
   } @else {
     <div class="mw-boot__logo-wrap">
       <div class="mw-boot__logo mw-boot__logo--small">
-        <img src="icons/logo.png" alt="" width="56" height="56" />
+        <mw-icon name="apple" [size]="56" />
       </div>
       <div class="mw-boot__bar">
         <div class="mw-boot__bar-fill" [style.width.%]="bootProgress()"></div>

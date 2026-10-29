@@ -1,5 +1,5 @@
 <div class="mw-music">
-  <div class="mw-music__demo-badge">حالت نمایشی (Demo) — بدون پخش صدای واقعی</div>
+  <div class="mw-music__demo-badge">Demo mode — no real audio playback</div>
 
   <div class="mw-music__now-playing">
     <div class="mw-music__art">
@@ -10,21 +10,21 @@
 
     <div class="mw-music__progress">
       <span>{{ formatTime(elapsed()) }}</span>
-      <input type="range" min="0" max="100" [value]="progressPercent()" (input)="seek($event)" aria-label="پیشرفت آهنگ" />
+      <input type="range" min="0" max="100" [value]="progressPercent()" (input)="seek($event)" aria-label="Track Progress" />
       <span>{{ formatTime(currentTrack().duration) }}</span>
     </div>
 
     <div class="mw-music__controls">
-      <button type="button" aria-label="قبلی" (click)="prev()"><mw-icon name="prev" [size]="18" /></button>
-      <button type="button" class="mw-music__play" [attr.aria-label]="isPlaying() ? 'توقف' : 'پخش'" (click)="togglePlay()">
+      <button type="button" aria-label="Previous" (click)="prev()"><mw-icon name="prev" [size]="18" /></button>
+      <button type="button" class="mw-music__play" [attr.aria-label]="isPlaying() ? 'Pause' : 'Play'" (click)="togglePlay()">
         <mw-icon [name]="isPlaying() ? 'pause' : 'play'" [size]="20" />
       </button>
-      <button type="button" aria-label="بعدی" (click)="next()"><mw-icon name="next" [size]="18" /></button>
+      <button type="button" aria-label="Next" (click)="next()"><mw-icon name="next" [size]="18" /></button>
     </div>
 
     <div class="mw-music__volume">
       <mw-icon [name]="settings.settings().volume === 0 ? 'volume-mute' : 'volume'" [size]="14" />
-      <input type="range" min="0" max="100" [value]="settings.settings().volume" (input)="setVolume($event)" aria-label="صدا" />
+      <input type="range" min="0" max="100" [value]="settings.settings().volume" (input)="setVolume($event)" aria-label="Volume" />
     </div>
   </div>
 

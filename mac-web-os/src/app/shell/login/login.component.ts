@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SystemStateService } from '../../core/services/system-state.service';
 import { SettingsService } from '../../core/services/settings.service';
@@ -47,6 +47,18 @@ export class LoginComponent {
   readonly error = signal(false);
   readonly submitting = signal(false);
   readonly passwordEnabled = computed(() => this.settings.settings().passwordEnabled);
+
+  /**
+   * Listens on `document` so Enter always confirms this screen — whether the
+   * password input has focus (the native form submit already covers that,
+   * `submit()`'s `submitting` guard makes the two calls harmless) or, for the
+   * no-password demo account, the plain "Enter Desktop" button isn't focused
+   * at all.
+   */
+  @HostListener('document:keydown.enter')
+  onEnterKey(): void {
+    void this.submit();
+  }
 
   async submit(): Promise<void> {
     if (this.submitting()) return;

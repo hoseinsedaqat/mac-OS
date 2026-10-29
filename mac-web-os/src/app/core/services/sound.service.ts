@@ -69,4 +69,42 @@ export class SoundService {
   error(): void {
     this.tone(160, 220, 'square', 0.03);
   }
+
+  /** Played when a window/app opens. A quick upward two-note chirp. */
+  open(): void {
+    this.tone(480, 55, 'sine', 0.03);
+    setTimeout(() => this.tone(660, 70, 'sine', 0.035), 45);
+  }
+
+  /** Played when a window closes or an app quits. A quick downward chirp. */
+  close(): void {
+    this.tone(560, 55, 'sine', 0.03);
+    setTimeout(() => this.tone(380, 80, 'sine', 0.03), 40);
+  }
+
+  /** Played when a window is minimized to the Dock. */
+  minimize(): void {
+    this.tone(520, 50, 'sine', 0.025);
+    setTimeout(() => this.tone(300, 90, 'sine', 0.025), 35);
+  }
+
+  /** Played when a window is restored from the Dock or un-maximized/maximized. */
+  restore(): void {
+    this.tone(420, 45, 'sine', 0.025);
+    setTimeout(() => this.tone(600, 60, 'sine', 0.03), 30);
+  }
+
+  /** Startup chime, played once when the desktop finishes booting. */
+  startup(): void {
+    this.tone(392, 160, 'sine', 0.05);
+    setTimeout(() => this.tone(523, 160, 'sine', 0.05), 130);
+    setTimeout(() => this.tone(659, 260, 'sine', 0.055), 260);
+  }
+
+  /** Played when the user triggers Restart or Shut Down. */
+  shutdown(): void {
+    this.tone(659, 140, 'sine', 0.05);
+    setTimeout(() => this.tone(523, 140, 'sine', 0.05), 120);
+    setTimeout(() => this.tone(392, 240, 'sine', 0.045), 240);
+  }
 }

@@ -9,11 +9,13 @@
   top: 38px;
   inset-inline-end: 12px;
   z-index: var(--mw-z-panels);
-  width: 300px;
+  width: 320px;
+  max-height: calc(100vh - 56px);
+  overflow-y: auto;
   padding: var(--mw-space-4);
   display: flex;
   flex-direction: column;
-  gap: var(--mw-space-4);
+  gap: var(--mw-space-3);
   background: var(--mw-bg-elevated);
   border: 1px solid var(--mw-border-subtle);
   border-radius: var(--mw-radius-lg);
@@ -23,10 +25,149 @@
   animation: mw-pop-in var(--mw-duration-base) var(--mw-ease-out);
 }
 
-.mw-cc__grid {
+.mw-cc__row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
   gap: var(--mw-space-3);
+
+  &--three {
+    grid-template-columns: 1.5fr 1fr 1fr;
+  }
+
+  &--recognise {
+    grid-template-columns: 1fr 1.4fr;
+    align-items: stretch;
+  }
+}
+
+.mw-cc__tile {
+  display: flex;
+  align-items: center;
+  gap: var(--mw-space-2);
+  padding: var(--mw-space-3);
+  background: var(--mw-bg-control);
+  border: 1px solid transparent;
+  border-radius: var(--mw-radius-md);
+  color: var(--mw-text-primary);
+  cursor: pointer;
+  min-width: 0;
+
+  &:hover {
+    background: var(--mw-bg-control-hover);
+  }
+
+  &.active {
+    background: var(--mw-accent);
+    color: #fff;
+  }
+
+  &--narrow {
+    justify-content: center;
+  }
+}
+
+.mw-cc__tile-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  text-align: start;
+
+  strong {
+    font-size: var(--mw-fs-sm);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  span {
+    font-size: var(--mw-fs-xs);
+    opacity: 0.8;
+  }
+}
+
+.mw-cc__card {
+  display: flex;
+  align-items: center;
+  gap: var(--mw-space-3);
+  padding: var(--mw-space-3);
+  background: var(--mw-bg-control);
+  border: 1px solid transparent;
+  border-radius: var(--mw-radius-md);
+  color: var(--mw-text-primary);
+  cursor: pointer;
+  width: 100%;
+  text-align: start;
+
+  &:hover {
+    background: var(--mw-bg-control-hover);
+  }
+}
+
+.mw-cc__media-art {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--mw-radius-sm);
+  background: var(--mw-bg-elevated);
+  flex-shrink: 0;
+}
+
+.mw-cc__media-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.mw-cc__media-status {
+  font-size: var(--mw-fs-sm);
+  font-weight: 500;
+  color: var(--mw-text-secondary);
+}
+
+.mw-cc__media-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--mw-space-2);
+  color: var(--mw-text-tertiary);
+}
+
+.mw-cc__recognise {
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--mw-space-2);
+  text-align: center;
+  font-size: var(--mw-fs-xs);
+  font-weight: 500;
+}
+
+.mw-cc__quick-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--mw-space-2);
+  background: var(--mw-bg-control);
+  border-radius: var(--mw-radius-md);
+  padding: var(--mw-space-2);
+}
+
+.mw-cc__quick {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border: none;
+  border-radius: var(--mw-radius-sm);
+  background: var(--mw-bg-elevated);
+  color: var(--mw-text-primary);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--mw-bg-control-hover);
+  }
+
+  &.active {
+    background: var(--mw-accent);
+    color: #fff;
+  }
 }
 
 .mw-cc__toggle {
@@ -52,6 +193,12 @@
   }
 }
 
+.mw-cc__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--mw-space-3);
+}
+
 .mw-cc__slider-card {
   padding: var(--mw-space-4);
   background: var(--mw-bg-control);
@@ -65,6 +212,27 @@
   margin-bottom: var(--mw-space-3);
   font-size: var(--mw-fs-sm);
   font-weight: 500;
+}
+
+.mw-cc__edit-controls {
+  background: none;
+  border: none;
+  color: var(--mw-text-tertiary);
+  font-size: var(--mw-fs-xs);
+  padding: var(--mw-space-2) 0;
+  cursor: pointer;
+  text-align: center;
+
+  &:hover {
+    color: var(--mw-text-secondary);
+    text-decoration: underline;
+  }
+}
+
+.mw-cc__divider {
+  height: 1px;
+  background: var(--mw-border-subtle);
+  margin: var(--mw-space-1) 0;
 }
 
 .mw-cc__lang-switch {

@@ -10,8 +10,8 @@ export type AccentColor =
   | 'green'
   | 'graphite';
 
-/** English is the primary/default language; Persian (فارسی) is the secondary, user-selectable language. */
-export type AppLanguage = 'en' | 'fa';
+/** MacWeb OS is English-only; this field is kept (always `'en'`) purely for settings-schema stability. */
+export type AppLanguage = 'en';
 
 export interface SettingsState {
   version: 2;
@@ -34,6 +34,12 @@ export interface SettingsState {
   passwordHash: string | null;
   wifiEnabled: boolean;
   focusMode: boolean;
+  bluetoothEnabled: boolean;
+  airdropEnabled: boolean;
+  stageManagerEnabled: boolean;
+  screenMirroringEnabled: boolean;
+  screenRecordingActive: boolean;
+  keyboardBrightness: number;
 }
 
 export const DEFAULT_SETTINGS: SettingsState = {
@@ -41,7 +47,7 @@ export const DEFAULT_SETTINGS: SettingsState = {
   theme: 'light',
   accent: 'blue',
   language: 'en',
-  wallpaperId: 'aurora',
+  wallpaperId: 'night-city',
   wallpaperFit: 'cover',
   dockSize: 56,
   dockAutoHide: false,
@@ -57,4 +63,10 @@ export const DEFAULT_SETTINGS: SettingsState = {
   passwordHash: null,
   wifiEnabled: true,
   focusMode: false,
+  bluetoothEnabled: false,
+  airdropEnabled: false,
+  stageManagerEnabled: false,
+  screenMirroringEnabled: false,
+  screenRecordingActive: false,
+  keyboardBrightness: 40,
 };

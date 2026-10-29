@@ -149,7 +149,7 @@ export class SettingsComponent implements OnInit {
     if (!value) return;
     const hash = await this.hash(value);
     this.settings.update({ passwordEnabled: true, passwordHash: hash });
-    await this.dialog.alert({ title: 'رمز عبور نمایشی', message: 'رمز عبور نمایشی با موفقیت تنظیم شد.' });
+    await this.dialog.alert({ title: 'Demo Password', message: 'Demo password was set successfully.' });
   }
 
   private async hash(value: string): Promise<string> {
@@ -166,17 +166,17 @@ export class SettingsComponent implements OnInit {
 
   async resetDefaults(): Promise<void> {
     const confirmed = await this.dialog.confirm({
-      title: 'بازگرداندن تنظیمات پیش‌فرض',
-      message: 'همه تنظیمات ظاهری و سیستمی به حالت اولیه بازمی‌گردند. فایل‌ها و یادداشت‌ها حذف نمی‌شوند.',
-      confirmLabel: 'بازگردانی',
+      title: 'Restore Default Settings',
+      message: 'All appearance and system settings will be reset to their defaults. Files and notes will not be deleted.',
+      confirmLabel: 'Restore',
       danger: true,
     });
     if (confirmed) this.settings.resetToDefaults();
   }
 
   formatBytes(bytes: number): string {
-    if (bytes === 0) return '0 بایت';
-    const units = ['بایت', 'KB', 'MB', 'GB'];
+    if (bytes === 0) return '0 bytes';
+    const units = ['bytes', 'KB', 'MB', 'GB'];
     const i = Math.min(units.length - 1, Math.floor(Math.log(bytes) / Math.log(1024)));
     return `${(bytes / Math.pow(1024, i)).toFixed(1)} ${units[i]}`;
   }

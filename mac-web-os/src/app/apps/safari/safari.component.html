@@ -7,22 +7,22 @@
         [class.active]="activeTabId() === tab.id"
         (click)="selectTab(tab.id)"
       >
-        <span>{{ tab.addressInput || 'برگه جدید' }}</span>
-        <i (click)="closeTab(tab.id, $event)" aria-label="بستن تب">×</i>
+        <span>{{ tab.addressInput || 'New Tab' }}</span>
+        <i (click)="closeTab(tab.id, $event)" aria-label="Close Tab">×</i>
       </button>
     }
-    <button type="button" class="mw-safari__new-tab" aria-label="تب جدید" (click)="newTab()">+</button>
+    <button type="button" class="mw-safari__new-tab" aria-label="New Tab" (click)="newTab()">+</button>
   </div>
 
   <div class="mw-safari__toolbar">
-    <button type="button" [disabled]="!canGoBack()" aria-label="بازگشت" (click)="goBack()">
+    <button type="button" [disabled]="!canGoBack()" aria-label="Back" (click)="goBack()">
       <mw-icon name="chevronLeft" [size]="14" />
     </button>
-    <button type="button" [disabled]="!canGoForward()" aria-label="جلو" (click)="goForward()">
+    <button type="button" [disabled]="!canGoForward()" aria-label="Forward" (click)="goForward()">
       <mw-icon name="chevronRight" [size]="14" />
     </button>
-    <button type="button" aria-label="بارگذاری مجدد" (click)="reload()"><mw-icon name="refresh" [size]="13" /></button>
-    <button type="button" aria-label="خانه" (click)="goHome()"><mw-icon name="home" [size]="13" /></button>
+    <button type="button" aria-label="Reload" (click)="reload()"><mw-icon name="refresh" [size]="13" /></button>
+    <button type="button" aria-label="Home" (click)="goHome()"><mw-icon name="home" [size]="13" /></button>
 
     <div class="mw-safari__address">
       <mw-icon name="globe" [size]="12" />
@@ -31,15 +31,15 @@
         [ngModel]="activeTab().addressInput"
         (ngModelChange)="onAddressInputChange($event)"
         (keydown.enter)="submitAddress()"
-        placeholder="آدرس را وارد کنید یا یکی از: home, about, portfolio, help"
-        aria-label="نوار آدرس"
+        placeholder="Enter an address or one of: home, about, portfolio, help"
+        aria-label="Address Bar"
       />
     </div>
 
-    <button type="button" aria-label="نشان‌گذاری" (click)="toggleBookmark()">
+    <button type="button" aria-label="Bookmark" (click)="toggleBookmark()">
       <mw-icon name="bookmark" [size]="14" [strokeWidth]="isBookmarked() ? 0 : 1.8" />
     </button>
-    <button type="button" aria-label="تاریخچه" (click)="toggleHistoryPanel()">
+    <button type="button" aria-label="History" (click)="toggleHistoryPanel()">
       <mw-icon name="history" [size]="14" />
     </button>
   </div>
@@ -58,47 +58,47 @@
         @switch (activeTab().route) {
           @case ('home') {
             <div class="mw-page mw-page--home">
-              <h1>به MacWeb OS Safari خوش آمدید</h1>
-              <p>این یک مرورگر داخلی و نمایشی است که فقط صفحات محلی پروژه را نمایش می‌دهد.</p>
+              <h1>Welcome to MacWeb OS Safari</h1>
+              <p>This is a demo in-app browser that only displays the project's local pages.</p>
               <div class="mw-page__links">
-                <button type="button" (click)="navigate('macweb://about')">درباره پروژه</button>
-                <button type="button" (click)="navigate('macweb://portfolio')">نمونه‌کار</button>
-                <button type="button" (click)="navigate('macweb://help')">راهنما</button>
+                <button type="button" (click)="navigate('macweb://about')">About This Project</button>
+                <button type="button" (click)="navigate('macweb://portfolio')">Portfolio</button>
+                <button type="button" (click)="navigate('macweb://help')">Help</button>
               </div>
             </div>
           }
           @case ('about') {
             <div class="mw-page">
-              <h1>درباره MacWeb OS</h1>
+              <h1>About MacWeb OS</h1>
               <p>
-                MacWeb OS یک شبیه‌ساز تحت وب از تجربه دسکتاپ macOS است که به‌طور کامل با Angular و بدون نیاز به
-                بک‌اند ساخته شده است. این پروژه یک محصول رسمی اپل نیست و صرفاً از نظر بصری از آن الهام گرفته است.
+                MacWeb OS is a web-based simulation of the macOS desktop experience, built entirely with Angular
+                and without any backend. This project is not an official Apple product and is only visually inspired by it.
               </p>
-              <p>همه داده‌های شما — تنظیمات، فایل‌ها، یادداشت‌ها و رویدادها — به‌صورت محلی در مرورگر شما ذخیره می‌شوند.</p>
+              <p>All of your data — settings, files, notes, and events — is stored locally in your browser.</p>
             </div>
           }
           @case ('portfolio') {
             <div class="mw-page">
-              <h1>نمونه‌کار</h1>
-              <p>این صفحه نمونه‌ای از یک پورتفولیوی ساده برای نمایش قابلیت صفحات محلی مرورگر است.</p>
+              <h1>Portfolio</h1>
+              <p>This page is a sample simple portfolio demonstrating the browser's local page capabilities.</p>
               <ul class="mw-page__list">
-                <li>شبیه‌سازی کامل محیط دسکتاپ با Angular Signals</li>
-                <li>مدیریت پنجره با Drag / Resize / Minimize / Maximize</li>
-                <li>فایل‌سیستم شبیه‌سازی‌شده روی IndexedDB</li>
-                <li>پشتیبانی از حالت روشن/تاریک و رنگ‌های تاکیدی</li>
+                <li>A complete desktop environment simulation with Angular Signals</li>
+                <li>Window management with Drag / Resize / Minimize / Maximize</li>
+                <li>A simulated file system on top of IndexedDB</li>
+                <li>Support for light/dark mode and accent colors</li>
               </ul>
             </div>
           }
           @case ('help') {
             <div class="mw-page">
-              <h1>راهنمای MacWeb OS</h1>
+              <h1>MacWeb OS Help</h1>
               <ul class="mw-page__list">
-                <li><strong>Ctrl/Cmd + Space</strong> — باز کردن Spotlight</li>
-                <li><strong>Ctrl/Cmd + W</strong> — بستن پنجره فعال</li>
-                <li><strong>Ctrl/Cmd + M</strong> — کوچک‌کردن پنجره فعال</li>
-                <li><strong>Ctrl/Cmd + Q</strong> — بستن همه پنجره‌های برنامه فعال</li>
-                <li><strong>Alt/Option + Tab</strong> — جابه‌جایی بین پنجره‌ها</li>
-                <li><strong>Escape</strong> — بستن پنل یا منوی باز</li>
+                <li><strong>Ctrl/Cmd + Space</strong> — Open Spotlight</li>
+                <li><strong>Ctrl/Cmd + W</strong> — Close the active window</li>
+                <li><strong>Ctrl/Cmd + M</strong> — Minimize the active window</li>
+                <li><strong>Ctrl/Cmd + Q</strong> — Quit the active app's windows</li>
+                <li><strong>Alt/Option + Tab</strong> — Switch between windows</li>
+                <li><strong>Escape</strong> — Close the open panel or menu</li>
               </ul>
             </div>
           }
@@ -107,19 +107,19 @@
       @case ('external-notice') {
         <div class="mw-page mw-page--notice">
           <mw-icon name="globe" [size]="32" />
-          <h1>بازکردن آدرس خارجی</h1>
+          <h1>Opening an External Address</h1>
           <p>
-            به دلایل امنیتی مرورگر (CSP / X-Frame-Options)، آدرس‌های خارجی داخل MacWeb OS نمایش داده نمی‌شوند. برای
-            باز کردن «{{ currentAddress() }}» می‌توانید از دکمه زیر استفاده کنید تا در یک تب جدید مرورگر واقعی شما باز شود.
+            For browser security reasons (CSP / X-Frame-Options), external addresses cannot be displayed inside MacWeb OS.
+            To open "{{ currentAddress() }}" you can use the button below to open it in a new tab of your real browser.
           </p>
-          <button type="button" class="mw-btn mw-btn-accent" (click)="openExternally()">باز کردن در تب جدید</button>
+          <button type="button" class="mw-btn mw-btn-accent" (click)="openExternally()">Open in New Tab</button>
         </div>
       }
       @case ('invalid') {
         <div class="mw-page mw-page--notice">
           <mw-icon name="info" [size]="32" />
-          <h1>آدرس نامعتبر</h1>
-          <p>«{{ currentAddress() }}» یک آدرس معتبر نیست. آدرس‌های محلی معتبر: home, about, portfolio, help</p>
+          <h1>Invalid Address</h1>
+          <p>"{{ currentAddress() }}" is not a valid address. Valid local addresses: home, about, portfolio, help</p>
         </div>
       }
     }
@@ -129,8 +129,8 @@
     <div class="mw-safari__history-scrim" (click)="toggleHistoryPanel()">
       <div class="mw-safari__history" (click)="$event.stopPropagation()">
         <header>
-          <h3>تاریخچه</h3>
-          <button type="button" (click)="clearHistory()">پاک‌کردن</button>
+          <h3>History</h3>
+          <button type="button" (click)="clearHistory()">Clear</button>
         </header>
         <div class="mw-scroll">
           @for (h of history(); track h.at) {
@@ -139,7 +139,7 @@
               <small>{{ h.address }}</small>
             </button>
           } @empty {
-            <p class="mw-safari__history-empty">تاریخچه‌ای وجود ندارد.</p>
+            <p class="mw-safari__history-empty">No history yet.</p>
           }
         </div>
       </div>

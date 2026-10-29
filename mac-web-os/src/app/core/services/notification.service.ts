@@ -1,6 +1,7 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { SystemNotification } from '../models/notification.model';
 import { createId } from '../../shared/utils/id.util';
+import { SoundService } from './sound.service';
 
 export interface PushNotificationInput {
   appId: string;
@@ -17,6 +18,7 @@ export interface PushNotificationInput {
  */
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
+  private readonly sound = inject(SoundService);
   private readonly notificationsSignal = signal<SystemNotification[]>([]);
   private readonly toastsSignal = signal<SystemNotification[]>([]);
 
@@ -34,6 +36,7 @@ export class NotificationService {
     this.notificationsSignal.update((list) => [notification, ...list].slice(0, 50));
     this.unreadCount.update((count) => count + 1);
     this.toastsSignal.update((list) => [...list, notification]);
+    this.sound.notify();
     setTimeout(() => this.dismissToast(notification.id), 5000);
   }
 

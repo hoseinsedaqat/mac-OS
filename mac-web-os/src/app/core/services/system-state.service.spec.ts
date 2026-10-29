@@ -66,4 +66,49 @@ describe('SystemStateService (boot/lock/login/desktop/sleep state machine)', () 
     service.cancelLogin();
     expect(service.state()).toBe('locked');
   });
+
+  it('supports restarting from the desktop, replaying the boot sequence back to locked', () => {
+    service.startBooting();
+    service.finishBooting();
+    service.requestLogin();
+    service.completeLogin();
+    expect(service.state()).toBe('desktop');
+
+    service.restart();
+    expect(service.state()).toBe('restarting');
+
+    service.rebootToSplash();
+    expect(service.state()).toBe('splash');
+
+    service.startBooting();
+    service.finishBooting();
+    expect(service.state()).toBe('locked');
+  });
+
+  it('supports powering off from the desktop and turning back on into the boot sequence', () => {
+    service.startBooting();
+    service.finishBooting();
+    service.requestLogin();
+    service.completeLogin();
+    expect(service.state()).toBe('desktop');
+
+    service.powerOff();
+    expect(service.state()).toBe('off');
+
+    // Powered off is a dead end except for turning back on.
+    expect(service.transition('desktop')).toBe(false);
+    expect(service.state()).toBe('off');
+
+    service.rebootToSplash();
+    expect(service.state()).toBe('splash');
+  });
+
+  it('also allows restart/power off directly from the locked screen', () => {
+    service.startBooting();
+    service.finishBooting();
+    expect(service.state()).toBe('locked');
+
+    service.restart();
+    expect(service.state()).toBe('restarting');
+  });
 });

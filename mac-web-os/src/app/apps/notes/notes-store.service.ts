@@ -48,8 +48,8 @@ export class NotesStoreService {
     const now = Date.now();
     const welcome: NoteRecord = {
       id: createId('note'),
-      title: 'به Notes خوش آمدید',
-      body: 'این یک یادداشت نمونه است.\n\nمی‌توانید یادداشت جدید بسازید، آن را ویرایش کنید و جست‌وجو کنید. همه تغییرات به‌صورت خودکار ذخیره می‌شوند.',
+      title: 'Welcome to Notes',
+      body: 'This is a sample note.\n\nYou can create new notes, edit them, and search through them. Every change is saved automatically.',
       folder: 'Notes',
       createdAt: now,
       updatedAt: now,

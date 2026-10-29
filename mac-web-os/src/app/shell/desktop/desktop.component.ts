@@ -6,6 +6,7 @@ import { SpotlightComponent } from '../spotlight/spotlight.component';
 import { ControlCenterComponent } from '../control-center/control-center.component';
 import { NotificationCenterComponent } from '../notifications/notification-center.component';
 import { ToastStackComponent } from '../notifications/toast-stack.component';
+import { LaunchpadComponent } from '../launchpad/launchpad.component';
 import { DesktopIconComponent } from './desktop-icon.component';
 import { WindowFrameComponent } from '../../shared/components/window-frame/window-frame.component';
 import { WindowManagerService } from '../../core/services/window-manager.service';
@@ -30,6 +31,7 @@ import { DOCUMENTS_ID } from '../../core/models/file-system.model';
     ControlCenterComponent,
     NotificationCenterComponent,
     ToastStackComponent,
+    LaunchpadComponent,
     DesktopIconComponent,
     WindowFrameComponent,
   ],

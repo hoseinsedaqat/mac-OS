@@ -1,0 +1,54 @@
+.mw-restart {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  background: radial-gradient(circle at 50% 35%, #1b1b1f 0%, #000 72%);
+  color: #fff;
+  animation: mw-fade-in 300ms ease;
+}
+
+.mw-restart__logo {
+  display: grid;
+  place-items: center;
+  color: #fff;
+  filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.18));
+}
+
+.mw-restart__spinner {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.18);
+  border-top-color: #fff;
+  animation: mw-spin 900ms linear infinite;
+}
+
+.mw-restart__label {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+@keyframes mw-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes mw-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mw-restart__spinner {
+    animation: none;
+  }
+}

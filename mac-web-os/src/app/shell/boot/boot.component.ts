@@ -1,18 +1,22 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
 import { SystemStateService } from '../../core/services/system-state.service';
 import { I18nService } from '../../core/services/i18n.service';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { SoundService } from '../../core/services/sound.service';
 
 const STEP_COUNT = 5;
 
 @Component({
   selector: 'mw-boot',
   standalone: true,
+  imports: [IconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './boot.component.html',
   styleUrl: './boot.component.scss',
 })
 export class BootComponent implements OnInit, OnDestroy {
   private readonly system = inject(SystemStateService);
+  private readonly sound = inject(SoundService);
   readonly i18n = inject(I18nService);
 
   readonly state = this.system.state;
@@ -58,6 +62,7 @@ export class BootComponent implements OnInit, OnDestroy {
 
   private goToBooting(): void {
     if (this.state() !== 'splash') return;
+    this.sound.startup();
     this.system.startBooting();
     this.runBootSequence();
   }

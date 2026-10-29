@@ -5,20 +5,22 @@ import { WindowManagerService } from '../../core/services/window-manager.service
 import { AppStoreInstallService } from './app-store-install.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { IconComponent } from '../../shared/components/icon/icon.component';
+import { AppIconComponent } from '../../shared/components/app-icon/app-icon.component';
+import { getIconTheme } from '../../shared/utils/icon-theme.data';
 import { AppDefinition } from '../../core/models/app.model';
 
 const CATEGORY_LABELS: Record<string, string> = {
-  system: 'سیستمی',
-  productivity: 'بهره‌وری',
-  internet: 'اینترنت',
-  media: 'رسانه',
-  utilities: 'ابزارها',
+  system: 'System',
+  productivity: 'Productivity',
+  internet: 'Internet',
+  media: 'Media',
+  utilities: 'Utilities',
 };
 
 @Component({
   selector: 'mw-app-app-store',
   standalone: true,
-  imports: [FormsModule, IconComponent],
+  imports: [FormsModule, IconComponent, AppIconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './app-store.component.html',
   styleUrl: './app-store.component.scss',
@@ -31,6 +33,11 @@ export class AppStoreComponent {
   private readonly notifications = inject(NotificationService);
 
   readonly categoryLabels = CATEGORY_LABELS;
+
+  themeFor(id: string) {
+    return getIconTheme(id);
+  }
+
   readonly query = signal('');
   readonly activeCategory = signal<string>('all');
   readonly selectedApp = signal<AppDefinition | null>(null);
@@ -67,8 +74,8 @@ export class AppStoreComponent {
       appId: 'app-store',
       appName: 'App Store',
       icon: 'app-store',
-      title: 'نصب کامل شد',
-      body: `${app.name} اکنون در دسترس است.`,
+      title: 'Installation Complete',
+      body: `${app.name} is now available.`,
     });
   }
 

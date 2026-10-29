@@ -38,11 +38,11 @@ export class MenuBarComponent implements OnInit, OnDestroy {
   readonly panels = inject(PanelService);
   readonly i18n = inject(I18nService);
 
-  private readonly locale = computed(() => (this.i18n.language() === 'fa' ? 'fa-IR' : 'en-US'));
+  private readonly locale = 'en-US';
   readonly time = computed(() =>
-    formatTime(this.clock.now(), this.settings.settings().use24HourClock, this.locale()),
+    formatTime(this.clock.now(), this.settings.settings().use24HourClock, this.locale),
   );
-  readonly date = computed(() => formatShortDate(this.clock.now(), this.locale()));
+  readonly date = computed(() => formatShortDate(this.clock.now(), this.locale));
   readonly unreadCount = this.notifications.unreadCount;
   readonly batteryLevel = signal(87);
 
@@ -79,13 +79,20 @@ export class MenuBarComponent implements OnInit, OnDestroy {
       { id: 'appstore', label: 'App Store…', icon: 'app-store', action: () => this.wm.open('app-store') },
       { id: 'sep2', separator: true },
       { id: 'sleep', label: t('shell.menuBar.sleep'), icon: 'moon', action: () => this.system.sleep() },
-      { id: 'lock', label: t('shell.menuBar.lockScreen'), icon: 'lock', action: () => this.lockScreen() },
       {
-        id: 'logout',
-        label: t('shell.menuBar.lockScreen'),
-        icon: 'power',
-        action: () => this.lockScreen(),
+        id: 'restart',
+        label: t('shell.menuBar.restart'),
+        icon: 'refresh',
+        action: () => void this.confirmRestart(),
       },
+      {
+        id: 'shutdown',
+        label: t('shell.menuBar.shutDown'),
+        icon: 'power',
+        action: () => void this.confirmShutDown(),
+      },
+      { id: 'sep2b', separator: true },
+      { id: 'lock', label: t('shell.menuBar.lockScreen'), icon: 'lock', action: () => this.lockScreen() },
       { id: 'sep3', separator: true },
       {
         id: 'reset',
@@ -103,18 +110,17 @@ export class MenuBarComponent implements OnInit, OnDestroy {
     const active = this.wm.activeWindow();
     const appDef = active ? this.registry.get(active.appId) : undefined;
     const canNewWindow = !!appDef && !appDef.singleInstance;
-    const fa = this.i18n.language() === 'fa';
     const items: ContextMenuItem[] = [
       {
         id: 'new-window',
-        label: fa ? 'پنجره جدید' : 'New Window',
+        label: 'New Window',
         icon: 'plus',
         disabled: !canNewWindow,
         action: () => active && this.wm.open(active.appId, { forceNew: true }),
       },
       {
         id: 'close-window',
-        label: fa ? 'بستن پنجره' : 'Close Window',
+        label: 'Close Window',
         icon: 'close',
         disabled: !active,
         action: () => active && this.wm.close(active.id),
@@ -125,11 +131,10 @@ export class MenuBarComponent implements OnInit, OnDestroy {
 
   openEditMenu(event: MouseEvent): void {
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
-    const fa = this.i18n.language() === 'fa';
     const items: ContextMenuItem[] = [
-      { id: 'cut', label: fa ? 'برش' : 'Cut', icon: 'close', action: () => this.execEdit('cut') },
-      { id: 'copy', label: fa ? 'کپی' : 'Copy', icon: 'check', action: () => this.execEdit('copy') },
-      { id: 'paste', label: fa ? 'چسباندن' : 'Paste', icon: 'download', action: () => this.execEdit('paste') },
+      { id: 'cut', label: 'Cut', icon: 'close', action: () => this.execEdit('cut') },
+      { id: 'copy', label: 'Copy', icon: 'check', action: () => this.execEdit('copy') },
+      { id: 'paste', label: 'Paste', icon: 'download', action: () => this.execEdit('paste') },
     ];
     this.contextMenu.open(rect.left, rect.bottom + 4, items);
   }
@@ -146,23 +151,16 @@ export class MenuBarComponent implements OnInit, OnDestroy {
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     const isDark = this.settings.theme() === 'dark';
     const isFullscreen = !!document.fullscreenElement;
-    const fa = this.i18n.language() === 'fa';
     const items: ContextMenuItem[] = [
       {
         id: 'theme',
-        label: isDark ? (fa ? 'حالت روشن' : 'Light Mode') : fa ? 'حالت تاریک' : 'Dark Mode',
+        label: isDark ? 'Light Mode' : 'Dark Mode',
         icon: isDark ? 'sun' : 'moon',
         action: () => this.settings.toggleTheme(),
       },
       {
         id: 'fullscreen',
-        label: isFullscreen
-          ? fa
-            ? 'خروج از تمام‌صفحه'
-            : 'Exit Full Screen'
-          : fa
-            ? 'ورود به حالت تمام‌صفحه'
-            : 'Enter Full Screen',
+        label: isFullscreen ? 'Exit Full Screen' : 'Enter Full Screen',
         icon: 'grid',
         action: () => this.toggleFullscreen(),
       },
@@ -183,18 +181,17 @@ export class MenuBarComponent implements OnInit, OnDestroy {
   openWindowMenu(event: MouseEvent): void {
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     const active = this.wm.activeWindow();
-    const fa = this.i18n.language() === 'fa';
     const items: ContextMenuItem[] = [
       {
         id: 'minimize',
-        label: fa ? 'کوچک‌کردن' : 'Minimize',
+        label: 'Minimize',
         icon: 'minus',
         disabled: !active,
         action: () => active && this.wm.minimize(active.id),
       },
       {
         id: 'zoom',
-        label: fa ? 'بزرگ‌نمایی' : 'Zoom',
+        label: 'Zoom',
         icon: 'plus',
         disabled: !active,
         action: () => active && this.wm.toggleMaximize(active.id),
@@ -210,17 +207,16 @@ export class MenuBarComponent implements OnInit, OnDestroy {
     this.contextMenu.open(
       rect.left,
       rect.bottom + 4,
-      items.length ? items : [{ id: 'none', label: fa ? 'بدون پنجره باز' : 'No Open Windows' }],
+      items.length ? items : [{ id: 'none', label: 'No Open Windows' }],
     );
   }
 
   openHelpMenu(event: MouseEvent): void {
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
-    const fa = this.i18n.language() === 'fa';
     this.contextMenu.open(rect.left, rect.bottom + 4, [
       {
         id: 'help',
-        label: fa ? 'راهنمای MacWeb OS' : 'MacWeb OS Help',
+        label: 'MacWeb OS Help',
         icon: 'info',
         action: () => this.wm.open('safari', { data: { url: 'macweb://help' } }),
       },
@@ -229,18 +225,17 @@ export class MenuBarComponent implements OnInit, OnDestroy {
 
   openWifiMenu(event: MouseEvent): void {
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
-    const fa = this.i18n.language() === 'fa';
     const wifiOn = this.settings.settings().wifiEnabled;
     this.contextMenu.open(rect.right - 200, rect.bottom + 4, [
       {
         id: 'toggle',
-        label: wifiOn ? (fa ? 'خاموش‌کردن Wi-Fi' : 'Turn Wi-Fi Off') : fa ? 'روشن‌کردن Wi-Fi' : 'Turn Wi-Fi On',
+        label: wifiOn ? 'Turn Wi-Fi Off' : 'Turn Wi-Fi On',
         icon: 'wifi',
         action: () => this.settings.update({ wifiEnabled: !wifiOn }),
       },
       {
         id: 'network',
-        label: wifiOn ? 'MacWeb-Network' : fa ? 'Wi-Fi خاموش است' : 'Wi-Fi is Off',
+        label: wifiOn ? 'MacWeb-Network' : 'Wi-Fi is Off',
         disabled: true,
       },
     ]);
@@ -263,12 +258,36 @@ export class MenuBarComponent implements OnInit, OnDestroy {
     this.system.lock();
   }
 
+  private async confirmRestart(): Promise<void> {
+    const confirmed = await this.dialog.confirm({
+      title: this.i18n.t('shell.restart.confirmTitle'),
+      message: this.i18n.t('shell.restart.confirmMessage'),
+      confirmLabel: this.i18n.t('shell.menuBar.restart'),
+    });
+    if (!confirmed) return;
+    this.sound.shutdown();
+    this.wm.closeAll();
+    this.system.restart();
+  }
+
+  private async confirmShutDown(): Promise<void> {
+    const confirmed = await this.dialog.confirm({
+      title: this.i18n.t('shell.shutdown.confirmTitle'),
+      message: this.i18n.t('shell.shutdown.confirmMessage'),
+      confirmLabel: this.i18n.t('shell.menuBar.shutDown'),
+      danger: true,
+    });
+    if (!confirmed) return;
+    this.sound.shutdown();
+    this.wm.closeAll();
+    this.system.powerOff();
+  }
+
   private async resetEnvironment(): Promise<void> {
-    const fa = this.i18n.language() === 'fa';
     const confirmed = await this.dialog.confirm({
       title: this.i18n.t('apps.settings.resetEnvironmentConfirmTitle'),
       message: this.i18n.t('apps.settings.resetEnvironmentConfirmMessage'),
-      confirmLabel: fa ? 'بازنشانی' : 'Reset',
+      confirmLabel: 'Reset',
       danger: true,
     });
     if (!confirmed) return;

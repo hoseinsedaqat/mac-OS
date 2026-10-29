@@ -61,9 +61,9 @@ export class NotesComponent implements OnInit {
     const note = this.store.selectedNote();
     if (!note) return;
     const confirmed = await this.dialog.confirm({
-      title: 'حذف یادداشت',
-      message: `آیا از حذف «${note.title || 'یادداشت بدون عنوان'}» مطمئن هستید؟`,
-      confirmLabel: 'حذف',
+      title: 'Delete Note',
+      message: `Are you sure you want to delete "${note.title || 'Untitled Note'}"?`,
+      confirmLabel: 'Delete',
       danger: true,
     });
     if (!confirmed) return;
@@ -78,6 +78,6 @@ export class NotesComponent implements OnInit {
   }
 
   preview(body: string): string {
-    return body.split('\n').find((line) => line.trim().length > 0)?.slice(0, 60) ?? 'بدون متن';
+    return body.split('\n').find((line) => line.trim().length > 0)?.slice(0, 60) ?? 'No additional text';
   }
 }

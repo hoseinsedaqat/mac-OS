@@ -17,10 +17,10 @@ interface SafariTab {
 }
 
 const LOCAL_PAGES: Record<LocalRoute, { title: string }> = {
-  home: { title: 'خانه — MacWeb OS' },
-  about: { title: 'درباره — MacWeb OS' },
-  portfolio: { title: 'نمونه‌کار — MacWeb OS' },
-  help: { title: 'راهنما — MacWeb OS' },
+  home: { title: 'Home — MacWeb OS' },
+  about: { title: 'About — MacWeb OS' },
+  portfolio: { title: 'Portfolio — MacWeb OS' },
+  help: { title: 'Help — MacWeb OS' },
 };
 
 const HOME_ADDRESS = 'macweb://home';

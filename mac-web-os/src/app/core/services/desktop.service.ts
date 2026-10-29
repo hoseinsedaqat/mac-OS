@@ -3,7 +3,8 @@ import { StorageService } from './storage.service';
 
 export type DesktopIconAction =
   | { type: 'open-app'; appId: string }
-  | { type: 'open-folder'; folderId: string };
+  | { type: 'open-folder'; folderId: string }
+  | { type: 'open-launchpad' };
 
 export interface DesktopIconDef {
   id: string;
@@ -43,8 +44,8 @@ const DEFAULT_ICONS: DesktopIconDef[] = [
   {
     id: 'applications',
     labelKey: 'shell.desktop.icons.applications',
-    icon: 'apps',
-    action: { type: 'open-app', appId: 'app-store' },
+    icon: 'launchpad',
+    action: { type: 'open-launchpad' },
   },
   {
     id: 'terminal',
