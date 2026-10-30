@@ -65,6 +65,53 @@ export class StorageService {
     this.memoryFallback.delete(key);
   }
 
+  /**
+   * Returns every namespaced key this app owns, with its namespace prefix
+   * stripped and its JSON value parsed back into a plain object. Used to
+   * build a full data export (Settings → Storage → Export Data).
+   */
+  exportAll(): Record<string, unknown> {
+    const result: Record<string, unknown> = {};
+    if (this.isAvailable()) {
+      try {
+        for (let i = 0; i < window.localStorage.length; i++) {
+          const fullKey = window.localStorage.key(i);
+          if (!fullKey || !fullKey.startsWith(`${this.namespace}:`)) continue;
+          const raw = window.localStorage.getItem(fullKey);
+          if (raw === null) continue;
+          try {
+            result[fullKey.slice(this.namespace.length + 1)] = JSON.parse(raw);
+          } catch {
+            // Corrupt entry: skip it rather than failing the whole export.
+          }
+        }
+        return result;
+      } catch {
+        // Fall through to the in-memory snapshot below.
+      }
+    }
+    for (const [key, raw] of this.memoryFallback) {
+      try {
+        result[key] = JSON.parse(raw);
+      } catch {
+        // Corrupt entry: skip it rather than failing the whole export.
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Restores every key from a snapshot produced by `exportAll()`. Existing
+   * keys are overwritten; keys that exist locally but aren't present in
+   * `data` are left untouched (callers that want a clean slate should call
+   * `clearAll()` first).
+   */
+  importAll(data: Record<string, unknown>): void {
+    for (const [key, value] of Object.entries(data)) {
+      this.setItem(key, value);
+    }
+  }
+
   /** Clears every key owned by this app (used by "Reset Environment"). */
   clearAll(): void {
     try {

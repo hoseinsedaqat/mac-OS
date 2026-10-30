@@ -209,6 +209,27 @@
   margin-top: var(--mw-space-3);
 }
 
+.mw-settings__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--mw-space-3);
+  margin-top: var(--mw-space-3);
+}
+
+.mw-settings__file-input {
+  // Visually hidden but still focusable/clickable via the "Import Data…" button and keyboard-accessible
+  // through it; kept out of `display: none` so assistive tech can still reach it if focused directly.
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .mw-settings__storage-bar {
   height: 10px;
   border-radius: var(--mw-radius-round);

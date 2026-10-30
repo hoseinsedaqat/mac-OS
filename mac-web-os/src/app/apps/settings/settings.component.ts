@@ -4,6 +4,7 @@ import { SettingsService } from '../../core/services/settings.service';
 import { WindowManagerService } from '../../core/services/window-manager.service';
 import { StorageService } from '../../core/services/storage.service';
 import { DialogService } from '../../core/services/dialog.service';
+import { DataPortabilityService } from '../../core/services/data-portability.service';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { WALLPAPERS } from '../../shared/utils/wallpapers.data';
 import { AccentColor, ThemeMode } from '../../core/models/settings.model';
@@ -52,6 +53,7 @@ export class SettingsComponent implements OnInit {
   private readonly wm = inject(WindowManagerService);
   private readonly storage = inject(StorageService);
   private readonly dialog = inject(DialogService);
+  private readonly dataPortability = inject(DataPortabilityService);
 
   readonly sections = SECTIONS;
   readonly active = signal<SettingsSection>('appearance');
@@ -59,6 +61,8 @@ export class SettingsComponent implements OnInit {
   readonly accentOptions = this.settings.accentOptions();
   readonly storageEstimate = signal<{ usage: number; quota: number } | null>(null);
   readonly storageSupported = signal(true);
+  readonly importError = signal<string | null>(null);
+  readonly importBusy = signal(false);
 
   ngOnInit(): void {
     const win = this.wm.windows().find((w) => w.id === this.windowId());
@@ -172,6 +176,42 @@ export class SettingsComponent implements OnInit {
       danger: true,
     });
     if (confirmed) this.settings.resetToDefaults();
+  }
+
+  exportData(): void {
+    this.dataPortability.downloadExport();
+  }
+
+  async onImportFileSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] ?? null;
+    input.value = ''; // allow re-selecting the same file again later
+    if (!file) return;
+
+    this.importError.set(null);
+
+    let bundle;
+    try {
+      bundle = this.dataPortability.parseBundle(await file.text());
+    } catch {
+      bundle = null;
+    }
+    if (!bundle) {
+      this.importError.set("That file doesn't look like a valid MacWeb OS backup.");
+      return;
+    }
+
+    const confirmed = await this.dialog.confirm({
+      title: 'Import Data',
+      message:
+        'This replaces every file, note, message, event and preference currently stored in this browser with the contents of the selected backup, then reloads the app. This cannot be undone.',
+      confirmLabel: 'Import & Reload',
+      danger: true,
+    });
+    if (!confirmed) return;
+
+    this.importBusy.set(true);
+    await this.dataPortability.importBundle(bundle);
   }
 
   formatBytes(bytes: number): string {

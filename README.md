@@ -91,6 +91,7 @@ It was built as a showcase of what a modern, standalone-component, Signal-driven
 - **LocalStorage** (`StorageService`) for every preference: namespaced, versioned, and falls back to an in-memory store if LocalStorage is unavailable or full (private browsing, quota exceeded) — the UI is warned, nothing crashes.
 - **IndexedDB** (`FileSystemService`) for the simulated filesystem (Finder/Trash). If IndexedDB is unavailable, the whole app transparently falls back to an equally functional **in-memory filesystem** for that session.
 - **Reset Environment** in Settings clears everything (with confirmation).
+- **Export / Import your data** (Settings → Storage): downloads everything the app stores in this browser — Notes, Mail, Calendar events, the simulated Finder/Trash file system, Dock layout, App Store installs, VS Code scratch files, Safari history/bookmarks and every preference — as a single versioned, self-describing JSON file (`DataPortabilityService`). Importing a previously exported file (or one from another browser/device) validates it, asks for confirmation since it replaces everything currently stored, then reloads the app with the restored data.
 
 ### 📱 Installable PWA
 - Built with `@angular/pwa` (`ngsw-config.json` + `public/manifest.webmanifest`): installable on desktop and mobile, with the built-in icon set generated from the app's own logo.

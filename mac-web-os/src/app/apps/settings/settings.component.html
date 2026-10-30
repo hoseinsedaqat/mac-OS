@@ -190,6 +190,31 @@
             Local storage is limited in this browser; some changes may be lost after closing the tab.
           </p>
         }
+
+        <h3>Export &amp; Import Data</h3>
+        <p class="mw-settings__hint">
+          Download everything stored in this browser — files, notes, mail, calendar events, Dock layout and
+          preferences — as a single JSON file you can keep as a backup or move to another browser. Importing a
+          backup replaces all of it and reloads the app.
+        </p>
+        <div class="mw-settings__actions">
+          <button type="button" class="mw-btn" (click)="exportData()">Export Data…</button>
+          <button type="button" class="mw-btn" [disabled]="importBusy()" (click)="importFileInput.click()">
+            {{ importBusy() ? 'Importing…' : 'Import Data…' }}
+          </button>
+          <input
+            #importFileInput
+            type="file"
+            accept="application/json,.json"
+            class="mw-settings__file-input"
+            aria-label="Choose a MacWeb OS backup file to import"
+            (change)="onImportFileSelected($event)"
+          />
+        </div>
+        @if (importError()) {
+          <p class="mw-settings__warning" role="alert">{{ importError() }}</p>
+        }
+
         <button type="button" class="mw-btn mw-btn-danger" (click)="resetDefaults()">Restore Default Settings</button>
       }
 
