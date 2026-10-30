@@ -41,9 +41,15 @@ MacWeb OS re-creates the *feel* of using a Mac — entirely as a static, client-
 It was built as a showcase of what a modern, standalone-component, Signal-driven Angular app can do: a real window manager with drag/resize/z-order, a persisted virtual filesystem, 13 fully working apps, and a UI that sweats details like keyboard shortcuts, dark mode, reduced-motion support and graceful storage fallbacks.
 
 <p align="center">
-  <img src="docs/screenshots/wallpaper-night-city.jpg" alt="MacWeb OS default wallpaper — Night City" width="820" />
+  <img src="docs/screenshots/desktop-overview.jpg" alt="MacWeb OS desktop — menu bar, desktop icons, Dock and the Night City wallpaper" width="820" />
   <br/>
-  <sub>One of the 9 original, built-in wallpapers (default: <em>Night City</em>)</sub>
+  <sub>The desktop: menu bar, desktop icons, and the Dock, over the default <em>Night City</em> wallpaper</sub>
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/finder-window.jpg" alt="MacWeb OS running the Finder app in a draggable window" width="820" />
+  <br/>
+  <sub>Finder open in a real, draggable/resizable window — one of the 13 built-in apps</sub>
 </p>
 
 ---
