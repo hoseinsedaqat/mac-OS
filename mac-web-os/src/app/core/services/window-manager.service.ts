@@ -127,8 +127,13 @@ export class WindowManagerService {
   close(id: string): void {
     this.windowsSignal.update((list) => {
       const remaining = list.filter((w) => w.id !== id);
-      if (remaining.length && !remaining.some((w) => w.active)) {
-        const topMost = [...remaining].sort((a, b) => b.zIndex - a.zIndex)[0];
+      // Only a visible (non-minimized) window may become the new active one —
+      // promoting a minimized window would leave it "active" while hidden,
+      // which (among other things) made the Dock think a maximized window
+      // was still on screen and kept it hidden after closing.
+      const visibleRemaining = remaining.filter((w) => !w.minimized);
+      if (visibleRemaining.length && !remaining.some((w) => w.active)) {
+        const topMost = [...visibleRemaining].sort((a, b) => b.zIndex - a.zIndex)[0];
         return remaining.map((w) => (w.id === topMost.id ? { ...w, active: true } : w));
       }
       return remaining;
