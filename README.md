@@ -100,8 +100,15 @@ It was built as a showcase of what a modern, standalone-component, Signal-driven
 
 ### 🎨 Visual / UX
 - Soft corners, shadows and blur, light/dark mode via CSS custom-property design tokens, short animations that respect `prefers-reduced-motion`.
-- Responsive: fullscreen windows and a compact Dock on tablet/mobile breakpoints.
 - Accessible focus states throughout.
+
+### 👆 Mobile & touch support
+- **Pointer Events everywhere**: window dragging/resizing and desktop-icon dragging are all built on the unified Pointer Events API (not separate mouse/touch handlers), so they work identically with a mouse, a trackpad, a stylus, or a finger — no device sniffing required.
+- **Windows open fullscreen when they don't comfortably fit**: `WindowManagerService` compares each app's own minimum size against the current viewport; on a phone, a small tablet in portrait, or simply a narrow browser window, a newly opened window fills the screen edge-to-edge below the menu bar instead of overflowing or needing horizontal scrolling to reach its own titlebar. Rotating the device or resizing the browser window re-checks this live, and "un-maximizing" a window always clamps back to whatever size currently fits — it can never hand back an overflowing window.
+- **Tap-to-open on touch**: desktop icons and Finder items normally follow the classic "click to select, double-click to open" convention, which has no real touch equivalent — on a touch pointer a single tap opens the item directly instead, matching how a phone's home screen behaves.
+- **Bigger touch targets**: window traffic-light buttons and edge/corner resize handles grow (and the traffic-light icons become permanently visible, since there's no hover state to reveal them on touch) under `@media (pointer: coarse)`, without changing how the window looks with a mouse.
+- **Compact Dock & menu bar**: the Dock shrinks its icon size at progressively narrower breakpoints and becomes horizontally scrollable as a safety net if it still doesn't fit; the menu bar drops optional items (and the date, on very narrow screens) rather than wrapping onto a second line.
+- **Safe-area aware**: the menu bar and Dock respect `env(safe-area-inset-*)` so they stay clear of notches, Dynamic Island cutouts and the home indicator on edge-to-edge phone screens.
 
 ---
 

@@ -35,16 +35,27 @@ export class WindowManagerService {
 
   private resyncMaximizedWindows(): void {
     const viewport = this.viewportSize();
+    const fullRect: Rect = { x: 0, y: MENU_BAR_HEIGHT, width: viewport.width, height: viewport.height - MENU_BAR_HEIGHT };
     this.windowsSignal.update((list) =>
-      list.map((w) =>
-        w.maximized
-          ? {
-              ...w,
-              rect: { x: 0, y: MENU_BAR_HEIGHT, width: viewport.width, height: viewport.height - MENU_BAR_HEIGHT },
-            }
-          : w,
-      ),
+      list.map((w) => {
+        if (w.maximized) return { ...w, rect: fullRect };
+        // The viewport shrank below this window's comfortable minimum size —
+        // a tablet rotated to portrait, or the browser window resized much
+        // narrower — so snap it to fullscreen instead of leaving it
+        // overflowing or needing the user to scroll to reach its own
+        // controls. This is also what makes windows behave sensibly on
+        // phone-sized touch screens without any device/UA sniffing.
+        if (!this.fitsComfortably(w.minSize.width, w.minSize.height, viewport)) {
+          return { ...w, maximized: true, restoreRect: w.rect, rect: fullRect };
+        }
+        return w;
+      }),
     );
+  }
+
+  /** True when `viewport` has enough room for a window of at least `minWidth`x`minHeight` plus breathing room for the menu bar and window chrome. */
+  private fitsComfortably(minWidth: number, minHeight: number, viewport: { width: number; height: number }): boolean {
+    return viewport.width >= minWidth + 16 && viewport.height >= minHeight + MENU_BAR_HEIGHT + 16;
   }
 
   isOpen(appId: string): boolean {
@@ -88,16 +99,25 @@ export class WindowManagerService {
       ...options.rect,
     };
 
+    // On a viewport too small to comfortably fit this app's own minimum
+    // window size — a phone, a small tablet in portrait, or simply a narrow
+    // browser window — open it filling the screen below the menu bar
+    // instead of a floating window that would overflow or need horizontal
+    // scrolling to reach its own titlebar/controls. The app still "remembers"
+    // its normal floating size in `restoreRect`, used if it's ever unmaximized.
+    const forceFullscreen = !options.rect && !this.fitsComfortably(def.window.minWidth, def.window.minHeight, viewport);
+    const fullRect: Rect = { x: 0, y: MENU_BAR_HEIGHT, width: viewport.width, height: viewport.height - MENU_BAR_HEIGHT };
+
     const win: WindowState = {
       id: createId('win'),
       appId,
       title: options.title ?? def.name,
-      rect,
-      restoreRect: null,
+      rect: forceFullscreen ? fullRect : rect,
+      restoreRect: forceFullscreen ? rect : null,
       minSize: { width: def.window.minWidth, height: def.window.minHeight },
       resizable: def.window.resizable,
       minimized: false,
-      maximized: false,
+      maximized: forceFullscreen,
       active: true,
       zIndex: ++this.zCounter,
       data: options.data ?? {},
@@ -183,7 +203,17 @@ export class WindowManagerService {
       list.map((w) => {
         if (w.id !== id) return w;
         if (w.maximized && w.restoreRect) {
-          return { ...w, maximized: false, rect: w.restoreRect, restoreRect: null };
+          // Clamp the remembered "restore" size to whatever room the current
+          // viewport actually has — if the browser window (or device
+          // orientation) got narrower since this window was maximized,
+          // restoring shouldn't hand back a window that overflows again.
+          const restored: Rect = {
+            x: w.restoreRect.x,
+            y: w.restoreRect.y,
+            width: Math.min(w.restoreRect.width, Math.max(w.minSize.width, viewport.width - 16)),
+            height: Math.min(w.restoreRect.height, Math.max(w.minSize.height, viewport.height - MENU_BAR_HEIGHT - 16)),
+          };
+          return { ...w, maximized: false, rect: restored, restoreRect: null };
         }
         // Edge-to-edge: a maximized window fills the entire screen below the menu
         // bar, with no side/bottom margins — the Dock is hidden while it's active

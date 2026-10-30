@@ -133,6 +133,13 @@ export class FinderComponent implements OnInit {
     return this.selection().has(id);
   }
 
+  /** Set from a cell/row's pointerdown, so a plain `click` can tell touch from mouse/pen. */
+  private lastPointerType = 'mouse';
+
+  trackPointerType(event: PointerEvent): void {
+    this.lastPointerType = event.pointerType;
+  }
+
   select(node: FsNode, event: MouseEvent): void {
     const multi = event.ctrlKey || event.metaKey;
     this.selection.update((current) => {
@@ -141,6 +148,10 @@ export class FinderComponent implements OnInit {
       else next.add(node.id);
       return next;
     });
+    // Touch has no equivalent of "click to select, double-click to open" — a
+    // tap is the only gesture available, so a single, non-multi-select tap
+    // opens the item directly instead of requiring a double-tap.
+    if (this.lastPointerType === 'touch' && !multi) this.openNode(node);
   }
 
   clearSelection(): void {
@@ -168,6 +179,11 @@ export class FinderComponent implements OnInit {
 
   openApp(appId: string): void {
     this.wm.open(appId);
+  }
+
+  /** Applications grid cells have no selection state, so a touch tap can open them directly; a mouse click still waits for the usual double-click. */
+  openAppOnTouch(appId: string): void {
+    if (this.lastPointerType === 'touch') this.openApp(appId);
   }
 
   async createFolder(): Promise<void> {

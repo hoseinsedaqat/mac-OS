@@ -60,7 +60,13 @@
       @if (isApplications()) {
         <div class="mw-finder__grid">
           @for (app of applicationsList(); track app.id) {
-            <button type="button" class="mw-finder__cell" (dblclick)="openApp(app.id)">
+            <button
+              type="button"
+              class="mw-finder__cell"
+              (pointerdown)="trackPointerType($event)"
+              (click)="openAppOnTouch(app.id)"
+              (dblclick)="openApp(app.id)"
+            >
               <mw-icon [name]="app.icon" [size]="34" />
               <span>{{ app.name }}</span>
             </button>
@@ -73,6 +79,7 @@
               type="button"
               class="mw-finder__cell"
               [class.selected]="isSelected(node.id)"
+              (pointerdown)="trackPointerType($event)"
               (click)="select(node, $event); $event.stopPropagation()"
               (dblclick)="openNode(node)"
               (contextmenu)="onContextMenu($event, node)"
@@ -110,6 +117,7 @@
             @for (node of items(); track node.id) {
               <tr
                 [class.selected]="isSelected(node.id)"
+                (pointerdown)="trackPointerType($event)"
                 (click)="select(node, $event)"
                 (dblclick)="openNode(node)"
                 (contextmenu)="onContextMenu($event, node)"
