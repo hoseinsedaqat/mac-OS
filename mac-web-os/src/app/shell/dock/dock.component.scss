@@ -33,17 +33,6 @@
   backdrop-filter: blur(26px) saturate(1.7);
   -webkit-backdrop-filter: blur(26px) saturate(1.7);
   pointer-events: auto;
-  // Safety net for narrow phones: even at the smallest icon size below, a
-  // full row of every built-in app can still be wider than the screen.
-  // Scroll it horizontally rather than silently clipping/overflowing off
-  // the edge of the viewport.
-  max-width: calc(100vw - 16px);
-  overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
 }
 
 .mw-dock__item {
