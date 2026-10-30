@@ -100,6 +100,33 @@ describe('WindowManagerService', () => {
     expect(winA?.active).toBe(true);
   });
 
+  it('closing the active window never promotes a minimized window to active (regression: Dock stayed hidden)', () => {
+    // A was maximized, then minimized — it keeps its `maximized` flag while hidden,
+    // exactly like a real minimized-after-maximize window would.
+    const a = wm.open('finder')!;
+    wm.toggleMaximize(a);
+    wm.minimize(a);
+    const b = wm.open('safari')!;
+    wm.toggleMaximize(b);
+
+    wm.close(b);
+
+    const winA = wm.windows().find((w) => w.id === a)!;
+    expect(winA.minimized).toBe(true);
+    expect(winA.active).toBe(false);
+    expect(wm.activeWindow()).toBeNull();
+    expect(wm.isFullscreenActive()).toBe(false);
+  });
+
+  it('isFullscreenActive is only true while the frontmost visible window is maximized', () => {
+    const id = wm.open('finder')!;
+    expect(wm.isFullscreenActive()).toBe(false);
+    wm.toggleMaximize(id);
+    expect(wm.isFullscreenActive()).toBe(true);
+    wm.minimize(id);
+    expect(wm.isFullscreenActive()).toBe(false);
+  });
+
   it('reopening a single-instance window with new data merges it without creating a second window', () => {
     const id = wm.open('trash')!;
     wm.open('trash', { data: { emptyRequested: 123 } });
