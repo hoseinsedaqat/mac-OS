@@ -17,7 +17,9 @@
     <mw-window-frame [win]="win" />
   }
 
-  <mw-dock />
+  @if (!wm.isFullscreenActive()) {
+    <mw-dock />
+  }
   <mw-spotlight />
   <mw-control-center />
   <mw-launchpad />
