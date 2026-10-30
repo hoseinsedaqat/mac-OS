@@ -1,0 +1,41 @@
+name: CI
+
+# Runs on every pull request so that a broken build or a failing test is
+# caught *before* it can be merged, not only after — the deploy workflow
+# only triggers on pushes to the protected branches (and already runs tests
+# itself as a deploy safety net), so without this job, pull requests never
+# ran any checks at all.
+on:
+  pull_request:
+    branches: [main, master, test]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: mac-web-os
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: mac-web-os/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npx ng test --watch=false
+
+      - name: Build (production)
+        run: npx ng build --configuration production
