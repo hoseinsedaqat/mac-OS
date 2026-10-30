@@ -1,18 +1,58 @@
-# MacWeb OS
+<p align="center">
+  <img src="mac-web-os/public/icons/logo.png" alt="MacWeb OS logo" width="120" />
+</p>
 
-A fully in-browser, macOS-inspired desktop simulator built with **Angular 22** (standalone components, Signals, strict TypeScript). Everything — the boot sequence, lock screen, window manager, Dock, Spotlight, Notification Center, Control Center and all 13 built-in apps — runs entirely client-side with **no backend, no API keys, and no real operating-system access**.
+<h1 align="center">MacWeb OS</h1>
 
-> **Not affiliated with Apple.** MacWeb OS is an original, independently built web app only *inspired* by macOS's look and feel. It is not an official Apple product, is not endorsed by Apple, and does not claim to be real macOS. All wallpapers, icons and the logo are custom/AI-generated artwork created for this project.
+<p align="center">
+  A fully in-browser, macOS-inspired desktop simulator — boot screen, Dock, Spotlight,<br/>
+  Control Center, Notification Center and 13 working apps, built with Angular 22, Signals and strict TypeScript.
+</p>
 
-![Angular](https://img.shields.io/badge/Angular-22-DD0031?logo=angular&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
-![No backend](https://img.shields.io/badge/backend-none-lightgrey)
+<p align="center">
+  <a href="https://hoseinsedaqat.github.io/mac-OS/"><strong>🔴 Live demo</strong></a>
+  ·
+  <a href="#features">Features</a>
+  ·
+  <a href="#getting-started">Getting started</a>
+  ·
+  <a href="#built-in-apps">Apps</a>
+  ·
+  <a href="#project-structure">Structure</a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Angular-22-DD0031?logo=angular&logoColor=white" alt="Angular 22" />
+  <img src="https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white" alt="TypeScript strict" />
+  <img src="https://img.shields.io/badge/State-Signals-FF4081" alt="Signals" />
+  <img src="https://img.shields.io/badge/Tests-123%20passing-success?logo=vitest&logoColor=white" alt="123 tests passing" />
+  <img src="https://img.shields.io/badge/backend-none-lightgrey" alt="No backend" />
+  <img src="https://img.shields.io/badge/deploy-GitHub%20Pages-222?logo=githubpages&logoColor=white" alt="Deployed on GitHub Pages" />
+</p>
+
+> **Not affiliated with Apple.** MacWeb OS is an original, independently built web app only *inspired* by macOS's look and feel. It is not an official Apple product, is not endorsed by Apple, and does not claim to be real macOS. All wallpapers, icons and the logo are custom/AI-generated artwork created specifically for this project.
 
 ---
 
-## Table of contents
+## ✨ What is this?
 
+MacWeb OS re-creates the *feel* of using a Mac — entirely as a static, client-side web app. There is **no backend, no API keys, and no real operating-system access**: every window, file, note, email and setting lives in your browser (`localStorage` + `IndexedDB`) and nothing ever leaves the tab.
+
+It was built as a showcase of what a modern, standalone-component, Signal-driven Angular app can do: a real window manager with drag/resize/z-order, a persisted virtual filesystem, 13 fully working apps, and a UI that sweats details like keyboard shortcuts, dark mode, reduced-motion support and graceful storage fallbacks.
+
+<p align="center">
+  <img src="docs/screenshots/wallpaper-night-city.jpg" alt="MacWeb OS default wallpaper — Night City" width="820" />
+  <br/>
+  <sub>One of the 9 original, built-in wallpapers (default: <em>Night City</em>)</sub>
+</p>
+
+---
+
+## 📚 Table of contents
+
+- [What is this?](#-what-is-this)
 - [Features](#features)
+- [Built-in apps](#built-in-apps)
 - [Tech stack](#tech-stack)
 - [Getting started](#getting-started)
 - [Available scripts](#available-scripts)
@@ -28,46 +68,50 @@ A fully in-browser, macOS-inspired desktop simulator built with **Angular 22** (
 
 ## Features
 
-### System shell
-- **Boot flow**: skippable splash → animated boot → lock screen (live clock/date, optional demo password, Enter-to-login or Enter key) → login (Enter key also submits/continues) → desktop, modeled as an explicit, illegal-transition-rejecting state machine (`SystemStateService`).
+### 🖥️ System shell
+- **Boot flow**: skippable splash → animated boot → lock screen (live clock/date, optional demo password, Enter-to-login) → login → desktop, modeled as an explicit, illegal-transition-rejecting state machine (`SystemStateService`).
 - **Sleep / resume**: the Page Visibility API puts the simulated machine to sleep when the tab is hidden and wakes it on return, preserving every open window and its state.
-- **Restart / Shut Down** (Apple menu): closes every open window and replays the boot animation back to the lock screen (Restart), or shows a black "powered off" screen that turns back on with a click/keypress (Shut Down, clearly disclosed as simulated since a browser tab can't actually power off the device).
-- **Menu Bar**: system menu, active app name, File/Edit/View/Window/Help, live clock & date, simulated Wi-Fi/battery/volume indicators, search, Control Center and Notification Center entry points.
-- **Dock**: a dedicated Launchpad button plus 12 built-in apps, open-app indicators, hover magnification, minimize/restore genie-less animation, single-instance activation, auto-hide, resizable, right-click menu — all persisted.
+- **Restart / Shut Down** (via the system menu — click the logo mark in the top-left corner of the menu bar): closes every open window and replays the boot animation back to the lock screen (Restart), or shows a black "powered off" screen that turns back on with a click/keypress (Shut Down) — clearly disclosed as simulated, since a browser tab can't actually power off a device.
+- **Menu Bar**: system menu (logo mark, top-left), active app name, File/Edit/View/Window/Help, live clock & date, simulated Wi-Fi/battery/volume indicators, search, Control Center and Notification Center entry points.
+- **Dock**: a dedicated Launchpad button plus built-in apps, open-app indicators, hover magnification, minimize/restore animation, single-instance activation, auto-hide, resizable, right-click menu — all persisted.
 - **Window Manager**: a single `WindowManagerService` owns every window's id/app/title/rect/open/minimized/maximized/active/z-index/drag/resize state, clamps windows to the viewport, dims inactive windows, and prevents accidental text selection while dragging.
-- **Launchpad** (desktop "Applications" icon or the Dock's grid icon): a full-screen, category-filterable app grid styled after macOS Launchpad, with original gradient tile artwork. Tiles for real apps (Settings, Photos, Safari, App Store, Calculator, Calendar, Games, Mail, Notes, Music, Finder, Terminal, Code…) open the actual app; a handful of extra tiles shown only for visual completeness (Preview, Maps, Automator, Books, Chess, Clock, Contacts, Dictionary, FaceTime, Find My, Font Book, Freeform, Home) clearly disclose that they are not implemented in this demo instead of silently doing nothing.
-- **Spotlight** (⌘/Ctrl+Space): fuzzy search across apps, simulated files and notes; Escape closes it.
+- **Launchpad**: a full-screen, category-filterable app grid with original gradient tile artwork. Tiles for real apps open the actual app; a handful of extra tiles shown only for visual completeness (Preview, Maps, Automator, Chess, Clock, …) clearly disclose that they are not implemented in this demo instead of silently doing nothing.
+- **Spotlight** (<kbd>⌘</kbd>/<kbd>Ctrl</kbd>+<kbd>Space</kbd>): fuzzy search across apps, simulated files and notes; <kbd>Esc</kbd> closes it.
 - **Notification Center**: dismiss individually or all at once, jump to the originating app, empty state.
-- **Control Center**: live Appearance/Volume/Dock/Keyboard-&-Display-brightness controls plus simulated Wi-Fi/Bluetooth/AirDrop/Focus/Stage Manager/Screen Mirroring toggles and a quick-action grid (Dark/Light mode, open Calculator, reset desktop icons, simulated screen recording, copy a shareable link, save a simulated screenshot file to Documents, Show Desktop) — every action either reflects real `SettingsService` state or performs a real, disclosed effect, never a dead click.
+- **Control Center**: live Appearance/Volume/Dock/Keyboard-&-Display-brightness controls plus simulated Wi-Fi/Bluetooth/AirDrop/Focus/Stage Manager/Screen Mirroring toggles and a quick-action grid — every action either reflects real `SettingsService` state or performs a real, disclosed effect, never a dead click.
 - **Keyboard shortcuts**: <kbd>Esc</kbd>, <kbd>Enter</kbd>, <kbd>Ctrl/Cmd+Space</kbd> (Spotlight), <kbd>Ctrl/Cmd+W</kbd> (close window), <kbd>Ctrl/Cmd+M</kbd> (minimize), <kbd>Ctrl/Cmd+Q</kbd> (quit app), <kbd>Alt/Option+Tab</kbd> (switch app) — all implemented so they never interfere with typing in text fields.
 
-### 13 built-in apps (all fully functional, nothing decorative)
-
-| App | What it does |
-|---|---|
-| **Finder** | Simulated filesystem backed by IndexedDB: sidebar, list/grid view, sort, search, create/rename/move/delete, multi-select, context menu. |
-| **Safari** | Tabs with their own back/forward history, bookmarks, address bar, local sample pages (`macweb://home`, `/about`, `/portfolio`, `/help`). External URLs never get embedded in an iframe — they open in a real new browser tab, avoiding fake/broken embedding. |
-| **Notes** | Folders, full CRUD, search, autosave, remembers the last selected note. |
-| **Calendar** | Month view & navigation, day selection, create/edit/delete events, today highlighted, persisted. |
-| **Calculator** | Four-function arithmetic implemented with a pure, dependency-free engine (**no `eval`/`Function`**), percent, sign toggle, clear/all-clear, divide-by-zero handling, full keyboard support. |
-| **Settings** | Appearance, Wallpaper, Theme, Accent color, Dock, Desktop, Sound, Date & Time, Accessibility, Storage, About — every change applies immediately and persists; includes Reset to Defaults. |
-| **Terminal** | A **safe, allow-listed** command simulator (`help`, `about`, `whoami`, `date`, `echo`, `ls`, `pwd`, `clear`, `neofetch`). It never executes real shell commands and contains no `eval`/`Function`. |
-| **Photos** | Grid/detail/lightbox views, albums, search, graceful placeholder on image load failure. |
-| **Music** | Sample tracks with play/pause/next/previous, progress and volume — clearly labeled **Demo mode**, no licensed streaming. |
-| **Mail** | Inbox/Sent/Drafts with sample data, search, draft/delete/mark-read — clearly labeled **Demo mode**; no message is ever actually transmitted. |
-| **App Store** | Browse/search/filter by category, app detail view, Install/Open toggle that persists per app. |
-| **About This Mac** | Simulated specs (never presented as real hardware), shows live app/window counts and a storage estimate. |
-| **Trash** | List, restore, permanently delete (with confirmation), empty (with confirmation) — backed by `FileSystemService`. |
-
-### Persistence
-- **LocalStorage** (`StorageService`) for every preference: namespaced, versioned, and falls back to an in-memory store if LocalStorage is unavailable or full (private browsing, quota exceeded) — the UI is warned via `storageDegraded`, nothing crashes.
+### 💾 Persistence
+- **LocalStorage** (`StorageService`) for every preference: namespaced, versioned, and falls back to an in-memory store if LocalStorage is unavailable or full (private browsing, quota exceeded) — the UI is warned, nothing crashes.
 - **IndexedDB** (`FileSystemService`) for the simulated filesystem (Finder/Trash). If IndexedDB is unavailable, the whole app transparently falls back to an equally functional **in-memory filesystem** for that session.
 - **Reset Environment** in Settings clears everything (with confirmation).
 
-### Visual/UX
+### 🎨 Visual / UX
 - Soft corners, shadows and blur, light/dark mode via CSS custom-property design tokens, short animations that respect `prefers-reduced-motion`.
 - Responsive: fullscreen windows and a compact Dock on tablet/mobile breakpoints.
 - Accessible focus states throughout.
+
+---
+
+## Built-in apps
+
+13 apps, all fully functional — nothing decorative or a dead click:
+
+| App | What it does |
+|---|---|
+| 🗂️ **Finder** | Simulated filesystem backed by IndexedDB: sidebar, list/grid view, sort, search, create/rename/move/delete, multi-select, context menu. |
+| 🌐 **Safari** | Tabs with their own back/forward history, bookmarks, address bar, local sample pages. External URLs never get embedded in an iframe — they open in a real new browser tab. |
+| 📝 **Notes** | Folders, full CRUD, search, autosave, remembers the last selected note. |
+| 📅 **Calendar** | Month view & navigation, day selection, create/edit/delete events, today highlighted, persisted. |
+| 🧮 **Calculator** | Four-function arithmetic implemented with a pure, dependency-free engine (**no `eval`/`Function`**), percent, sign toggle, divide-by-zero handling, full keyboard support. |
+| ⚙️ **Settings** | Appearance, Wallpaper, Theme, Accent color, Dock, Desktop, Sound, Date & Time, Accessibility, Storage, About — every change applies immediately and persists; includes Reset to Defaults. |
+| ⌨️ **Terminal** | A **safe, allow-listed** command simulator (`help`, `about`, `whoami`, `date`, `echo`, `ls`, `pwd`, `clear`, `neofetch`). Never executes real shell commands, no `eval`/`Function`. |
+| 🖼️ **Photos** | Grid/detail/lightbox views, albums, search, graceful placeholder on image load failure. |
+| 🎵 **Music** | Sample tracks with play/pause/next/previous, progress and volume — clearly labeled **Demo mode**. |
+| ✉️ **Mail** | Inbox/Sent/Drafts with sample data, search, draft/delete/mark-read — clearly labeled **Demo mode**; no message is ever actually transmitted. |
+| 🛍️ **App Store** | Browse/search/filter by category, app detail view, Install/Open toggle that persists per app. |
+| ℹ️ **About This Mac** | Simulated specs (never presented as real hardware), shows live app/window counts and a storage estimate. |
+| 🗑️ **Trash** | List, restore, permanently delete (with confirmation), empty (with confirmation) — backed by `FileSystemService`. |
 
 ---
 
@@ -77,7 +121,7 @@ A fully in-browser, macOS-inspired desktop simulator built with **Angular 22** (
 - **TypeScript** in `strict` mode.
 - **Signals** for all application state (no NgRx/Redux/other state library).
 - **SCSS** with a token-driven design system (`src/styles/_tokens.scss`, `_typography.scss`, `_utilities.scss`).
-- **Custom inline SVG icons** (`shared/components/icon`) — no icon library dependency (`lucide-angular`'s peer dependencies don't yet support Angular 22).
+- **Custom inline SVG icons** (`shared/components/icon`) — no icon library dependency.
 - **Vitest** (via `@angular/build:unit-test`) for unit tests.
 - Zero runtime dependencies beyond Angular itself + RxJS.
 
@@ -111,15 +155,14 @@ cd mac-web-os
 npm test
 ```
 
-The suite covers 100+ scenarios across 17 spec files, including:
+The suite covers 100+ scenarios across 20 spec files, including:
 - the full splash → boot → lock → login → desktop → sleep/wake state machine, including rejected illegal/duplicate transitions;
 - the window manager (open/close/focus/minimize/maximize/resize, single-vs-multi-instance apps, viewport clamping, z-order);
 - every data-backed app's store (Notes, Calendar, Mail, App Store installs) including persistence across reloads;
 - the Calculator engine (all four operators, chaining, percent, sign toggle, divide-by-zero recovery) with **zero `eval`/`Function` usage**;
 - the Terminal's allow-listed command parser, proving unknown/malicious input is never executed;
 - `StorageService`'s in-memory fallback when `localStorage.setItem` throws;
-- `FileSystemService`'s in-memory fallback when IndexedDB is unavailable (this is also how the suite runs under Vitest + jsdom, which has no IndexedDB implementation);
-- a regression test pinning down a real bug that was found and fixed during development (see below).
+- `FileSystemService`'s in-memory fallback when IndexedDB is unavailable.
 
 ## Building for production
 
@@ -132,7 +175,7 @@ Output is written to `dist/mac-web-os/browser/`. The app is a 100% static bundle
 
 ## Deploying to GitHub Pages
 
-A ready-to-use workflow lives at [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). It triggers on every push to `main` and can also be run manually from the **Actions** tab (`workflow_dispatch`).
+A ready-to-use workflow lives at [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). It triggers on every push to the default branch and can also be run manually from the **Actions** tab (`workflow_dispatch`).
 
 What it does:
 
@@ -143,9 +186,11 @@ What it does:
 3. Runs `ng build --configuration production` with that base href.
 4. **Auto-detects the real build output folder** (`dist/<project>/browser`) instead of hard-coding a path, so renaming the Angular project doesn't break the pipeline.
 5. Adds a `404.html` (copy of `index.html`) so direct/deep links still load the app, and a `.nojekyll` file so GitHub Pages doesn't mangle any filenames starting with `_`.
-6. Uploads the result as a Pages artifact and deploys it with the official `actions/deploy-pages` action, using the modern OIDC-based Pages permissions (`pages: write`, `id-token: write`) — no personal access token required.
+6. Uploads the result as a Pages artifact and deploys it with the official `actions/deploy-pages` action, using the modern OIDC-based Pages permissions — no personal access token required.
 
-**One-time repo setup**: in GitHub → Settings → Pages, set the source to **GitHub Actions**. After that, every push to `main` deploys automatically.
+**One-time repo setup**: in GitHub → Settings → Pages, set the source to **GitHub Actions**. After that, every push to the default branch deploys automatically.
+
+👉 **Live instance:** https://hoseinsedaqat.github.io/mac-OS/
 
 ## Project structure
 
@@ -167,7 +212,7 @@ mac-web-os/
       finder/ safari/ notes/ calendar/ calculator/ settings/ terminal/
       photos/ music/ mail/ app-store/ about/ trash/
   public/
-    wallpapers/   # 8 original wallpapers (light + dark), default is an abstract flowing-silk gradient scene
+    wallpapers/   # 9 original wallpapers, default is the stylized "Night City" skyline
     icons/        # app logo
     photos/       # sample AI-generated photos for the Photos app
   src/styles/
@@ -193,7 +238,7 @@ Everything below is clearly labeled in the UI as simulated and never claims to b
 - **Screen recording** (Control Center quick action) only flips a labeled in-app flag and shows a toast explaining it — MacWeb OS never captures your real screen.
 - **"Screenshot"** (Control Center quick action) saves a placeholder text file named like a screenshot into the simulated Documents folder (visible in Finder) — it is not a real screen capture.
 - **Recognise Music** shows a toast explaining there is no real audio input to listen to in a browser demo.
-- A handful of **Launchpad tiles** (Preview, Maps, Automator, Books, Chess, Clock, Contacts, Dictionary, FaceTime, Find My, Font Book, Freeform, Home) exist only for visual completeness against the reference screenshot and open a clearly-labeled "not implemented in this demo" dialog instead of a real app.
+- A handful of **Launchpad tiles** (Preview, Maps, Automator, Books, Chess, Clock, Contacts, Dictionary, FaceTime, Find My, Font Book, Freeform, Home) exist only for visual completeness and open a clearly-labeled "not implemented in this demo" dialog instead of a real app.
 - **Music** playback is a **Demo mode** using short, generated sample clips — no licensed streaming catalogue is involved.
 - **Mail** sending is a **Demo mode** — composing and "sending" a message only moves it into the local Sent folder; no network call is ever made.
 - **Terminal** is a sandboxed command simulator with an allow-listed parser — it can never run a real shell command, and contains no `eval`/`Function`.
@@ -207,3 +252,7 @@ Everything below is clearly labeled in the UI as simulated and never claims to b
 - **`localStorage`/IndexedDB quota or private-browsing errors**: the app is designed to degrade gracefully (in-memory fallback + a visible warning) instead of crashing; if you still see a hard error, please file an issue with the exact browser/version.
 - **Tests fail locally only on first run**: run `npm ci` again inside `mac-web-os/` to make sure `node_modules` matches `package-lock.json` exactly.
 - **Adding a new icon**: `shared/components/icon/icon.component.ts` keeps every icon as a hand-authored inline SVG path string in one lookup table — add your new icon's `name` there; unknown names fall back to a generic icon instead of crashing.
+
+---
+
+<p align="center"><sub>Built as an original, from-scratch demo project. Not affiliated with or endorsed by Apple Inc.</sub></p>

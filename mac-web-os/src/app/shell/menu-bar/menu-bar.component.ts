@@ -65,6 +65,7 @@ export class MenuBarComponent implements OnInit, OnDestroy {
   }
 
   openAppleMenu(event: MouseEvent): void {
+    event.stopPropagation();
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     const t = (key: string) => this.i18n.t(key);
     const items: ContextMenuItem[] = [
@@ -106,6 +107,7 @@ export class MenuBarComponent implements OnInit, OnDestroy {
   }
 
   openFileMenu(event: MouseEvent): void {
+    event.stopPropagation();
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     const active = this.wm.activeWindow();
     const appDef = active ? this.registry.get(active.appId) : undefined;
@@ -130,6 +132,7 @@ export class MenuBarComponent implements OnInit, OnDestroy {
   }
 
   openEditMenu(event: MouseEvent): void {
+    event.stopPropagation();
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     const items: ContextMenuItem[] = [
       { id: 'cut', label: 'Cut', icon: 'close', action: () => this.execEdit('cut') },
@@ -148,6 +151,7 @@ export class MenuBarComponent implements OnInit, OnDestroy {
   }
 
   openViewMenu(event: MouseEvent): void {
+    event.stopPropagation();
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     const isDark = this.settings.theme() === 'dark';
     const isFullscreen = !!document.fullscreenElement;
@@ -179,6 +183,7 @@ export class MenuBarComponent implements OnInit, OnDestroy {
   }
 
   openWindowMenu(event: MouseEvent): void {
+    event.stopPropagation();
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     const active = this.wm.activeWindow();
     const items: ContextMenuItem[] = [
@@ -212,6 +217,7 @@ export class MenuBarComponent implements OnInit, OnDestroy {
   }
 
   openHelpMenu(event: MouseEvent): void {
+    event.stopPropagation();
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     this.contextMenu.open(rect.left, rect.bottom + 4, [
       {
@@ -224,6 +230,7 @@ export class MenuBarComponent implements OnInit, OnDestroy {
   }
 
   openWifiMenu(event: MouseEvent): void {
+    event.stopPropagation();
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     const wifiOn = this.settings.settings().wifiEnabled;
     this.contextMenu.open(rect.right - 200, rect.bottom + 4, [
