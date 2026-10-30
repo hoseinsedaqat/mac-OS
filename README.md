@@ -153,6 +153,8 @@ Run from inside `mac-web-os/`:
 | `npm run build` | Production build to `dist/mac-web-os/browser`. |
 | `npm run watch` | Development build in watch mode. |
 | `npm test` | Runs the Vitest unit test suite once. |
+| `npm run e2e:install` | One-time setup: downloads the Playwright Chromium browser. |
+| `npm run e2e` | Runs the Playwright end-to-end suite against a real browser. |
 
 ## Running tests
 
@@ -161,7 +163,7 @@ cd mac-web-os
 npm test
 ```
 
-The suite covers 100+ scenarios across 20 spec files, including:
+The suite covers 100+ scenarios across 20+ spec files, including:
 - the full splash → boot → lock → login → desktop → sleep/wake state machine, including rejected illegal/duplicate transitions;
 - the window manager (open/close/focus/minimize/maximize/resize, single-vs-multi-instance apps, viewport clamping, z-order);
 - every data-backed app's store (Notes, Calendar, Mail, App Store installs) including persistence across reloads;
@@ -169,6 +171,18 @@ The suite covers 100+ scenarios across 20 spec files, including:
 - the Terminal's allow-listed command parser, proving unknown/malicious input is never executed;
 - `StorageService`'s in-memory fallback when `localStorage.setItem` throws;
 - `FileSystemService`'s in-memory fallback when IndexedDB is unavailable.
+
+### End-to-end tests
+
+Unit tests run against mocked/`TestBed` state, so they can't catch bugs that only show up from real pointer interactions against the live DOM (drag, double-click, focus order, CSS visibility). [`mac-web-os/e2e/`](mac-web-os/e2e) holds a [Playwright](https://playwright.dev) suite that drives a real browser through the actual boot → lock screen → login → desktop flow, then exercises window management (open/maximize/minimize/close) exactly like a user would.
+
+```bash
+cd mac-web-os
+npm run e2e:install   # one-time: downloads the Playwright browser
+npm run e2e
+```
+
+This runs automatically in CI on every pull request (see [`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
 
 ## Building for production
 
