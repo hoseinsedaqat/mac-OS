@@ -143,4 +143,61 @@ describe('WindowManagerService', () => {
     expect(resized.rect.width).toBe(win.minSize.width);
     expect(resized.rect.height).toBe(win.minSize.height);
   });
+
+  describe('mobile/touch-sized viewports', () => {
+    function setViewport(width: number, height: number): void {
+      Object.defineProperty(window, 'innerWidth', { value: width, configurable: true });
+      Object.defineProperty(window, 'innerHeight', { value: height, configurable: true });
+    }
+
+    it('opens a window fullscreen (filling below the menu bar) when the viewport is too small for its minimum size', () => {
+      setViewport(375, 667); // iPhone-sized viewport
+      const id = wm.open('notes')!;
+      const win = wm.windows().find((w) => w.id === id)!;
+      expect(win.maximized).toBe(true);
+      expect(win.rect).toEqual({ x: 0, y: 32, width: 375, height: 635 });
+      // The normal floating size is remembered so a later "un-maximize" has somewhere sensible to go back to.
+      expect(win.restoreRect).not.toBeNull();
+    });
+
+    it('opens a normal floating window (not maximized) when the viewport comfortably fits it', () => {
+      setViewport(1200, 800);
+      const id = wm.open('notes')!;
+      const win = wm.windows().find((w) => w.id === id)!;
+      expect(win.maximized).toBe(false);
+    });
+
+    it('snaps an already-open window to fullscreen if the viewport shrinks below its minimum size', () => {
+      setViewport(1200, 800);
+      const id = wm.open('notes')!;
+      expect(wm.windows().find((w) => w.id === id)!.maximized).toBe(false);
+
+      setViewport(360, 640);
+      window.dispatchEvent(new Event('resize'));
+
+      const win = wm.windows().find((w) => w.id === id)!;
+      expect(win.maximized).toBe(true);
+      expect(win.rect).toEqual({ x: 0, y: 32, width: 360, height: 608 });
+    });
+
+    it('toggleMaximize clamps the restored size to the current viewport, so it never hands back an overflowing window', () => {
+      setViewport(1200, 800);
+      const id = wm.open('notes')!;
+      const original = wm.windows().find((w) => w.id === id)!.rect;
+      wm.toggleMaximize(id); // maximize
+
+      // Simulate the browser window (or device orientation) having gotten much narrower while maximized.
+      setViewport(500, 700);
+      wm.toggleMaximize(id); // un-maximize/restore
+
+      const restored = wm.windows().find((w) => w.id === id)!;
+      expect(restored.maximized).toBe(false);
+      expect(restored.rect.width).toBeLessThanOrEqual(500);
+      expect(restored.rect.height).toBeLessThanOrEqual(700 - 32);
+      // Still at least as big as the app declares it needs to be.
+      expect(restored.rect.width).toBeGreaterThanOrEqual(restored.minSize.width);
+      // And smaller than (or equal to) what it would have restored to with plenty of room.
+      expect(restored.rect.width).toBeLessThanOrEqual(original.width);
+    });
+  });
 });

@@ -59,6 +59,8 @@ export class DesktopIconComponent {
   private moved = false;
   private startPointer = { x: 0, y: 0 };
   private startPos = { x: 0, y: 0 };
+  /** Set from the pointerdown that starts a drag/tap, so a plain `click` can tell touch from mouse/pen. */
+  private lastPointerType = 'mouse';
 
   private readonly onMove = (e: PointerEvent) => this.handleMove(e);
   private readonly onUp = () => this.handleUp();
@@ -74,6 +76,12 @@ export class DesktopIconComponent {
       return;
     }
     this.desktop.select(this.def().id);
+    // Touch has no real equivalent of a mouse "single click to select, double
+    // click to open" — a tap is the only gesture available, so it should
+    // behave like tapping an icon on a phone's home screen and open
+    // immediately instead of silently just selecting until a second tap
+    // happens to land within the double-tap window.
+    if (this.lastPointerType === 'touch') this.open();
   }
 
   open(): void {
@@ -89,6 +97,7 @@ export class DesktopIconComponent {
 
   startDrag(event: PointerEvent): void {
     if (event.button !== 0) return;
+    this.lastPointerType = event.pointerType;
     this.desktop.select(this.def().id);
     this.dragging = true;
     this.moved = false;

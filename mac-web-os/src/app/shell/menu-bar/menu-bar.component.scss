@@ -8,7 +8,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--mw-space-4);
+  // On devices with a notch/Dynamic Island/rounded corners (e.g. a phone used
+  // in landscape), keep the menu bar's own content clear of the unsafe
+  // area instead of letting it render underneath the cutout.
+  padding: 0 max(var(--mw-space-4), env(safe-area-inset-right)) 0 max(var(--mw-space-4), env(safe-area-inset-left));
   background: var(--mw-bg-menubar);
   backdrop-filter: blur(22px) saturate(1.7);
   -webkit-backdrop-filter: blur(22px) saturate(1.7);
@@ -87,6 +90,8 @@
   font-variant-numeric: tabular-nums;
   display: flex;
   gap: 8px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .mw-menubar__date {
@@ -95,6 +100,16 @@
 
 @media (max-width: 720px) {
   .mw-menubar__item {
+    display: none;
+  }
+}
+
+@media (max-width: 420px) {
+  // On a phone-width menu bar there isn't room for both the date and the
+  // time without wrapping onto a second line (which would make the bar
+  // taller than the fixed menu-bar height every window position is based
+  // on) — drop the date and keep the clock itself readable.
+  .mw-menubar__date {
     display: none;
   }
 }

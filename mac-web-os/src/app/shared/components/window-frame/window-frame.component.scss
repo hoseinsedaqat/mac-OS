@@ -169,6 +169,68 @@
   cursor: nesw-resize;
 }
 
+// Touchscreens have no hover state to reveal the traffic-light glyphs and no
+// mouse-precision pointer to hit a 6px resize band, so give both a bit more
+// room on coarse (touch) pointers without changing how the window looks on a
+// trackpad/mouse.
+@media (pointer: coarse) {
+  .mw-traffic {
+    width: 20px;
+    height: 20px;
+    // Icons are otherwise only shown on titlebar hover, which doesn't exist
+    // on touch — always show them so each button's purpose is discoverable.
+    color: rgba(0, 0, 0, 0.55);
+  }
+
+  .mw-window__traffic {
+    gap: 12px;
+  }
+
+  .mw-resize--n,
+  .mw-resize--s {
+    height: 18px;
+  }
+  .mw-resize--n {
+    top: -9px;
+  }
+  .mw-resize--s {
+    bottom: -9px;
+  }
+  .mw-resize--e,
+  .mw-resize--w {
+    width: 18px;
+  }
+  .mw-resize--e {
+    right: -9px;
+  }
+  .mw-resize--w {
+    left: -9px;
+  }
+  .mw-resize--ne,
+  .mw-resize--nw,
+  .mw-resize--se,
+  .mw-resize--sw {
+    width: 28px;
+    height: 28px;
+  }
+  .mw-resize--ne {
+    top: -14px;
+    right: -14px;
+  }
+  .mw-resize--nw {
+    top: -14px;
+    left: -14px;
+  }
+  .mw-resize--se {
+    bottom: -14px;
+    right: -14px;
+  }
+  .mw-resize--sw {
+    bottom: -14px;
+    left: -14px;
+  }
+}
+
 @keyframes mw-window-in {
   from {
     opacity: 0;

@@ -2,7 +2,9 @@
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 8px;
+  // Keeps the Dock clear of the home indicator on notched/gesture-nav phones
+  // instead of overlapping it.
+  bottom: max(8px, env(safe-area-inset-bottom));
   z-index: var(--mw-z-dock);
   display: flex;
   justify-content: center;
@@ -31,6 +33,17 @@
   backdrop-filter: blur(26px) saturate(1.7);
   -webkit-backdrop-filter: blur(26px) saturate(1.7);
   pointer-events: auto;
+  // Safety net for narrow phones: even at the smallest icon size below, a
+  // full row of every built-in app can still be wider than the screen.
+  // Scroll it horizontally rather than silently clipping/overflowing off
+  // the edge of the viewport.
+  max-width: calc(100vw - 16px);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .mw-dock__item {
@@ -132,5 +145,13 @@
   }
   .mw-dock__tooltip {
     display: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .mw-dock__inner {
+    --dock-size: 38px !important;
+    gap: 4px;
+    padding: 5px 6px;
   }
 }
