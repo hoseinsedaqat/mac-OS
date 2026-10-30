@@ -18,11 +18,34 @@ export class WindowManagerService {
   readonly activeWindow = computed(() => this.windowsSignal().find((w) => w.active) ?? null);
   readonly visibleWindows = computed(() => this.windowsSignal().filter((w) => !w.minimized));
   readonly minimizedWindows = computed(() => this.windowsSignal().filter((w) => w.minimized));
+  /** True when the frontmost window is maximized — used to auto-hide the Dock, like real macOS. */
+  readonly isFullscreenActive = computed(() => {
+    const active = this.activeWindow();
+    return !!active && active.maximized;
+  });
 
   constructor(
     private readonly registry: ApplicationRegistryService,
     private readonly sound: SoundService,
-  ) {}
+  ) {
+    // Keep maximized windows filling the whole screen if the viewport itself
+    // changes size (e.g. the browser window is resized).
+    window.addEventListener('resize', () => this.resyncMaximizedWindows());
+  }
+
+  private resyncMaximizedWindows(): void {
+    const viewport = this.viewportSize();
+    this.windowsSignal.update((list) =>
+      list.map((w) =>
+        w.maximized
+          ? {
+              ...w,
+              rect: { x: 0, y: MENU_BAR_HEIGHT, width: viewport.width, height: viewport.height - MENU_BAR_HEIGHT },
+            }
+          : w,
+      ),
+    );
+  }
 
   isOpen(appId: string): boolean {
     return this.windowsSignal().some((w) => w.appId === appId);
@@ -157,11 +180,14 @@ export class WindowManagerService {
         if (w.maximized && w.restoreRect) {
           return { ...w, maximized: false, rect: w.restoreRect, restoreRect: null };
         }
+        // Edge-to-edge: a maximized window fills the entire screen below the menu
+        // bar, with no side/bottom margins — the Dock is hidden while it's active
+        // (see `isFullscreenActive`) so there's nothing left for it to overlap.
         const fullRect: Rect = {
-          x: 6,
-          y: MENU_BAR_HEIGHT + 6,
-          width: viewport.width - 12,
-          height: viewport.height - MENU_BAR_HEIGHT - 12,
+          x: 0,
+          y: MENU_BAR_HEIGHT,
+          width: viewport.width,
+          height: viewport.height - MENU_BAR_HEIGHT,
         };
         return { ...w, maximized: true, restoreRect: w.rect, rect: fullRect };
       }),
