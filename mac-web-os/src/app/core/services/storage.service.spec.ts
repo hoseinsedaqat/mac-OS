@@ -43,6 +43,40 @@ describe('StorageService', () => {
     expect(window.localStorage.getItem('unrelated-app-key')).toBe('keep-me');
   });
 
+  it('exportAll returns every namespaced key with its parsed value, without the namespace prefix', () => {
+    window.localStorage.setItem('unrelated-app-key', 'keep-me');
+    service.setItem('settings', { theme: 'dark' });
+    service.setItem('notes', [{ id: '1', title: 'Hi' }]);
+    const exported = service.exportAll();
+    expect(exported).toEqual({
+      settings: { theme: 'dark' },
+      notes: [{ id: '1', title: 'Hi' }],
+    });
+  });
+
+  it('importAll writes every key from a snapshot back into storage', () => {
+    service.importAll({ settings: { theme: 'light' }, notes: [{ id: '2' }] });
+    expect(service.getItem('settings', null)).toEqual({ theme: 'light' });
+    expect(service.getItem('notes', null)).toEqual([{ id: '2' }]);
+  });
+
+  it('exportAll -> importAll round-trips a full snapshot into a genuinely separate service instance', () => {
+    service.setItem('settings', { theme: 'dark', volume: 7 });
+    service.setItem('notes', [{ id: 'n1', title: 'Note' }]);
+    const snapshot = service.exportAll();
+
+    window.localStorage.clear();
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({});
+    const fresh = TestBed.inject(StorageService);
+    expect(fresh.getItem('settings', null)).toBeNull(); // confirms this really is a fresh instance/store
+
+    fresh.importAll(snapshot);
+
+    expect(fresh.getItem('settings', null)).toEqual({ theme: 'dark', volume: 7 });
+    expect(fresh.getItem('notes', null)).toEqual([{ id: 'n1', title: 'Note' }]);
+  });
+
   it('falls back to an in-memory value and flags storageDegraded when localStorage.setItem throws', () => {
     const proto = Object.getPrototypeOf(window.localStorage) as Storage;
     const spy = vi.spyOn(proto, 'setItem').mockImplementation(() => {

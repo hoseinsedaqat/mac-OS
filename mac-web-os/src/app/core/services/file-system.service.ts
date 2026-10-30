@@ -362,4 +362,29 @@ export class FileSystemService {
     if (!q) return [];
     return this.nodes().filter((n) => !n.trashed && n.name.toLowerCase().includes(q));
   }
+
+  /** Returns a snapshot of every node (including trashed ones), for full-data export. */
+  exportAll(): FsNode[] {
+    return this.nodes();
+  }
+
+  /**
+   * Replaces the entire simulated file system with `nodes` (used by Import).
+   * Clears the existing IndexedDB store first when available; otherwise just
+   * overwrites the in-memory fallback. Callers are expected to reload the
+   * app afterwards so every other service re-reads a consistent state.
+   */
+  async importAll(nodes: FsNode[]): Promise<void> {
+    if (!this.memoryMode) {
+      try {
+        await this.withStore('readwrite', (s) => s.clear() as IDBRequest<undefined>);
+        for (const node of nodes) {
+          await this.withStore('readwrite', (s) => s.put(node));
+        }
+      } catch {
+        this.enterMemoryMode();
+      }
+    }
+    this.nodes.set(nodes);
+  }
 }

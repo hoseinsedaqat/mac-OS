@@ -67,4 +67,22 @@ describe('FileSystemService (simulated IndexedDB-backed file system)', () => {
     const hits = service.search('findmeplease');
     expect(hits.length).toBe(1);
   });
+
+  it('exportAll() returns the current node snapshot, importAll() replaces a different instance\'s whole tree with it', async () => {
+    await service.init();
+    await service.createFile(DOCUMENTS_ID, 'exported.txt', 'export me');
+    const snapshot = service.exportAll();
+    expect(snapshot.some((n) => n.name === 'exported.txt')).toBe(true);
+
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({});
+    const fresh = TestBed.inject(FileSystemService);
+    await fresh.init();
+    expect(fresh.nodes().some((n) => n.name === 'exported.txt')).toBe(false); // confirms this really is a fresh instance
+
+    await fresh.importAll(snapshot);
+    expect(fresh.nodes().map((n) => n.id).sort()).toEqual(snapshot.map((n) => n.id).sort());
+    expect(fresh.getNode(ROOT_ID)).toBeTruthy();
+    expect(fresh.nodes().some((n) => n.name === 'exported.txt')).toBe(true);
+  });
 });
