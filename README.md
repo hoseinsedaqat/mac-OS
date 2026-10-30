@@ -92,6 +92,11 @@ It was built as a showcase of what a modern, standalone-component, Signal-driven
 - **IndexedDB** (`FileSystemService`) for the simulated filesystem (Finder/Trash). If IndexedDB is unavailable, the whole app transparently falls back to an equally functional **in-memory filesystem** for that session.
 - **Reset Environment** in Settings clears everything (with confirmation).
 
+### 📱 Installable PWA
+- Built with `@angular/pwa` (`ngsw-config.json` + `public/manifest.webmanifest`): installable on desktop and mobile, with the built-in icon set generated from the app's own logo.
+- The Angular service worker (enabled in production builds only, not in `ng serve`) precaches the app shell, so a previously-visited build keeps working **offline** — there's no backend to go offline from anyway, the entire "OS" already runs client-side.
+- No `dataGroups` are configured since the app never calls a network API; everything is local storage / IndexedDB, as described below.
+
 ### 🎨 Visual / UX
 - Soft corners, shadows and blur, light/dark mode via CSS custom-property design tokens, short animations that respect `prefers-reduced-motion`.
 - Responsive: fullscreen windows and a compact Dock on tablet/mobile breakpoints.
